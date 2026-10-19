@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merge PDF — Join PDF Files Into One, Free &amp; Private | SimpleKit</title>
+<meta name="description" content="Combine many PDF files into one PDF in the order you want. Free, no sign-up, no watermark. Your files never leave your device.">
+<link rel="canonical" href="https://example.com/merge-pdf/"><meta property="og:title" content="Merge PDF — Join PDF Files Into One, Free &amp; Private | SimpleKit"><meta property="og:description" content="Combine many PDF files into one PDF in the order you want. Free, no sign-up, no watermark. Your files never leave your device."><meta property="og:url" content="https://example.com/merge-pdf/"><meta property="og:type" content="website"><meta property="og:image" content="https://example.com/assets/img/share.png">
+<meta name="theme-color" content="#3B2D8F">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/common.js" data-root="../"></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I merge PDF files?", "acceptedAnswer": {"@type": "Answer", "text": "Choose all your PDFs (you can pick many at once), use the up and down arrows to set the order, then press \u201cJoin my PDFs\u201d."}}, {"@type": "Question", "name": "Is there a limit on files?", "acceptedAnswer": {"@type": "Answer", "text": "There is no fixed limit. Very large files may be slow on older phones, because all the work happens on your device."}}, {"@type": "Question", "name": "Will the quality change?", "acceptedAnswer": {"@type": "Answer", "text": "No. Pages are copied exactly as they are. Nothing is compressed."}}, {"@type": "Question", "name": "Are my files uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Joining happens inside your browser, so your PDFs stay private."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Join PDFs", "url": "https://example.com/merge-pdf/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in your web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+  <a class="logo" href="../" aria-label="SimpleKit home"><span class="logo-mark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span><span>Simple<strong>Kit</strong></span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="../resume-builder/" class="hide-sm">Resume</a><a href="../#tools" class="hide-sm">All tools</a><a href="../about/" class="hide-sm">About</a>
+    <button type="button" class="text-btn" data-big-text aria-pressed="false"><span class="a1">A</span><span class="a2">A</span> Bigger text</button>
+  </nav>
+</div></header>
+<main id="main" class="wrap narrow">
+  <div class="tool-head"><a class="back" href="../" aria-label="Back to all tools"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><h1>Join PDFs</h1></div>
+  <p class="tool-sub">Put two or more PDF files together into one file, in the order you choose.</p>
+  <div class="progress-steps" aria-hidden="true"><span class="ps on cur" data-step="1"><span class="dot">1</span><span class="lbl">Choose PDFs</span></span><span class="bar"></span><span class="ps" data-step="2"><span class="dot">2</span><span class="lbl">Put in order</span></span><span class="bar"></span><span class="ps" data-step="3"><span class="dot">3</span><span class="lbl">Download</span></span></div>
+  
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 18v2h16v-2"/></svg></span>
+    <b id="drop-t">Tap here to choose PDFs</b>
+    <span>You can pick many files at once · or drag them here</span>
+    <input type="file" accept="application/pdf,.pdf" multiple aria-label="Choose PDF files">
+  </label>
+
+  <ul class="file-list" id="list" hidden></ul>
+
+  <button type="button" class="btn btn-big" id="go" disabled>Join my PDFs <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  <p class="hint" id="need" style="text-align:center;margin-top:-10px">Choose at least 2 PDFs.</p>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1D6B45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Your PDFs are joined</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns">
+      <button type="button" class="btn" id="dl"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 10l6 6 6-6"/><path d="M4 20h16"/></svg> Download PDF</button>
+      <button type="button" class="btn btn-light" id="again">Start again</button>
+    </div>
+  </div>
+</div>
+
+  <div class="ad-slot"></div>
+  
+<section class="section"><h2>How to join PDF files</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your PDFs</b><span>Tap the pink box and select all the PDF files you want to join.</span></div>
+  <div class="step"><span class="num">2</span><b>Set the order</b><span>Use the up and down arrows. The first file in the list comes first.</span></div>
+  <div class="step"><span class="num">3</span><b>Join and download</b><span>Press the big button and save your new single PDF.</span></div>
+</div></section>
+
+  <section class="section"><h2>Questions people ask</h2><div class="faq"><details><summary>How do I merge PDF files?</summary><p>Choose all your PDFs (you can pick many at once), use the up and down arrows to set the order, then press “Join my PDFs”.</p></details><details><summary>Is there a limit on files?</summary><p>There is no fixed limit. Very large files may be slow on older phones, because all the work happens on your device.</p></details><details><summary>Will the quality change?</summary><p>No. Pages are copied exactly as they are. Nothing is compressed.</p></details><details><summary>Are my files uploaded?</summary><p>No. Joining happens inside your browser, so your PDFs stay private.</p></details></div></section>
+  <section class="section"><h2>Other free tools</h2><nav class="related" aria-label="Related tools"><a href="../split-pdf/">Split a PDF</a><a href="../compress-pdf/">Make PDF smaller</a><a href="../jpg-to-pdf/">Photos to PDF</a><a href="../pdf-to-jpg/">PDF to photos</a></nav></section>
+</main>
+<footer class="site-footer"><div class="wrap"><div class="card">
+  <span style="font-size:21px">Simple<strong>Kit</strong> · free tools for everyone</span>
+  <nav aria-label="Footer"><a href="../about/">About</a><a href="../privacy/">Privacy</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a></nav>
+  <small>© 2026 SimpleKit. Your files are processed on your own device and are never uploaded.</small>
+</div></div></footer>
+<script src="../assets/js/tools/merge-pdf.js" defer></script>
+</body>
+</html>

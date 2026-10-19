@@ -1,0 +1,64 @@
+<!---
+{"slug": "jpg-to-pdf", "tool": true,
+ "title": "JPG to PDF — Convert Photos and Scans to One PDF Free",
+ "desc": "Turn JPG, PNG and iPhone photos into a single PDF. Choose A4 or fit-to-photo pages and set the order. Free, no upload, works on your phone.",
+ "h1": "Photos to PDF",
+ "sub": "Turn photos of documents, certificates or scans into one neat PDF.",
+ "steps": ["Choose photos", "Pick page size", "Download"],
+ "scripts": ["assets/js/tools/jpg-to-pdf.js"],
+ "related": ["compress-pdf", "merge-pdf", "resize-image", "pdf-to-jpg"],
+ "faq": [
+  ["How do I convert a JPG to PDF?", "Choose one or more photos, set the order with the arrows, pick a page size and press “Make my PDF”."],
+  ["Can I add photos from my iPhone?", "Yes. iPhone HEIC photos are supported and are converted automatically."],
+  ["Which page size should I choose?", "Choose A4 if you will print it or upload it to a form. Choose “Same as photo” to keep each page the exact shape of the photo."],
+  ["The PDF is too big for my form. What now?", "After downloading, open our “Make PDF smaller” tool and choose the size your form allows."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:upload:42:#3B2D8F}}</span>
+    <b id="drop-t">Tap here to choose photos</b>
+    <span>JPG, PNG, WEBP or iPhone HEIC · pick many at once</span>
+    <input type="file" accept="image/*,.heic,.heif" multiple aria-label="Choose photos">
+  </label>
+
+  <ul class="file-list" id="list" hidden></ul>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:22px">
+    <div>
+      <span class="field-label" id="ps-l">Page size</span>
+      <div class="choices" id="pagesize" role="group" aria-labelledby="ps-l">
+        <button type="button" class="choice" data-value="a4" aria-pressed="true">A4</button>
+        <button type="button" class="choice" data-value="letter" aria-pressed="false">US Letter</button>
+        <button type="button" class="choice" data-value="fit" aria-pressed="false">Same as photo</button>
+      </div>
+    </div>
+    <div>
+      <span class="field-label" id="m-l">White border</span>
+      <div class="choices" id="margin" role="group" aria-labelledby="m-l">
+        <button type="button" class="choice" data-value="0" aria-pressed="false">None</button>
+        <button type="button" class="choice" data-value="20" aria-pressed="true">Small</button>
+        <button type="button" class="choice" data-value="45" aria-pressed="false">Big</button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-big" id="go">Make my PDF {{ICON:arrow:26:#FFFFFF}}</button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your PDF is ready</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns">
+      <button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download PDF</button>
+      <button type="button" class="btn btn-light" id="again">Start again</button>
+    </div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to turn photos into a PDF</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your photos</b><span>Pick all the pages you photographed. You can add more any time.</span></div>
+  <div class="step"><span class="num">2</span><b>Set order and size</b><span>Use the arrows to put pages in order, then choose A4 for printing or forms.</span></div>
+  <div class="step"><span class="num">3</span><b>Download</b><span>Press the big button and save one PDF with all your pages.</span></div>
+</div></section>

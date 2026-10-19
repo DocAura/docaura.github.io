@@ -1,0 +1,47 @@
+<!---
+{"slug": "merge-pdf", "tool": true,
+ "title": "Merge PDF — Join PDF Files Into One, Free & Private",
+ "desc": "Combine many PDF files into one PDF in the order you want. Free, no sign-up, no watermark. Your files never leave your device.",
+ "h1": "Join PDFs",
+ "sub": "Put two or more PDF files together into one file, in the order you choose.",
+ "steps": ["Choose PDFs", "Put in order", "Download"],
+ "scripts": ["assets/js/tools/merge-pdf.js"],
+ "related": ["split-pdf", "compress-pdf", "jpg-to-pdf", "pdf-to-jpg"],
+ "faq": [
+  ["How do I merge PDF files?", "Choose all your PDFs (you can pick many at once), use the up and down arrows to set the order, then press “Join my PDFs”."],
+  ["Is there a limit on files?", "There is no fixed limit. Very large files may be slow on older phones, because all the work happens on your device."],
+  ["Will the quality change?", "No. Pages are copied exactly as they are. Nothing is compressed."],
+  ["Are my files uploaded?", "No. Joining happens inside your browser, so your PDFs stay private."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:upload:42:#3B2D8F}}</span>
+    <b id="drop-t">Tap here to choose PDFs</b>
+    <span>You can pick many files at once · or drag them here</span>
+    <input type="file" accept="application/pdf,.pdf" multiple aria-label="Choose PDF files">
+  </label>
+
+  <ul class="file-list" id="list" hidden></ul>
+
+  <button type="button" class="btn btn-big" id="go" disabled>Join my PDFs {{ICON:arrow:26:#FFFFFF}}</button>
+  <p class="hint" id="need" style="text-align:center;margin-top:-10px">Choose at least 2 PDFs.</p>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your PDFs are joined</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns">
+      <button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download PDF</button>
+      <button type="button" class="btn btn-light" id="again">Start again</button>
+    </div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to join PDF files</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your PDFs</b><span>Tap the pink box and select all the PDF files you want to join.</span></div>
+  <div class="step"><span class="num">2</span><b>Set the order</b><span>Use the up and down arrows. The first file in the list comes first.</span></div>
+  <div class="step"><span class="num">3</span><b>Join and download</b><span>Press the big button and save your new single PDF.</span></div>
+</div></section>

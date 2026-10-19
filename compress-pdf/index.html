@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compress PDF to 100KB, 200KB, 500KB — Free PDF Size Reducer | SimpleKit</title>
+<meta name="description" content="Reduce PDF file size to 100KB, 200KB, 500KB or 1MB for online forms and email. Free, no sign-up, and your PDF never leaves your device.">
+<link rel="canonical" href="https://example.com/compress-pdf/"><meta property="og:title" content="Compress PDF to 100KB, 200KB, 500KB — Free PDF Size Reducer | SimpleKit"><meta property="og:description" content="Reduce PDF file size to 100KB, 200KB, 500KB or 1MB for online forms and email. Free, no sign-up, and your PDF never leaves your device."><meta property="og:url" content="https://example.com/compress-pdf/"><meta property="og:type" content="website"><meta property="og:image" content="https://example.com/assets/img/share.png">
+<meta name="theme-color" content="#3B2D8F">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/common.js" data-root="../"></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I compress a PDF to 100KB?", "acceptedAnswer": {"@type": "Answer", "text": "Choose your PDF, tap \u201c100KB\u201d and press the big button. The tool tries clearer settings first and keeps the best one that fits under 100KB."}}, {"@type": "Question", "name": "Will my PDF look worse?", "acceptedAnswer": {"@type": "Answer", "text": "A little, depending on how small you go. \u201cSmaller, good quality\u201d keeps text sharp. Very small sizes like 100KB for many pages may look softer."}}, {"@type": "Question", "name": "Can I still copy text from the smaller PDF?", "acceptedAnswer": {"@type": "Answer", "text": "When we shrink to a set size, each page is saved as a picture, so text can no longer be selected. Keep your original file if you need to copy text."}}, {"@type": "Question", "name": "Is it safe for my documents?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Your PDF is processed inside your own browser and is never uploaded to any server."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Make PDF smaller", "url": "https://example.com/compress-pdf/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in your web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+  <a class="logo" href="../" aria-label="SimpleKit home"><span class="logo-mark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span><span>Simple<strong>Kit</strong></span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="../resume-builder/" class="hide-sm">Resume</a><a href="../#tools" class="hide-sm">All tools</a><a href="../about/" class="hide-sm">About</a>
+    <button type="button" class="text-btn" data-big-text aria-pressed="false"><span class="a1">A</span><span class="a2">A</span> Bigger text</button>
+  </nav>
+</div></header>
+<main id="main" class="wrap narrow">
+  <div class="tool-head"><a class="back" href="../" aria-label="Back to all tools"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><h1>Make PDF smaller</h1></div>
+  <p class="tool-sub">Compress a PDF to 100KB, 200KB, 500KB or any size — for forms, email and WhatsApp.</p>
+  <div class="progress-steps" aria-hidden="true"><span class="ps on cur" data-step="1"><span class="dot">1</span><span class="lbl">Choose PDF</span></span><span class="bar"></span><span class="ps" data-step="2"><span class="dot">2</span><span class="lbl">Pick size</span></span><span class="bar"></span><span class="ps" data-step="3"><span class="dot">3</span><span class="lbl">Download</span></span></div>
+  
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 18v2h16v-2"/></svg></span>
+    <b>Tap here to choose a PDF</b>
+    <span>or drag it here · stays on your device</span>
+    <input type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF">
+  </label>
+
+  <ul class="file-list" id="file-info" hidden></ul>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:22px">
+    <div>
+      <span class="field-label" id="size-l">How small should it be?</span>
+      <div class="choices" id="sizes" role="group" aria-labelledby="size-l">
+        <button type="button" class="choice" data-value="auto" aria-pressed="true">Smaller<small>good quality</small></button>
+        <button type="button" class="choice" data-value="100" aria-pressed="false">100KB</button>
+        <button type="button" class="choice" data-value="200" aria-pressed="false">200KB</button>
+        <button type="button" class="choice" data-value="500" aria-pressed="false">500KB</button>
+        <button type="button" class="choice" data-value="1024" aria-pressed="false">1MB</button>
+        <button type="button" class="choice" data-value="custom" aria-pressed="false">Custom</button>
+      </div>
+      <div id="custom-wrap" hidden style="margin-top:14px">
+        <label class="field-label" for="custom-kb">Your size in KB</label>
+        <input class="input" id="custom-kb" type="number" inputmode="numeric" min="20" value="300">
+      </div>
+    </div>
+    <button type="button" class="btn btn-big" id="go">Make my PDF smaller <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1D6B45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Your PDF is ready</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns">
+      <button type="button" class="btn" id="dl"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 10l6 6 6-6"/><path d="M4 20h16"/></svg> Download PDF</button>
+      <button type="button" class="btn btn-light" id="again">Do another PDF</button>
+    </div>
+  </div>
+</div>
+
+  <div class="ad-slot"></div>
+  
+<section class="section"><h2>How to reduce PDF size</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your PDF</b><span>Tap the pink box and pick the PDF from your phone or computer.</span></div>
+  <div class="step"><span class="num">2</span><b>Pick a size</b><span>Choose a size your form allows, like 200KB, or just “Smaller”.</span></div>
+  <div class="step"><span class="num">3</span><b>Download</b><span>Save the smaller PDF. We show you the new size before you upload it.</span></div>
+</div></section>
+
+  <section class="section"><h2>Questions people ask</h2><div class="faq"><details><summary>How do I compress a PDF to 100KB?</summary><p>Choose your PDF, tap “100KB” and press the big button. The tool tries clearer settings first and keeps the best one that fits under 100KB.</p></details><details><summary>Will my PDF look worse?</summary><p>A little, depending on how small you go. “Smaller, good quality” keeps text sharp. Very small sizes like 100KB for many pages may look softer.</p></details><details><summary>Can I still copy text from the smaller PDF?</summary><p>When we shrink to a set size, each page is saved as a picture, so text can no longer be selected. Keep your original file if you need to copy text.</p></details><details><summary>Is it safe for my documents?</summary><p>Yes. Your PDF is processed inside your own browser and is never uploaded to any server.</p></details></div></section>
+  <section class="section"><h2>Other free tools</h2><nav class="related" aria-label="Related tools"><a href="../merge-pdf/">Join PDFs</a><a href="../jpg-to-pdf/">Photos to PDF</a><a href="../resize-image/">Resize photo to KB</a><a href="../split-pdf/">Split a PDF</a></nav></section>
+</main>
+<footer class="site-footer"><div class="wrap"><div class="card">
+  <span style="font-size:21px">Simple<strong>Kit</strong> · free tools for everyone</span>
+  <nav aria-label="Footer"><a href="../about/">About</a><a href="../privacy/">Privacy</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a></nav>
+  <small>© 2026 SimpleKit. Your files are processed on your own device and are never uploaded.</small>
+</div></div></footer>
+<script src="../assets/js/tools/compress-pdf.js" defer></script>
+</body>
+</html>

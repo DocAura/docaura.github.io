@@ -1,0 +1,74 @@
+<!---
+{"slug": "passport-photo", "tool": true,
+ "title": "Passport Size Photo Maker — 35×45 mm & 2×2 inch, Free",
+ "desc": "Make a passport size photo online: crop to 35×45 mm or 2×2 inch, then download a single photo or a ready-to-print sheet (4×6 inch or A4). Free and private.",
+ "h1": "Passport photo",
+ "sub": "Crop your photo to passport size and get a sheet you can print at home or at a photo shop.",
+ "steps": ["Choose photo", "Line up face", "Download"],
+ "scripts": ["assets/js/tools/passport-photo.js"],
+ "related": ["resize-image", "heic-to-jpg", "jpg-to-pdf", "resume-builder"],
+ "faq": [
+  ["What size is a passport photo?", "Many countries, including India, the UK and most of Europe, use 35 × 45 mm. The USA and many visa forms use 2 × 2 inches (51 × 51 mm). Always check the rules on your own form."],
+  ["How do I take a good passport photo at home?", "Stand in front of a plain white or light wall, face the camera straight on, keep a neutral face with your mouth closed, and use soft daylight without shadows."],
+  ["How do I print it?", "Download the 4 × 6 inch sheet and print it as a normal 4 × 6 photo at any photo shop, or print the A4 sheet at home at “actual size” (100%)."],
+  ["My form needs the photo under 50KB.", "Download the single photo, then open our “Resize photo to KB” tool and choose the size the form asks for."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:upload:42:#3B2D8F}}</span>
+    <b>Tap here to choose your photo</b>
+    <span>A clear photo, face straight, plain light background</span>
+    <input type="file" accept="image/*,.heic,.heif" aria-label="Choose your photo">
+  </label>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:22px">
+    <div>
+      <span class="field-label" id="sz-l">Photo size</span>
+      <div class="choices" id="preset" role="group" aria-labelledby="sz-l">
+        <button type="button" class="choice" data-value="35x45" aria-pressed="true">35 × 45 mm<small>India, UK, Europe</small></button>
+        <button type="button" class="choice" data-value="51x51" aria-pressed="false">2 × 2 inch<small>USA, visas</small></button>
+        <button type="button" class="choice" data-value="custom" aria-pressed="false">Custom</button>
+      </div>
+      <div class="row" id="custom-wrap" hidden style="margin-top:12px">
+        <div><label class="field-label" for="cw">Width (mm)</label><input class="input" id="cw" type="number" inputmode="decimal" min="10" max="100" value="30"></div>
+        <div><label class="field-label" for="ch">Height (mm)</label><input class="input" id="ch" type="number" inputmode="decimal" min="10" max="100" value="40"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <span class="field-label" style="margin:0">Line up your face</span>
+      <p class="hint" style="margin:0">Drag the photo to move it. Use the slider to zoom. Fit your face inside the oval.</p>
+      <div class="crop-box" id="crop-box"><canvas id="crop" aria-label="Photo crop area. Drag to move."></canvas></div>
+      <div class="zoom-row">
+        <button type="button" class="icon-btn" id="zout" aria-label="Zoom out"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+        <label class="sr-only" for="zoom">Zoom</label>
+        <input type="range" id="zoom" min="1" max="4" step="0.01" value="1">
+        <button type="button" class="icon-btn" id="zin" aria-label="Zoom in"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-big" id="go">Make my passport photo {{ICON:arrow:26:#FFFFFF}}</button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your passport photo is ready</h2>
+    <img class="preview-img" id="out-img" alt="Your passport photo" style="max-height:240px">
+    <p class="meta" id="out-meta"></p>
+    <div class="btns">
+      <button type="button" class="btn" id="dl-one">{{ICON:download:24:#FFFFFF}} Single photo</button>
+      <button type="button" class="btn btn-light" id="dl-46">4 × 6 inch print sheet</button>
+      <button type="button" class="btn btn-light" id="dl-a4">A4 sheet (PDF)</button>
+    </div>
+    <button type="button" class="link-btn" id="adjust">Change the crop</button>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to make a passport photo at home</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Take a good photo</b><span>Plain white wall behind you, face the camera, no shadows, neutral face.</span></div>
+  <div class="step"><span class="num">2</span><b>Line up your face</b><span>Drag and zoom so your face fits inside the oval guide.</span></div>
+  <div class="step"><span class="num">3</span><b>Download or print</b><span>Save one photo for online forms, or a sheet to print at a photo shop.</span></div>
+</div></section>

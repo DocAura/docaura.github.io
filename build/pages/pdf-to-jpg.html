@@ -1,0 +1,64 @@
+<!---
+{"slug": "pdf-to-jpg", "tool": true,
+ "title": "PDF to JPG — Convert PDF Pages to Images Free",
+ "desc": "Save every page of a PDF as a JPG or PNG picture in normal or high quality. Free, no sign-up, and your PDF stays on your device.",
+ "h1": "PDF to photos",
+ "sub": "Save each page of a PDF as a picture you can share on WhatsApp or upload to a form.",
+ "steps": ["Choose PDF", "Pick quality", "Download"],
+ "scripts": ["assets/js/tools/pdf-to-jpg.js"],
+ "related": ["jpg-to-pdf", "resize-image", "split-pdf", "compress-pdf"],
+ "faq": [
+  ["How do I convert a PDF to JPG?", "Choose your PDF, pick the quality, and press “Make pictures”. Then save each page, or all of them at once."],
+  ["My browser asks to allow many downloads. Is that okay?", "Yes. When you save all pages at once, the browser asks once whether this site may download several files. Tap Allow."],
+  ["JPG or PNG — which should I pick?", "JPG makes smaller files and is best for most uses. PNG is sharper for pages with small text, but the files are bigger."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:upload:42:#3B2D8F}}</span>
+    <b>Tap here to choose a PDF</b>
+    <span>or drag it here · stays on your device</span>
+    <input type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF">
+  </label>
+
+  <ul class="file-list" id="file-info" hidden></ul>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:22px">
+    <div>
+      <span class="field-label" id="q-l">Picture quality</span>
+      <div class="choices" id="quality" role="group" aria-labelledby="q-l">
+        <button type="button" class="choice" data-value="110" aria-pressed="false">Small<small>for WhatsApp</small></button>
+        <button type="button" class="choice" data-value="150" aria-pressed="true">Normal</button>
+        <button type="button" class="choice" data-value="220" aria-pressed="false">High<small>for printing</small></button>
+      </div>
+    </div>
+    <div>
+      <span class="field-label" id="f-l">Picture type</span>
+      <div class="choices" id="format" role="group" aria-labelledby="f-l">
+        <button type="button" class="choice" data-value="jpg" aria-pressed="true">JPG</button>
+        <button type="button" class="choice" data-value="png" aria-pressed="false">PNG</button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-big" id="go">Make pictures {{ICON:arrow:26:#FFFFFF}}</button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your pictures are ready</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns">
+      <button type="button" class="btn" id="dl-all">{{ICON:download:24:#FFFFFF}} Save all pictures</button>
+      <button type="button" class="btn btn-light" id="again">Do another PDF</button>
+    </div>
+    <p class="hint">Or tap a page below to save just that one.</p>
+    <div class="thumbs" id="out-thumbs"></div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to turn a PDF into pictures</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your PDF</b><span>Tap the pink box and pick the PDF.</span></div>
+  <div class="step"><span class="num">2</span><b>Pick quality</b><span>“Normal” is right for most people. Choose “High” only for printing.</span></div>
+  <div class="step"><span class="num">3</span><b>Save pictures</b><span>Save all pages at once, or tap one page to save just that picture.</span></div>
+</div></section>

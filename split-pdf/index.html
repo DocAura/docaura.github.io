@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Split PDF — Extract or Remove Pages From a PDF Free | SimpleKit</title>
+<meta name="description" content="Pick the pages you want and save them as a new PDF, or save every page as its own file. See each page before you choose. Free and private.">
+<link rel="canonical" href="https://example.com/split-pdf/"><meta property="og:title" content="Split PDF — Extract or Remove Pages From a PDF Free | SimpleKit"><meta property="og:description" content="Pick the pages you want and save them as a new PDF, or save every page as its own file. See each page before you choose. Free and private."><meta property="og:url" content="https://example.com/split-pdf/"><meta property="og:type" content="website"><meta property="og:image" content="https://example.com/assets/img/share.png">
+<meta name="theme-color" content="#3B2D8F">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/common.js" data-root="../"></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I take out some pages from a PDF?", "acceptedAnswer": {"@type": "Answer", "text": "Choose your PDF, tap the pages you want to keep (they turn pink with a tick), then press \u201cSave chosen pages\u201d."}}, {"@type": "Question", "name": "How do I remove a page from a PDF?", "acceptedAnswer": {"@type": "Answer", "text": "Tap \u201cChoose all\u201d, then tap the page you want to remove so it is no longer ticked, and save."}}, {"@type": "Question", "name": "Can I type page numbers instead?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Type something like 1-3, 5 in the page numbers box and the pages are chosen for you."}}, {"@type": "Question", "name": "Are my files uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Your PDF is split inside your own browser."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Split a PDF", "url": "https://example.com/split-pdf/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in your web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+  <a class="logo" href="../" aria-label="SimpleKit home"><span class="logo-mark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span><span>Simple<strong>Kit</strong></span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="../resume-builder/" class="hide-sm">Resume</a><a href="../#tools" class="hide-sm">All tools</a><a href="../about/" class="hide-sm">About</a>
+    <button type="button" class="text-btn" data-big-text aria-pressed="false"><span class="a1">A</span><span class="a2">A</span> Bigger text</button>
+  </nav>
+</div></header>
+<main id="main" class="wrap narrow">
+  <div class="tool-head"><a class="back" href="../" aria-label="Back to all tools"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><h1>Split a PDF</h1></div>
+  <p class="tool-sub">See every page, tap the ones you want, and save them as a new PDF.</p>
+  <div class="progress-steps" aria-hidden="true"><span class="ps on cur" data-step="1"><span class="dot">1</span><span class="lbl">Choose PDF</span></span><span class="bar"></span><span class="ps" data-step="2"><span class="dot">2</span><span class="lbl">Tap pages</span></span><span class="bar"></span><span class="ps" data-step="3"><span class="dot">3</span><span class="lbl">Download</span></span></div>
+  
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 18v2h16v-2"/></svg></span>
+    <b>Tap here to choose a PDF</b>
+    <span>or drag it here · stays on your device</span>
+    <input type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF">
+  </label>
+
+  <ul class="file-list" id="file-info" hidden></ul>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:20px">
+    <div class="row">
+      <div style="flex:3 1 240px"><label class="field-label" for="range">Page numbers (optional)</label><input class="input" id="range" placeholder="e.g. 1-3, 5"></div>
+      <div style="flex:1 1 140px;display:flex;gap:10px"><button type="button" class="btn btn-light btn-small" id="all" style="flex:1">Choose all</button><button type="button" class="btn btn-light btn-small" id="none" style="flex:1">Clear</button></div>
+    </div>
+    <p class="field-label" id="count" style="margin:0">Tap the pages you want to keep</p>
+    <div class="thumbs" id="thumbs"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px">
+      <button type="button" class="btn btn-big" id="go" style="flex:2 1 260px" disabled>Save chosen pages <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" class="btn btn-light" id="each" style="flex:1 1 220px;min-height:72px" disabled>Each page as its own PDF</button>
+    </div>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1D6B45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Done</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns" id="out-btns"></div>
+  </div>
+</div>
+
+  <div class="ad-slot"></div>
+  
+<section class="section"><h2>How to split a PDF</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your PDF</b><span>Every page is shown as a small picture so you can see what is inside.</span></div>
+  <div class="step"><span class="num">2</span><b>Tap the pages</b><span>Tap the pages to keep. Chosen pages turn pink with a tick.</span></div>
+  <div class="step"><span class="num">3</span><b>Save</b><span>Save them as one new PDF, or each page as its own PDF.</span></div>
+</div></section>
+
+  <section class="section"><h2>Questions people ask</h2><div class="faq"><details><summary>How do I take out some pages from a PDF?</summary><p>Choose your PDF, tap the pages you want to keep (they turn pink with a tick), then press “Save chosen pages”.</p></details><details><summary>How do I remove a page from a PDF?</summary><p>Tap “Choose all”, then tap the page you want to remove so it is no longer ticked, and save.</p></details><details><summary>Can I type page numbers instead?</summary><p>Yes. Type something like 1-3, 5 in the page numbers box and the pages are chosen for you.</p></details><details><summary>Are my files uploaded?</summary><p>No. Your PDF is split inside your own browser.</p></details></div></section>
+  <section class="section"><h2>Other free tools</h2><nav class="related" aria-label="Related tools"><a href="../merge-pdf/">Join PDFs</a><a href="../compress-pdf/">Make PDF smaller</a><a href="../pdf-to-jpg/">PDF to photos</a><a href="../jpg-to-pdf/">Photos to PDF</a></nav></section>
+</main>
+<footer class="site-footer"><div class="wrap"><div class="card">
+  <span style="font-size:21px">Simple<strong>Kit</strong> · free tools for everyone</span>
+  <nav aria-label="Footer"><a href="../about/">About</a><a href="../privacy/">Privacy</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a></nav>
+  <small>© 2026 SimpleKit. Your files are processed on your own device and are never uploaded.</small>
+</div></div></footer>
+<script src="../assets/js/tools/split-pdf.js" defer></script>
+</body>
+</html>

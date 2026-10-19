@@ -1,0 +1,6 @@
+{
+  "brand": { "name": "SimpleKit", "name_light": "Simple", "name_bold": "Kit" },
+  "site_url": "https://example.com",
+  "base_path": "",
+  "contact_email": "hello@yourdomain.com"
+}

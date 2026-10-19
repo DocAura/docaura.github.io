@@ -1,0 +1,54 @@
+<!---
+{"slug": "split-pdf", "tool": true,
+ "title": "Split PDF — Extract or Remove Pages From a PDF Free",
+ "desc": "Pick the pages you want and save them as a new PDF, or save every page as its own file. See each page before you choose. Free and private.",
+ "h1": "Split a PDF",
+ "sub": "See every page, tap the ones you want, and save them as a new PDF.",
+ "steps": ["Choose PDF", "Tap pages", "Download"],
+ "scripts": ["assets/js/tools/split-pdf.js"],
+ "related": ["merge-pdf", "compress-pdf", "pdf-to-jpg", "jpg-to-pdf"],
+ "faq": [
+  ["How do I take out some pages from a PDF?", "Choose your PDF, tap the pages you want to keep (they turn pink with a tick), then press “Save chosen pages”."],
+  ["How do I remove a page from a PDF?", "Tap “Choose all”, then tap the page you want to remove so it is no longer ticked, and save."],
+  ["Can I type page numbers instead?", "Yes. Type something like 1-3, 5 in the page numbers box and the pages are chosen for you."],
+  ["Are my files uploaded?", "No. Your PDF is split inside your own browser."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:upload:42:#3B2D8F}}</span>
+    <b>Tap here to choose a PDF</b>
+    <span>or drag it here · stays on your device</span>
+    <input type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF">
+  </label>
+
+  <ul class="file-list" id="file-info" hidden></ul>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:20px">
+    <div class="row">
+      <div style="flex:3 1 240px"><label class="field-label" for="range">Page numbers (optional)</label><input class="input" id="range" placeholder="e.g. 1-3, 5"></div>
+      <div style="flex:1 1 140px;display:flex;gap:10px"><button type="button" class="btn btn-light btn-small" id="all" style="flex:1">Choose all</button><button type="button" class="btn btn-light btn-small" id="none" style="flex:1">Clear</button></div>
+    </div>
+    <p class="field-label" id="count" style="margin:0">Tap the pages you want to keep</p>
+    <div class="thumbs" id="thumbs"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px">
+      <button type="button" class="btn btn-big" id="go" style="flex:2 1 260px" disabled>Save chosen pages {{ICON:arrow:26:#FFFFFF}}</button>
+      <button type="button" class="btn btn-light" id="each" style="flex:1 1 220px;min-height:72px" disabled>Each page as its own PDF</button>
+    </div>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Done</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns" id="out-btns"></div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to split a PDF</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your PDF</b><span>Every page is shown as a small picture so you can see what is inside.</span></div>
+  <div class="step"><span class="num">2</span><b>Tap the pages</b><span>Tap the pages to keep. Chosen pages turn pink with a tick.</span></div>
+  <div class="step"><span class="num">3</span><b>Save</b><span>Save them as one new PDF, or each page as its own PDF.</span></div>
+</div></section>

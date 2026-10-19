@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JPG to PDF — Convert Photos and Scans to One PDF Free | SimpleKit</title>
+<meta name="description" content="Turn JPG, PNG and iPhone photos into a single PDF. Choose A4 or fit-to-photo pages and set the order. Free, no upload, works on your phone.">
+<link rel="canonical" href="https://example.com/jpg-to-pdf/"><meta property="og:title" content="JPG to PDF — Convert Photos and Scans to One PDF Free | SimpleKit"><meta property="og:description" content="Turn JPG, PNG and iPhone photos into a single PDF. Choose A4 or fit-to-photo pages and set the order. Free, no upload, works on your phone."><meta property="og:url" content="https://example.com/jpg-to-pdf/"><meta property="og:type" content="website"><meta property="og:image" content="https://example.com/assets/img/share.png">
+<meta name="theme-color" content="#3B2D8F">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/common.js" data-root="../"></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I convert a JPG to PDF?", "acceptedAnswer": {"@type": "Answer", "text": "Choose one or more photos, set the order with the arrows, pick a page size and press \u201cMake my PDF\u201d."}}, {"@type": "Question", "name": "Can I add photos from my iPhone?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. iPhone HEIC photos are supported and are converted automatically."}}, {"@type": "Question", "name": "Which page size should I choose?", "acceptedAnswer": {"@type": "Answer", "text": "Choose A4 if you will print it or upload it to a form. Choose \u201cSame as photo\u201d to keep each page the exact shape of the photo."}}, {"@type": "Question", "name": "The PDF is too big for my form. What now?", "acceptedAnswer": {"@type": "Answer", "text": "After downloading, open our \u201cMake PDF smaller\u201d tool and choose the size your form allows."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Photos to PDF", "url": "https://example.com/jpg-to-pdf/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in your web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+  <a class="logo" href="../" aria-label="SimpleKit home"><span class="logo-mark"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span><span>Simple<strong>Kit</strong></span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="../resume-builder/" class="hide-sm">Resume</a><a href="../#tools" class="hide-sm">All tools</a><a href="../about/" class="hide-sm">About</a>
+    <button type="button" class="text-btn" data-big-text aria-pressed="false"><span class="a1">A</span><span class="a2">A</span> Bigger text</button>
+  </nav>
+</div></header>
+<main id="main" class="wrap narrow">
+  <div class="tool-head"><a class="back" href="../" aria-label="Back to all tools"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><h1>Photos to PDF</h1></div>
+  <p class="tool-sub">Turn photos of documents, certificates or scans into one neat PDF.</p>
+  <div class="progress-steps" aria-hidden="true"><span class="ps on cur" data-step="1"><span class="dot">1</span><span class="lbl">Choose photos</span></span><span class="bar"></span><span class="ps" data-step="2"><span class="dot">2</span><span class="lbl">Pick page size</span></span><span class="bar"></span><span class="ps" data-step="3"><span class="dot">3</span><span class="lbl">Download</span></span></div>
+  
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 18v2h16v-2"/></svg></span>
+    <b id="drop-t">Tap here to choose photos</b>
+    <span>JPG, PNG, WEBP or iPhone HEIC · pick many at once</span>
+    <input type="file" accept="image/*,.heic,.heif" multiple aria-label="Choose photos">
+  </label>
+
+  <ul class="file-list" id="list" hidden></ul>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:22px">
+    <div>
+      <span class="field-label" id="ps-l">Page size</span>
+      <div class="choices" id="pagesize" role="group" aria-labelledby="ps-l">
+        <button type="button" class="choice" data-value="a4" aria-pressed="true">A4</button>
+        <button type="button" class="choice" data-value="letter" aria-pressed="false">US Letter</button>
+        <button type="button" class="choice" data-value="fit" aria-pressed="false">Same as photo</button>
+      </div>
+    </div>
+    <div>
+      <span class="field-label" id="m-l">White border</span>
+      <div class="choices" id="margin" role="group" aria-labelledby="m-l">
+        <button type="button" class="choice" data-value="0" aria-pressed="false">None</button>
+        <button type="button" class="choice" data-value="20" aria-pressed="true">Small</button>
+        <button type="button" class="choice" data-value="45" aria-pressed="false">Big</button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-big" id="go">Make my PDF <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1D6B45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Your PDF is ready</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns">
+      <button type="button" class="btn" id="dl"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 10l6 6 6-6"/><path d="M4 20h16"/></svg> Download PDF</button>
+      <button type="button" class="btn btn-light" id="again">Start again</button>
+    </div>
+  </div>
+</div>
+
+  <div class="ad-slot"></div>
+  
+<section class="section"><h2>How to turn photos into a PDF</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your photos</b><span>Pick all the pages you photographed. You can add more any time.</span></div>
+  <div class="step"><span class="num">2</span><b>Set order and size</b><span>Use the arrows to put pages in order, then choose A4 for printing or forms.</span></div>
+  <div class="step"><span class="num">3</span><b>Download</b><span>Press the big button and save one PDF with all your pages.</span></div>
+</div></section>
+
+  <section class="section"><h2>Questions people ask</h2><div class="faq"><details><summary>How do I convert a JPG to PDF?</summary><p>Choose one or more photos, set the order with the arrows, pick a page size and press “Make my PDF”.</p></details><details><summary>Can I add photos from my iPhone?</summary><p>Yes. iPhone HEIC photos are supported and are converted automatically.</p></details><details><summary>Which page size should I choose?</summary><p>Choose A4 if you will print it or upload it to a form. Choose “Same as photo” to keep each page the exact shape of the photo.</p></details><details><summary>The PDF is too big for my form. What now?</summary><p>After downloading, open our “Make PDF smaller” tool and choose the size your form allows.</p></details></div></section>
+  <section class="section"><h2>Other free tools</h2><nav class="related" aria-label="Related tools"><a href="../compress-pdf/">Make PDF smaller</a><a href="../merge-pdf/">Join PDFs</a><a href="../resize-image/">Resize photo to KB</a><a href="../pdf-to-jpg/">PDF to photos</a></nav></section>
+</main>
+<footer class="site-footer"><div class="wrap"><div class="card">
+  <span style="font-size:21px">Simple<strong>Kit</strong> · free tools for everyone</span>
+  <nav aria-label="Footer"><a href="../about/">About</a><a href="../privacy/">Privacy</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a></nav>
+  <small>© 2026 SimpleKit. Your files are processed on your own device and are never uploaded.</small>
+</div></div></footer>
+<script src="../assets/js/tools/jpg-to-pdf.js" defer></script>
+</body>
+</html>

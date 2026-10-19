@@ -1,17 +1,18 @@
 <!---
 {"slug": "jpg-to-pdf", "tool": true,
- "title": "JPG to PDF — Convert Photos and Scans to One PDF Free",
- "desc": "Turn JPG, PNG and iPhone photos into a single PDF. Choose A4 or fit-to-photo pages and set the order. Free, no upload, works on your phone.",
+ "title": "Photos to PDF — Scan Homework & Documents to One PDF, Free",
+ "desc": "Turn phone photos of homework, notes or documents into one clean PDF. Removes shadows, makes writing darker, turns pages the right way and keeps the file under 5MB or 10MB for upload. Free, no upload.",
  "h1": "Photos to PDF",
- "sub": "Turn photos of documents, certificates or scans into one neat PDF.",
- "steps": ["Choose photos", "Pick page size", "Download"],
+ "sub": "Turn phone photos of homework, notes or documents into one clean, readable PDF — ready to upload to Canvas, Google Classroom, Moodle or any form.",
+ "steps": ["Choose photos", "Fix & order", "Download"],
  "scripts": ["assets/js/tools/jpg-to-pdf.js"],
- "related": ["compress-pdf", "merge-pdf", "resize-image", "pdf-to-jpg"],
+ "related": ["compress-pdf", "merge-pdf", "organize-pdf", "page-numbers"],
  "faq": [
-  ["How do I convert a JPG to PDF?", "Choose one or more photos, set the order with the arrows, pick a page size and press “Make my PDF”."],
-  ["Can I add photos from my iPhone?", "Yes. iPhone HEIC photos are supported and are converted automatically."],
-  ["Which page size should I choose?", "Choose A4 if you will print it or upload it to a form. Choose “Same as photo” to keep each page the exact shape of the photo."],
-  ["The PDF is too big for my form. What now?", "After downloading, open our “Make PDF smaller” tool and choose the size your form allows."]
+  ["My photos are dark or have shadows. Can this fix them?", "Yes. Choose “Clear document” to remove shadows and whiten the paper, or “Black & white” for the sharpest, smallest file. You can see the result on each page before you download."],
+  ["How do I turn a sideways page?", "Tap the turn button next to that page. Each tap turns it a quarter turn."],
+  ["My school only accepts files under 5MB or 10MB.", "Pick “Under 5MB” or “Under 10MB” and the tool automatically keeps the PDF below that size."],
+  ["Can I add photos from my iPhone?", "Yes. iPhone HEIC photos are supported and converted automatically."],
+  ["Which page size should I choose?", "A4 for most of the world, US Letter for the USA and Canada. “Same as photo” keeps each page the exact shape of the photo."]
  ]}
 --->
 <div class="panel">
@@ -26,6 +27,15 @@
 
   <div id="opts" hidden style="display:flex;flex-direction:column;gap:22px">
     <div>
+      <span class="field-label" id="fx-l">Make it easy to read</span>
+      <div class="choices" id="filter" role="group" aria-labelledby="fx-l">
+        <button type="button" class="choice" data-value="none" aria-pressed="false">Original<small>no change</small></button>
+        <button type="button" class="choice" data-value="clear" aria-pressed="true">Clear document<small>removes shadows</small></button>
+        <button type="button" class="choice" data-value="bw" aria-pressed="false">Black &amp; white<small>sharpest, smallest</small></button>
+      </div>
+      <p class="hint">The small pictures above show how each page will look.</p>
+    </div>
+    <div>
       <span class="field-label" id="ps-l">Page size</span>
       <div class="choices" id="pagesize" role="group" aria-labelledby="ps-l">
         <button type="button" class="choice" data-value="a4" aria-pressed="true">A4</button>
@@ -34,11 +44,12 @@
       </div>
     </div>
     <div>
-      <span class="field-label" id="m-l">White border</span>
-      <div class="choices" id="margin" role="group" aria-labelledby="m-l">
-        <button type="button" class="choice" data-value="0" aria-pressed="false">None</button>
-        <button type="button" class="choice" data-value="20" aria-pressed="true">Small</button>
-        <button type="button" class="choice" data-value="45" aria-pressed="false">Big</button>
+      <span class="field-label" id="lim-l">File size limit</span>
+      <div class="choices" id="limit" role="group" aria-labelledby="lim-l">
+        <button type="button" class="choice" data-value="0" aria-pressed="true">No limit<small>best quality</small></button>
+        <button type="button" class="choice" data-value="10" aria-pressed="false">Under 10MB</button>
+        <button type="button" class="choice" data-value="5" aria-pressed="false">Under 5MB</button>
+        <button type="button" class="choice" data-value="2" aria-pressed="false">Under 2MB</button>
       </div>
     </div>
     <button type="button" class="btn btn-big" id="go">Make my PDF {{ICON:arrow:26:#FFFFFF}}</button>
@@ -48,17 +59,18 @@
 
   <div class="result" id="result">
     <h2>{{ICON:check:28:#1D6B45}} Your PDF is ready</h2>
+    <img class="preview-img" id="out-img" alt="First page of your PDF" hidden>
     <p class="meta" id="out-meta"></p>
-    <div class="btns">
+    <div class="btns" id="out-btns">
       <button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download PDF</button>
       <button type="button" class="btn btn-light" id="again">Start again</button>
     </div>
   </div>
 </div>
 <!--howto-->
-<section class="section"><h2>How to turn photos into a PDF</h2>
+<section class="section"><h2>How to scan homework into one PDF</h2>
 <div class="steps">
-  <div class="step"><span class="num">1</span><b>Choose your photos</b><span>Pick all the pages you photographed. You can add more any time.</span></div>
-  <div class="step"><span class="num">2</span><b>Set order and size</b><span>Use the arrows to put pages in order, then choose A4 for printing or forms.</span></div>
-  <div class="step"><span class="num">3</span><b>Download</b><span>Press the big button and save one PDF with all your pages.</span></div>
+  <div class="step"><span class="num">1</span><b>Take clear photos</b><span>Lay the paper flat in good light, hold the phone straight above it, and take one photo per page.</span></div>
+  <div class="step"><span class="num">2</span><b>Fix and order</b><span>Choose “Clear document”, turn any sideways pages, and use the arrows to put pages in order.</span></div>
+  <div class="step"><span class="num">3</span><b>Check and upload</b><span>Look at the preview, check the page count, then upload the single PDF.</span></div>
 </div></section>

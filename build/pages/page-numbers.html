@@ -1,0 +1,88 @@
+<!---
+{"slug": "page-numbers", "tool": true,
+ "title": "Add Page Numbers to PDF — Plus Your Name on Every Page, Free",
+ "desc": "Add page numbers (1, Page 1, Page 1 of 10) to any PDF and put your name, roll number or class on every page. Choose the position and size. Free, private, no upload.",
+ "h1": "Add page numbers & name",
+ "sub": "Number every page and add your name, student ID or class to the top of each page — just like teachers ask.",
+ "steps": ["Choose PDF", "Pick options", "Download"],
+ "scripts": ["assets/js/tools/page-numbers.js"],
+ "related": ["organize-pdf", "merge-pdf", "jpg-to-pdf", "compress-pdf"],
+ "faq": [
+  ["How do I add page numbers to a PDF?", "Choose your PDF, pick where the numbers go and how they look, then press “Add numbers”. Your original file is not changed."],
+  ["Can I add my name and roll number to every page?", "Yes. Type it in “Text on every page”, for example “Priya Sharma · Class 10B · Roll 23”, and it appears at the top of every page."],
+  ["Can I start from a number other than 1?", "Yes. Change “Start at” — useful when your file continues from an earlier part."],
+  ["Does it work on scanned PDFs?", "Yes. The numbers are added on top of each page, so it works with scans and photos too."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:upload:42:#3B2D8F}}</span>
+    <b>Tap here to choose a PDF</b>
+    <span>or drag it here · stays on your device</span>
+    <input type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF">
+  </label>
+
+  <ul class="file-list" id="file-info" hidden></ul>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:22px">
+    <div>
+      <span class="field-label" id="pos-l">Where should the numbers go?</span>
+      <div class="choices" id="pos" role="group" aria-labelledby="pos-l">
+        <button type="button" class="choice" data-value="bc" aria-pressed="true">Bottom middle</button>
+        <button type="button" class="choice" data-value="br" aria-pressed="false">Bottom right</button>
+        <button type="button" class="choice" data-value="tr" aria-pressed="false">Top right</button>
+        <button type="button" class="choice" data-value="none" aria-pressed="false">No numbers</button>
+      </div>
+    </div>
+    <div>
+      <span class="field-label" id="fmt-l">How should they look?</span>
+      <div class="choices" id="fmt" role="group" aria-labelledby="fmt-l">
+        <button type="button" class="choice" data-value="n" aria-pressed="false">1</button>
+        <button type="button" class="choice" data-value="page" aria-pressed="false">Page 1</button>
+        <button type="button" class="choice" data-value="of" aria-pressed="true">Page 1 of 9</button>
+      </div>
+    </div>
+    <div class="row">
+      <div><label class="field-label" for="start">Start at</label><input class="input" id="start" type="number" inputmode="numeric" min="0" value="1"></div>
+      <div><label class="field-label" for="skip">Skip first pages</label><input class="input" id="skip" type="number" inputmode="numeric" min="0" value="0"></div>
+    </div>
+    <p class="hint" style="margin-top:-12px">“Skip first pages” leaves a cover page without a number.</p>
+    <div>
+      <label class="field-label" for="txt">Text on every page (optional)</label>
+      <input class="input" id="txt" placeholder="e.g. Priya Sharma · Class 10B · Roll 23" maxlength="120">
+      <div class="choices" id="txtpos" role="group" aria-label="Text position" style="margin-top:10px">
+        <button type="button" class="choice" data-value="tl" aria-pressed="true">Top left</button>
+        <button type="button" class="choice" data-value="tc" aria-pressed="false">Top middle</button>
+        <button type="button" class="choice" data-value="trt" aria-pressed="false">Top right</button>
+      </div>
+    </div>
+    <div>
+      <span class="field-label" id="sz-l">Size</span>
+      <div class="choices" id="size" role="group" aria-labelledby="sz-l">
+        <button type="button" class="choice" data-value="10" aria-pressed="false">Small</button>
+        <button type="button" class="choice" data-value="12" aria-pressed="true">Normal</button>
+        <button type="button" class="choice" data-value="15" aria-pressed="false">Large</button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-big" id="go">Add numbers {{ICON:arrow:26:#FFFFFF}}</button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your PDF is ready</h2>
+    <img class="preview-img" id="out-img" alt="First page of your PDF" hidden>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns" id="out-btns">
+      <button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download PDF</button>
+      <button type="button" class="btn btn-light" id="again">Do another PDF</button>
+    </div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to number the pages of a PDF</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your PDF</b><span>Tap the pink box and pick the PDF.</span></div>
+  <div class="step"><span class="num">2</span><b>Pick the style</b><span>Choose where numbers go, how they look, and add your name if you like.</span></div>
+  <div class="step"><span class="num">3</span><b>Check and download</b><span>Look at the preview of page 1, then save.</span></div>
+</div></section>

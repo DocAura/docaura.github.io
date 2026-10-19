@@ -1,0 +1,55 @@
+<!---
+{"slug": "organize-pdf", "tool": true,
+ "title": "Rotate, Reorder & Delete PDF Pages — Free Organize PDF Tool",
+ "desc": "Fix upside-down or sideways pages, put pages in the right order and remove blank or wrong pages from a PDF. See every page as you work. Free, private, no upload.",
+ "h1": "Turn, reorder & delete pages",
+ "sub": "Fix upside-down scans, pages in the wrong order and pages you don’t want — then save one tidy PDF.",
+ "steps": ["Choose PDF", "Fix pages", "Download"],
+ "scripts": ["assets/js/tools/organize-pdf.js"],
+ "related": ["page-numbers", "merge-pdf", "split-pdf", "compress-pdf"],
+ "faq": [
+  ["How do I rotate one page of a PDF?", "Tap the turn button under that page. Each tap turns it a quarter turn. Only that page changes."],
+  ["How do I change the page order?", "Use the left and right arrows under each page to move it earlier or later."],
+  ["How do I delete a page?", "Tap the bin button under the page. You can undo with “Start over” before saving."],
+  ["Will the quality change?", "No. Pages are kept exactly as they are; only their direction and order change."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:upload:42:#3B2D8F}}</span>
+    <b>Tap here to choose a PDF</b>
+    <span>or drag it here · stays on your device</span>
+    <input type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF">
+  </label>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:18px">
+    <div class="row" style="align-items:center">
+      <p class="field-label" id="count" style="margin:0;flex:1 1 200px"></p>
+      <div style="flex:0 1 auto;display:flex;gap:10px;flex-wrap:wrap">
+        <button type="button" class="btn btn-light btn-small" id="rot-all">Turn all pages</button>
+        <button type="button" class="btn btn-light btn-small" id="reset">Start over</button>
+      </div>
+    </div>
+    <div class="org-grid" id="grid"></div>
+    <button type="button" class="btn btn-big" id="go">Save my PDF {{ICON:arrow:26:#FFFFFF}}</button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your PDF is ready</h2>
+    <img class="preview-img" id="out-img" alt="First page of your PDF" hidden>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns" id="out-btns">
+      <button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download PDF</button>
+      <button type="button" class="btn btn-light" id="again">Do another PDF</button>
+    </div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to fix the pages of a PDF</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your PDF</b><span>Every page appears as a small picture.</span></div>
+  <div class="step"><span class="num">2</span><b>Fix the pages</b><span>Turn sideways pages, move pages with the arrows, and remove pages you don’t need.</span></div>
+  <div class="step"><span class="num">3</span><b>Save</b><span>Check the preview and download your tidy PDF.</span></div>
+</div></section>

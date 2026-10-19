@@ -35,6 +35,8 @@ ICONS = {
   'up': '<path d="m6 15 6-6 6 6"/>',
   'down': '<path d="m6 9 6 6 6-6"/>',
   'plus': '<path d="M12 5v14M5 12h14"/>',
+  'organize': '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><path d="M21 16a5 5 0 0 1-9 3M12 21v-3h3"/>',
+  'numbers': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M10 17h1.5v-5L10 13M14 12h2.5l-2.5 5h2.5"/>',
 }
 
 def icon(name, size=24, color='currentColor', width=2.2):
@@ -48,8 +50,10 @@ TOOLS = [
   dict(slug='compress-pdf', name='Make PDF smaller', desc='Compress a PDF to 100KB, 200KB or any size you need.', icon='compress', keys='compress pdf reduce size smaller 100kb 200kb 500kb 1mb', group='pdf'),
   dict(slug='merge-pdf', name='Join PDFs', desc='Put many PDF files together into one file.', icon='merge', keys='merge join combine pdf', group='pdf'),
   dict(slug='split-pdf', name='Split a PDF', desc='Take out only the pages you want.', icon='split', keys='split pdf extract pages remove pages cut', group='pdf'),
-  dict(slug='jpg-to-pdf', name='Photos to PDF', desc='Turn JPG photos or scans into one PDF.', icon='image', keys='jpg to pdf image to pdf photo png scan convert', group='pdf'),
+  dict(slug='jpg-to-pdf', name='Photos to PDF', desc='Scan homework or documents into one clean PDF.', icon='image', keys='jpg to pdf image to pdf photo png scan convert homework scanner document camera', group='pdf'),
   dict(slug='pdf-to-jpg', name='PDF to photos', desc='Save each PDF page as a JPG picture.', icon='pdfimg', keys='pdf to jpg pdf to image png convert pages', group='pdf'),
+  dict(slug='organize-pdf', name='Turn & reorder pages', desc='Fix upside-down pages, change order, delete pages.', icon='organize', keys='rotate pdf pages reorder delete remove pages organize upside down sideways', group='pdf'),
+  dict(slug='page-numbers', name='Add page numbers', desc='Number pages and add your name to every page.', icon='numbers', keys='page numbers pdf add name header roll number student', group='pdf'),
   dict(slug='passport-photo', name='Passport photo', desc='Crop your photo to passport size and print a sheet.', icon='passport', keys='passport photo size visa crop 35x45 2x2 print sheet', group='image'),
   dict(slug='heic-to-jpg', name='iPhone photo to JPG', desc='Change HEIC photos into normal JPG files.', icon='convert', keys='heic to jpg iphone photo convert heif', group='image'),
 ]
@@ -124,13 +128,14 @@ def tool_shell(meta, body, r):
     return '''<main id="main" class="wrap narrow">
   <div class="tool-head"><a class="back" href="%(r)s" aria-label="Back to all tools">%(back)s</a><h1>%(h1)s</h1></div>
   <p class="tool-sub">%(sub)s</p>
+  <p class="promise"><span>%(chk)s No daily limit</span><span>%(chk)s No watermark</span><span>%(chk)s No sign-up</span><span>%(chk)s Files never uploaded</span></p>
   %(ps)s
   %(body)s
   <div class="ad-slot"></div>
   %(howto)s
   %(faq)s
   <section class="section"><h2>Other free tools</h2>%(related)s</section>
-</main>''' % dict(r=r, back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body,
+</main>''' % dict(r=r, back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body, chk=icon('check', 18, '#1D6B45', 3),
                   howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq')), related=related(r, rel_slugs))
 
 def page(meta, body):

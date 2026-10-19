@@ -5,6 +5,7 @@
   var file = null, buf = null, outBlob = null;
 
   var getSize = SK.choices($('sizes'), function (v) { $('custom-wrap').hidden = v !== 'custom'; });
+  var fname = SK.nameField($('out-btns'), '.pdf');
 
   // From clearest to smallest: [dots per inch, JPEG quality]
   var LEVELS = [[150, 0.8], [130, 0.72], [110, 0.65], [96, 0.58], [84, 0.5], [72, 0.45], [62, 0.4], [52, 0.35], [44, 0.3], [36, 0.25]];
@@ -16,6 +17,7 @@
     f.arrayBuffer().then(function (b) {
       buf = b;
       info.innerHTML = ''; info.appendChild(SK.fileItem(f.name, f.size)); info.hidden = false;
+      fname.set(SK.baseName(f.name) + '-small');
       opts.hidden = false; drop.hidden = true; SK.step(2); go.focus();
     });
   });
@@ -32,6 +34,15 @@
       var ctx = c.getContext('2d');
       ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
       await page.render({ canvasContext: ctx, viewport: vp }).promise;
+      if ($('bw').checked) {
+        var im = ctx.getImageData(0, 0, c.width, c.height), px = im.data;
+        for (var j = 0; j < px.length; j += 4) {
+          var l = 0.299 * px[j] + 0.587 * px[j + 1] + 0.114 * px[j + 2];
+          l = l > 215 ? 255 : l < 60 ? 0 : (l - 60) * 255 / 155; // whiter paper, darker writing
+          px[j] = px[j + 1] = px[j + 2] = l;
+        }
+        ctx.putImageData(im, 0, 0);
+      }
       var blob = await SK.canvasToBlob(c, 'image/jpeg', q);
       var jpg = await out.embedJpg(new Uint8Array(await blob.arrayBuffer()));
       var p = out.addPage([vp1.width, vp1.height]);
@@ -97,17 +108,19 @@
     go.disabled = false;
   });
 
-  function finish(blob, ok, note) {
+  async function finish(blob, ok, note) {
     outBlob = blob;
     var pct = Math.round((1 - blob.size / file.size) * 100);
-    $('out-meta').textContent = 'New size: ' + SK.bytes(blob.size) + ' (was ' + SK.bytes(file.size) + ')' + (pct > 0 ? ' — ' + pct + '% smaller' : '');
+    var pages = '';
+    try { var n = await SK.pdfPreview(blob, $('out-img')); pages = ' · ' + n + (n === 1 ? ' page' : ' pages'); } catch (e) {}
+    $('out-meta').textContent = 'New size: ' + SK.bytes(blob.size) + ' (was ' + SK.bytes(file.size) + ')' + (pct > 0 ? ' — ' + pct + '% smaller' : '') + pages;
     if (note) SK.status(status, ok ? 'info' : 'err', note); else SK.status(status);
     result.classList.add('show'); SK.step(3); go.disabled = false;
     $('dl').focus();
   }
 
   $('dl').addEventListener('click', function () {
-    if (outBlob) SK.download(outBlob, SK.baseName(file.name) + '-small.pdf');
+    if (outBlob) SK.download(outBlob, fname.get());
   });
   $('again').addEventListener('click', function () {
     file = buf = outBlob = null;

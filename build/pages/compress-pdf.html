@@ -1,7 +1,7 @@
 <!---
 {"slug": "compress-pdf", "tool": true,
  "title": "Compress PDF to 100KB, 200KB, 500KB — Free PDF Size Reducer",
- "desc": "Reduce PDF file size to 100KB, 200KB, 500KB or 1MB for online forms and email. Free, no sign-up, and your PDF never leaves your device.",
+ "desc": "Reduce PDF file size to 100KB, 200KB, 1MB, 5MB or 10MB for school uploads, online forms and email. No daily limit, no watermark, and your PDF never leaves your device.",
  "h1": "Make PDF smaller",
  "sub": "Compress a PDF to 100KB, 200KB, 500KB or any size — for forms, email and WhatsApp.",
  "steps": ["Choose PDF", "Pick size", "Download"],
@@ -33,6 +33,10 @@
         <button type="button" class="choice" data-value="200" aria-pressed="false">200KB</button>
         <button type="button" class="choice" data-value="500" aria-pressed="false">500KB</button>
         <button type="button" class="choice" data-value="1024" aria-pressed="false">1MB</button>
+        <button type="button" class="choice" data-value="2048" aria-pressed="false">2MB</button>
+        <button type="button" class="choice" data-value="5120" aria-pressed="false">5MB<small>school uploads</small></button>
+        <button type="button" class="choice" data-value="10240" aria-pressed="false">10MB</button>
+        <button type="button" class="choice" data-value="25600" aria-pressed="false">25MB<small>email</small></button>
         <button type="button" class="choice" data-value="custom" aria-pressed="false">Custom</button>
       </div>
       <div id="custom-wrap" hidden style="margin-top:14px">
@@ -40,6 +44,9 @@
         <input class="input" id="custom-kb" type="number" inputmode="numeric" min="20" value="300">
       </div>
     </div>
+    <label style="display:flex;align-items:center;gap:14px;font-weight:700;cursor:pointer;min-height:44px">
+      <input type="checkbox" id="bw" style="width:28px;height:28px;accent-color:#3B2D8F"> Black &amp; white (best for scanned homework and documents)
+    </label>
     <button type="button" class="btn btn-big" id="go">Make my PDF smaller {{ICON:arrow:26:#FFFFFF}}</button>
   </div>
 
@@ -47,8 +54,9 @@
 
   <div class="result" id="result">
     <h2>{{ICON:check:28:#1D6B45}} Your PDF is ready</h2>
+    <img class="preview-img" id="out-img" alt="First page of your smaller PDF" hidden>
     <p class="meta" id="out-meta"></p>
-    <div class="btns">
+    <div class="btns" id="out-btns">
       <button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download PDF</button>
       <button type="button" class="btn btn-light" id="again">Do another PDF</button>
     </div>

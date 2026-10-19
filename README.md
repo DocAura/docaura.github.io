@@ -26,6 +26,12 @@ python3 build/build.py
 
 This regenerates every `index.html`, plus `sitemap.xml` and `robots.txt`. Commit the generated files too, because GitHub Pages serves them directly.
 
+## SEO landing pages (generated)
+
+- `build/seo_sizes.py`: exact-size pages such as `/compress-pdf-to-200kb/` and `/resize-image-to-50kb/`. Each one is the real tool with that size already chosen, plus its own short guide.
+- `build/seo_resume.py`: 13 resume examples (`/resume-examples/…`) and 6 template pages (`/resume-templates/…`). The examples also feed the builder's "Fill with this example" menu (through the generated `assets/js/tools/resume-samples.js`), and the "Use this example" links open `/resume-builder/?example=…&design=…`.
+- Example preview images live in `assets/img/examples/`. Regenerate them after changing an example.
+
 ## Settings to fill in before launch
 
 1. **`build/config.json`**

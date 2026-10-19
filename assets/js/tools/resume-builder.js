@@ -12,64 +12,10 @@
     edu: [{ degree: '', school: '', year: '', detail: '' }],
     skills: '', languages: '', certs: '', tpl: 'modern', color: 'theme', photo: '', font: 'theme', paper: 'a4'
   };
-  var SAMPLE = {
-    name: 'Priya Sharma', title: 'Senior Accountant', email: 'priya.sharma@email.com', phone: '+91 98765 43210',
-    location: 'Hyderabad, India', link: 'linkedin.com/in/priyasharma',
-    summary: 'Chartered accountant with 7 years of experience in GST, audits and month-end closing for manufacturing and retail companies. Known for clean books, on-time filings and training junior staff.',
-    exp: [
-      { role: 'Senior Accountant', company: 'Sunrise Textiles Pvt Ltd', place: 'Hyderabad', start: 'Apr 2021', end: 'Present',
-        bullets: 'Closed monthly books 3 days faster by building Excel templates for reconciliations\nFiled GST returns for 4 business units with zero penalties in 3 years\nLed a team of 3 junior accountants and trained them on Tally Prime' },
-      { role: 'Accountant', company: 'Kumar & Associates', place: 'Vijayawada', start: 'Jun 2017', end: 'Mar 2021',
-        bullets: 'Handled accounts and tax filings for 40+ small business clients\nPrepared statutory audit reports and supported partners in client meetings' }
-    ],
-    edu: [
-      { degree: 'Chartered Accountant (CA)', school: 'Institute of Chartered Accountants of India', year: '2017', detail: '' },
-      { degree: 'B.Com', school: 'Osmania University', year: '2014', detail: 'First class with distinction' }
-    ],
-    skills: 'GST filing, Tally Prime, MS Excel, Audit, TDS, Financial reporting, Team leadership',
-    languages: 'English, Hindi, Telugu', certs: 'GST Practitioner Certificate (2019)', tpl: 'modern', color: 'theme', photo: ''
-  };
-
-  // Ready-made examples for different kinds of jobs (all names and companies are made up)
-  var SAMPLES = {
-    finance: SAMPLE,
-    it: { name: 'Daniel Kim', title: 'Senior Software Engineer', email: 'daniel.kim@email.com', phone: '+1 415 555 0134', location: 'San Francisco, CA', link: 'github.com/danielkim',
-      summary: 'Software engineer with 6 years of experience building fast, reliable web applications with React, Node.js and AWS. I enjoy turning messy requirements into simple products and mentoring newer developers.',
-      exp: [{ role: 'Senior Software Engineer', company: 'Brightline Analytics', place: 'San Francisco', start: 'Mar 2022', end: 'Present', bullets: 'Rebuilt the customer dashboard in React and TypeScript, cutting page load time by 45%\nDesigned REST APIs in Node.js serving 2 million requests a day\nMentored 4 junior engineers and introduced code reviews that halved production bugs' },
-        { role: 'Software Engineer', company: 'Northwind Apps', place: 'Seattle', start: 'Jul 2019', end: 'Feb 2022', bullets: 'Built payment features used by 300,000 customers\nAutomated deployments with Docker and GitHub Actions, saving 6 hours a week' }],
-      edu: [{ degree: 'B.S. Computer Science', school: 'University of Washington', year: '2019', detail: '' }],
-      skills: 'JavaScript, TypeScript, React, Node.js, Python, SQL, PostgreSQL, AWS, Docker, CI/CD, REST APIs, Agile', languages: 'English, Korean', certs: 'AWS Certified Developer - Associate (2023)' },
-    sales: { name: 'Sofia Martinez', title: 'Account Executive', email: 'sofia.martinez@email.com', phone: '+1 512 555 0178', location: 'Austin, TX', link: 'linkedin.com/in/sofiamartinez',
-      summary: 'Results-driven B2B sales professional with 5 years of experience closing software deals. Consistently above target, with a strong network in retail and logistics.',
-      exp: [{ role: 'Account Executive', company: 'Peakview Software', place: 'Austin', start: 'Jan 2022', end: 'Present', bullets: 'Closed $1.8M in new annual revenue in 2025, 132% of quota\nBuilt a pipeline of 60+ qualified leads per quarter through cold calling and LinkedIn\nShortened the average sales cycle from 74 to 51 days' },
-        { role: 'Sales Development Representative', company: 'CloudCart', place: 'Dallas', start: 'Jun 2020', end: 'Dec 2021', bullets: 'Booked 25 discovery meetings a month for 3 account executives\nRanked #1 of 14 SDRs for meetings booked in 2021' }],
-      edu: [{ degree: 'B.B.A. Marketing', school: 'University of Texas at Austin', year: '2020', detail: '' }],
-      skills: 'B2B sales, Salesforce, HubSpot, Lead generation, Cold calling, Negotiation, Pipeline management, Forecasting, Presentation', languages: 'English, Spanish', certs: 'Salesforce Certified Administrator' },
-    health: { name: 'Grace Okafor', title: 'Registered Nurse', email: 'grace.okafor@email.com', phone: '+44 7700 900123', location: 'Manchester, UK', link: '',
-      summary: 'Caring registered nurse with 8 years of experience in busy medical and surgical wards. Calm under pressure, with strong patient care, medication and teamwork skills.',
-      exp: [{ role: 'Senior Staff Nurse', company: 'Riverside General Hospital', place: 'Manchester', start: 'Apr 2021', end: 'Present', bullets: 'Lead a team of 6 nurses on a 28-bed surgical ward\nCut medication errors by 30% by introducing a double-check routine\nTrained 15 newly qualified nurses on ward procedures and infection control' },
-        { role: 'Staff Nurse', company: 'St Anne’s Hospital', place: 'Leeds', start: 'Sep 2017', end: 'Mar 2021', bullets: 'Cared for up to 8 patients per shift on an acute medical ward\nUsed electronic health records to plan and document patient care' }],
-      edu: [{ degree: 'BSc (Hons) Adult Nursing', school: 'University of Leeds', year: '2017', detail: '' }],
-      skills: 'Patient care, Medication administration, Triage, Wound care, Infection control, Electronic health records, Care planning, Team leadership', languages: 'English, Yoruba', certs: 'NMC Registered Nurse\nAdvanced Life Support (ALS)' },
-    teacher: { name: 'Ananya Rao', title: 'Mathematics Teacher', email: 'ananya.rao@email.com', phone: '+91 98450 12345', location: 'Bengaluru, India', link: '',
-      summary: 'Patient and creative maths teacher with 9 years of experience teaching grades 8 to 12. I make maths simple with real-life examples and regular feedback.',
-      exp: [{ role: 'Mathematics Teacher (Grades 8–10)', company: 'Greenfield Public School', place: 'Bengaluru', start: 'Jun 2019', end: 'Present', bullets: 'Raised the class average in board exams from 68% to 81% over 3 years\nCreated weekly online quizzes in Google Classroom for 160 students\nRun the school maths club and coached students to 4 state olympiad medals' },
-        { role: 'Mathematics Teacher', company: 'Sunrise Academy', place: 'Mysuru', start: 'Jun 2016', end: 'May 2019', bullets: 'Taught algebra and geometry to 5 sections of grade 9\nStarted after-school support classes for weaker students' }],
-      edu: [{ degree: 'B.Ed', school: 'Bangalore University', year: '2016', detail: '' }, { degree: 'M.Sc Mathematics', school: 'University of Mysore', year: '2015', detail: '' }],
-      skills: 'Lesson planning, Classroom management, Assessment, Google Classroom, Student engagement, Curriculum design, Parent communication', languages: 'English, Kannada, Hindi', certs: 'CTET qualified (2016)' },
-    fresher: { name: 'Rahul Verma', title: 'Graduate Engineer Trainee', email: 'rahul.verma@email.com', phone: '+91 91234 56789', location: 'Pune, India', link: 'github.com/rahulverma',
-      summary: 'Final-year computer engineering student with hands-on project and internship experience in Python and web development. Quick learner looking for my first full-time role.',
-      exp: [{ role: 'Software Development Intern', company: 'Bluepeak Technologies', place: 'Pune', start: 'May 2025', end: 'Jul 2025', bullets: 'Built 3 internal web pages with React used by 40+ employees\nWrote Python scripts that cleaned 10,000 records of customer data' },
-        { role: 'Final-year project: Attendance app', company: 'College project', place: '', start: '2025', end: '2026', bullets: 'Led a team of 4 to build a face-recognition attendance app for 300 students' }],
-      edu: [{ degree: 'B.E. Computer Engineering', school: 'Savitribai Phule Pune University', year: '2026', detail: 'CGPA 8.4 / 10' }, { degree: 'Class XII (Science)', school: 'Kendriya Vidyalaya', year: '2022', detail: '91%' }],
-      skills: 'Python, Java, SQL, HTML, CSS, JavaScript, React, Git, Problem solving, Teamwork', languages: 'English, Hindi, Marathi', certs: 'Google Data Analytics Certificate (2025)\nWinner, college hackathon (2024)' },
-    marketing: { name: 'Emma Clarke', title: 'Digital Marketing Manager', email: 'emma.clarke@email.com', phone: '+44 7700 900456', location: 'London, UK', link: 'linkedin.com/in/emmaclarke',
-      summary: 'Digital marketer with 7 years of experience growing brands through SEO, paid ads and social media. Data-led, creative and comfortable managing budgets and teams.',
-      exp: [{ role: 'Digital Marketing Manager', company: 'Oakleaf Home', place: 'London', start: 'Feb 2022', end: 'Present', bullets: 'Grew organic website traffic by 120% in 18 months through SEO and content marketing\nManaged a £400,000 yearly Google Ads and Meta budget with a 4.2x return\nLed a team of 3 marketers and 2 agencies' },
-        { role: 'Marketing Executive', company: 'Bright Beauty', place: 'London', start: 'Aug 2018', end: 'Jan 2022', bullets: 'Launched email campaigns with a 32% open rate\nGrew Instagram followers from 8,000 to 95,000' }],
-      edu: [{ degree: 'BA (Hons) Marketing', school: 'University of Manchester', year: '2018', detail: '' }],
-      skills: 'SEO, Google Ads, Google Analytics, Social media, Content marketing, Email marketing, Copywriting, Budgeting, Team leadership', languages: 'English, French', certs: 'Google Ads Search Certification' }
-  };
+  // Ready-made examples for different kinds of jobs (all names and companies are made up).
+  // Generated from build/data + build/seo_resume.py into resume-samples.js, shared with the resume example pages.
+  var SAMPLES = window.SK_SAMPLES || {};
+  var SAMPLE = SAMPLES.finance;
 
   function load() {
     try {
@@ -376,6 +322,36 @@
     $('fix-all').hidden = fixes.length < 2;
   }
   $('fix-all').addEventListener('click', function () { SKCheck.tips(data).forEach(function (t) { if (t.apply) t.apply(data); }); renderList('exp'); changed(true); renderTips(); });
+
+  // Example list in the "Fill with this example" menu
+  (function () {
+    var sel = $('sample-kind'), L = window.SK_SAMPLE_LABELS || {};
+    if (!sel || !Object.keys(L).length) return;
+    sel.innerHTML = '';
+    Object.keys(L).forEach(function (k) { if (!SAMPLES[k]) return; var o = document.createElement('option'); o.value = k; o.textContent = 'Example: ' + L[k]; sel.appendChild(o); });
+  })();
+
+  // Links from the resume example and template pages: ?example=it&design=tech
+  (function () {
+    var q; try { q = new URLSearchParams(location.search); } catch (e) { return; }
+    var own = function (o, k) { return !!k && Object.prototype.hasOwnProperty.call(o, k); };
+    var ex = q.get('example'), ds = q.get('design'), note = [];
+    if (own(SAMPLES, ex)) {
+      var label = own(window.SK_SAMPLE_LABELS || {}, ex) ? window.SK_SAMPLE_LABELS[ex] : 'this';
+      if (!hasContent() || confirm('Open the ' + label + ' example? This replaces what you typed before.')) {
+        var keep = { tpl: data.tpl, color: data.color, photo: data.photo, font: data.font, paper: data.paper };
+        data = JSON.parse(JSON.stringify(SAMPLES[ex])); Object.assign(data, keep);
+        if ($('sample-kind')) $('sample-kind').value = ex;
+        note.push('The ' + label + ' example is filled in — change it to your own details.');
+      }
+    }
+    if (own(R.byId, ds)) { data.tpl = ds; note.unshift('Design chosen: ' + R.byId[ds].name + '.'); }
+    if (note.length) {
+      save();
+      setTimeout(function () { SK.status(status, 'ok', note.join(' ')); var t = $('fill-h'); if (t) t.scrollIntoView({ block: 'start' }); }, 300);
+    }
+    if (ex || ds) try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  })();
 
   // For automated tests
   window.__skResume = { set: function (d) { data = d; refreshAll(); }, get: function () { return data; }, samples: SAMPLES, build: function (jsPDF) { return buildPdf(jsPDF); } };

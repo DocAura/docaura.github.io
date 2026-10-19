@@ -5,7 +5,9 @@ Each page file starts with a JSON header inside <!--- ... ---> followed by the p
 Run:  python3 build/build.py
 Output goes to the repo root (index.html, compress-pdf/index.html, ...), ready for GitHub Pages.
 """
-import json, os, re, html, datetime
+import json, os, re, html, datetime, copy, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import seo_sizes, seo_pages
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -91,7 +93,7 @@ def footer(r):
     year = datetime.date.today().year
     return '''<footer class="site-footer"><div class="wrap"><div class="card">
   <span style="font-size:21px">%(b1)s<strong>%(b2)s</strong> · %(tag)s</span>
-  <nav aria-label="Footer"><a href="%(r)sguides/">Guides</a><a href="%(r)sabout/">About</a><a href="%(r)sprivacy/">Privacy</a><a href="%(r)scontact/">Contact</a><a href="%(r)sterms/">Terms</a></nav>
+  <nav aria-label="Footer"><a href="%(r)sresume-examples/">Resume examples</a><a href="%(r)sresume-templates/">Resume templates</a><a href="%(r)sguides/">Guides</a><a href="%(r)sabout/">About</a><a href="%(r)sprivacy/">Privacy</a><a href="%(r)scontact/">Contact</a><a href="%(r)sterms/">Terms</a></nav>
   <small>© %(y)s %(brand)s. Your files are processed on your own device and are never uploaded.</small>
 </div></div></footer>''' % dict(r=r, b1=BRAND['name_light'], b2=BRAND['name_bold'], brand=BRAND['name'], y=year, tag=html.escape(BRAND.get('tagline', 'free tools for everyone')))
 
@@ -117,7 +119,7 @@ def faq_html(faqs):
 def faq_schema(faqs):
     if not faqs: return ''
     data = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
-        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub('<[^>]+>', '', a)}} for q, a in faqs]}
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": html.unescape(re.sub('<[^>]+>', '', a))}} for q, a in faqs]}
     return '<script type="application/ld+json">%s</script>' % json.dumps(data)
 
 GUIDES = []  # filled in main(): list of article metas
@@ -158,12 +160,70 @@ def article_schema(meta, url):
             "image": SITE_URL + '/assets/img/share.png'}
     return '<script type="application/ld+json">%s</script>' % json.dumps(data)
 
+def crumb_schema(meta):
+    crumbs = meta.get('crumbs')
+    if not crumbs and meta.get('article'):
+        crumbs = [('Guides', 'guides/'), (meta['h1'], meta['slug'] + '/')]
+    if not crumbs: return ''
+    items = [('Home', '')] + list(crumbs)
+    data = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": i + 1, "name": n, "item": SITE_URL + '/' + u} for i, (n, u) in enumerate(items)]}
+    return '<script type="application/ld+json">%s</script>' % json.dumps(data)
+
 def tool_schema(meta, url):
     if not meta.get('tool'): return ''
     data = {"@context": "https://schema.org", "@type": "WebApplication", "name": meta['h1'], "url": url,
             "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in your web browser)",
             "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}
     return '<script type="application/ld+json">%s</script>' % json.dumps(data)
+
+def size_links(r, meta):
+    fam = meta.get('family') or (meta['slug'] if meta['slug'] in seo_sizes.FAMILIES else None)
+    if not fam: return ''
+    items = seo_sizes.FAMILIES[fam]
+    word = 'PDF' if fam == 'compress-pdf' else 'photo'
+    links = ''.join('<a href="%s%s/"%s>%s to %s</a>' % (r, v['slug'], ' aria-current="page"' if v['slug'] == meta['slug'] else '',
+                    'Compress PDF' if fam == 'compress-pdf' else 'Resize photo', v['label']) for v in items)
+    return '<section class="section"><h2>Popular %s sizes</h2><nav class="related" aria-label="Popular sizes">%s</nav></section>' % (word, links)
+
+def apply_preset(body, kb, family):
+    """Pre-select a size in the tool's size buttons (or fill the custom box)."""
+    m = re.search(r'(<div class="choices" id="sizes".*?</div>)', body, re.S)
+    grp = m.group(1)
+    new = grp.replace('aria-pressed="true"', 'aria-pressed="false"')
+    btn = 'data-value="%d" aria-pressed="false"' % kb
+    if btn in new:
+        new = new.replace(btn, 'data-value="%d" aria-pressed="true"' % kb)
+        custom = False
+    else:
+        new = new.replace('data-value="custom" aria-pressed="false"', 'data-value="custom" aria-pressed="true"')
+        custom = True
+    body = body.replace(grp, new)
+    if custom:
+        body = body.replace('<div id="custom-wrap" hidden', '<div id="custom-wrap"')
+        body = re.sub(r'(id="custom-kb"[^>]*value=")\d+', lambda mm: mm.group(1) + str(kb), body)
+    if family == 'resize-image':
+        body = body.replace('Make it 50KB', 'Make it %dKB' % kb)
+    return body
+
+def size_variants(parsed):
+    out = []
+    bases = {m['slug']: (m, b) for m, b in parsed}
+    for fam, items in seo_sizes.FAMILIES.items():
+        bm, bb = bases[fam]
+        for v in items:
+            m = copy.deepcopy(bm)
+            what = 'PDF' if fam == 'compress-pdf' else 'photo'
+            m.update(slug=v['slug'], title=v['title'], desc=v['desc'], family=fam, priority='0.7',
+                     h1=('Compress PDF to ' if fam == 'compress-pdf' else 'Resize photo to ') + v['label'],
+                     sub=('Make your PDF smaller than %s in one tap — for forms, portals and email.' if fam == 'compress-pdf'
+                          else 'Make any photo or signature smaller than %s — for exam, job and government forms.') % v['label'])
+            m['faq'] = v['faq'] + [q for q in bm.get('faq', []) if 'safe' in q[0].lower() or 'uploaded' in q[0].lower()][:1]
+            uses = ''.join('<li>%s</li>' % u for u in v['uses'])
+            m['howto_html'] = ('<section class="section"><h2>Where you need a %s under %s</h2><div class="panel prose"><ul>%s</ul>%s</div></section>'
+                               % (what, v['label'], uses, v['tips'])) + bm.get('howto_html', '')
+            out.append((m, apply_preset(bb, v['kb'], fam)))
+    return out
 
 def tool_shell(meta, body, r):
     """Standard tool page: back button, title, steps, panel, ad, how-to, faq, related."""
@@ -172,6 +232,7 @@ def tool_shell(meta, body, r):
     ps = '<div class="progress-steps" aria-hidden="true">' + '<span class="bar"></span>'.join(
         '<span class="ps%s" data-step="%d"><span class="dot">%d</span><span class="lbl">%s</span></span>' % (' on cur' if i == 0 else '', i + 1, i + 1, s)
         for i, s in enumerate(steps)) + '</div>'
+    gslug = meta.get('family', slug)
     rel_slugs = meta.get('related') or [t['slug'] for t in TOOLS if t['slug'] != slug][:4]
     return '''<main id="main" class="wrap narrow">
   <div class="tool-head"><a class="back" href="%(r)s" aria-label="Back to all tools">%(back)s</a><h1>%(h1)s</h1></div>
@@ -179,13 +240,14 @@ def tool_shell(meta, body, r):
   <p class="promise"><span>%(chk)s No daily limit</span><span>%(chk)s No watermark</span><span>%(chk)s No sign-up</span><span>%(chk)s Files never uploaded</span></p>
   %(ps)s
   %(body)s
+  %(sizes)s
   <div class="ad-slot"></div>
   %(howto)s
   %(faq)s
   %(guide)s
   <section class="section"><h2>Other free tools</h2>%(related)s</section>
-</main>''' % dict(r=r, back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body, chk=icon('check', 18, '#1D6B45', 3), guide=(('<section class="section"><h2>Learn more</h2><div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('cta') == slug) + '</div></section>') if any(g.get('cta') == slug for g in GUIDES) else ''),
-                  howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq')), related=related(r, rel_slugs))
+</main>''' % dict(r=r, back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body, chk=icon('check', 18, '#1D6B45', 3), guide=(('<section class="section"><h2>Learn more</h2><div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('cta') == gslug) + '</div></section>') if any(g.get('cta') == gslug for g in GUIDES) else ''),
+                  sizes=size_links(r, meta), howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq')), related=related(r, rel_slugs))
 
 ADS_ON = bool(CONFIG.get('adsense_client'))
 
@@ -269,7 +331,7 @@ def page(meta, body):
 </body>
 </html>
 ''' % dict(csp=csp(), title=html.escape(title), desc=html.escape(meta['desc']), canonical=canonical, og=og, robots=robots, r=r,
-           schema=faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url), header=header(r, meta.get('active')),
+           schema=faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url) + crumb_schema(meta), header=header(r, meta.get('active')),
            body=body, footer=footer(r), scripts=scripts)
 
 def parse(path):
@@ -292,6 +354,8 @@ def main():
         for fn in names:
             if fn.endswith('.html'): files.append(os.path.join(root, fn))
     parsed = [parse(f) for f in sorted(files)]
+    parsed += size_variants(parsed)
+    parsed += seo_pages.build_pages()
     GUIDES[:] = sorted([m for m, b in parsed if m.get('article')], key=lambda m: m.get('order', 99))
     for meta, body in parsed:
         slug = meta['slug']

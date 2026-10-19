@@ -85,13 +85,13 @@ def header(r, active):
   </nav>
 </div></header>''' % dict(r=r, brand=BRAND['name'], logo=icon('logo', 28, '#FFFFFF'), b1=BRAND['name_light'], b2=BRAND['name_bold'],
       n1=nav('resume-builder/', 'Resume', 'resume', 'hide-sm'), n2=nav('#tools', 'All tools', 'tools', 'hide-sm'),
-      n3=nav('about/', 'About', 'about', 'hide-sm'))
+      n3=nav('guides/', 'Guides', 'guides', 'hide-sm'))
 
 def footer(r):
     year = datetime.date.today().year
     return '''<footer class="site-footer"><div class="wrap"><div class="card">
   <span style="font-size:21px">%(b1)s<strong>%(b2)s</strong> · %(tag)s</span>
-  <nav aria-label="Footer"><a href="%(r)sabout/">About</a><a href="%(r)sprivacy/">Privacy</a><a href="%(r)scontact/">Contact</a><a href="%(r)sterms/">Terms</a></nav>
+  <nav aria-label="Footer"><a href="%(r)sguides/">Guides</a><a href="%(r)sabout/">About</a><a href="%(r)sprivacy/">Privacy</a><a href="%(r)scontact/">Contact</a><a href="%(r)sterms/">Terms</a></nav>
   <small>© %(y)s %(brand)s. Your files are processed on your own device and are never uploaded.</small>
 </div></div></footer>''' % dict(r=r, b1=BRAND['name_light'], b2=BRAND['name_bold'], brand=BRAND['name'], y=year, tag=html.escape(BRAND.get('tagline', 'free tools for everyone')))
 
@@ -120,6 +120,44 @@ def faq_schema(faqs):
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub('<[^>]+>', '', a)}} for q, a in faqs]}
     return '<script type="application/ld+json">%s</script>' % json.dumps(data)
 
+GUIDES = []  # filled in main(): list of article metas
+
+def guide_cards(r, limit=None, exclude=None):
+    items = [g for g in GUIDES if g['slug'] != exclude][:limit]
+    return '<div class="guide-grid">' + ''.join(
+        '<a class="guide-card" href="%s%s/"><span class="g-tag">%s</span><b>%s</b><span>%s</span></a>' % (
+            r, g['slug'], html.escape(g.get('topic', 'Guide')), html.escape(g['h1']), html.escape(g['desc'])) for g in items) + '</div>'
+
+def article_shell(meta, body, r):
+    t = TOOL_BY_SLUG.get(meta.get('cta'))
+    cta = ''
+    if t:
+        cta = ('<aside class="cta-card"><span class="ic%s">%s</span><div><b>%s</b><span>%s Free, no sign-up, works on your phone.</span></div>'
+               '<a class="btn" href="%s%s/">Open the tool %s</a></aside>') % (
+            ' dark' if t.get('dark') else '', icon(t['icon'], 32, '#FFFFFF' if t.get('dark') else '#3B2D8F', 2), t['name'], t['desc'], r, t['slug'], icon('arrow', 22, '#FFFFFF'))
+    words = len(re.sub('<[^>]+>', ' ', body).split())
+    return '''<main id="main" class="wrap narrow">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="%(r)s">Home</a> › <a href="%(r)sguides/">Guides</a></nav>
+  <article class="article">
+    <h1>%(h1)s</h1>
+    <p class="art-meta">Updated %(date)s · %(mins)d min read</p>
+    %(cta)s
+    <div class="prose art-body">%(body)s</div>
+    %(cta)s
+  </article>
+  <div class="ad-slot"></div>
+  <section class="section"><h2>More helpful guides</h2>%(more)s</section>
+</main>''' % dict(r=r, h1=meta['h1'], date=meta.get('date', '20 October 2026'), mins=max(2, round(words / 200)), cta=cta, body=body,
+                  more=guide_cards(r, 4, meta['slug']))
+
+def article_schema(meta, url):
+    if not meta.get('article'): return ''
+    data = {"@context": "https://schema.org", "@type": "Article", "headline": meta['h1'], "description": meta['desc'],
+            "dateModified": meta.get('iso', '2026-10-20'), "datePublished": meta.get('iso', '2026-10-20'), "mainEntityOfPage": url,
+            "author": {"@type": "Organization", "name": BRAND['name']}, "publisher": {"@type": "Organization", "name": BRAND['name']},
+            "image": SITE_URL + '/assets/img/share.png'}
+    return '<script type="application/ld+json">%s</script>' % json.dumps(data)
+
 def tool_schema(meta, url):
     if not meta.get('tool'): return ''
     data = {"@context": "https://schema.org", "@type": "WebApplication", "name": meta['h1'], "url": url,
@@ -144,8 +182,9 @@ def tool_shell(meta, body, r):
   <div class="ad-slot"></div>
   %(howto)s
   %(faq)s
+  %(guide)s
   <section class="section"><h2>Other free tools</h2>%(related)s</section>
-</main>''' % dict(r=r, back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body, chk=icon('check', 18, '#1D6B45', 3),
+</main>''' % dict(r=r, back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body, chk=icon('check', 18, '#1D6B45', 3), guide=(('<section class="section"><h2>Learn more</h2><div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('cta') == slug) + '</div></section>') if any(g.get('cta') == slug for g in GUIDES) else ''),
                   howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq')), related=related(r, rel_slugs))
 
 ADS_ON = bool(CONFIG.get('adsense_client'))
@@ -187,6 +226,10 @@ def page(meta, body):
     url = SITE_URL + '/' + (slug + '/' if slug and slug != '404' else '')
     if meta.get('tool'):
         body = tool_shell(meta, body, r)
+    if meta.get('article'):
+        body = article_shell(meta, body, r)
+    body = re.sub(r'\{\{TOPIC_GUIDES:(\w+)\}\}', lambda m: '<div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('topic') == m.group(1)) + '</div>', body)
+    body = body.replace('{{GUIDE_CARDS}}', guide_cards(r, 6)).replace('{{ALL_GUIDES}}', guide_cards(r))
     body = body.replace('{{EMAIL}}', email_html()).replace('{{R}}', r).replace('{{TOOL_GRID}}', tool_grid(r)).replace('{{BRAND}}', BRAND['name']).replace('{{EMAIL}}', email_html()).replace('{{UPDATED}}', CONFIG.get('policy_updated', '19 October 2026'))
     body = re.sub(r'\{\{ICON:(\w+):(\d+):([#\w]+)\}\}', lambda m: icon(m.group(1), int(m.group(2)), m.group(3)), body)
     title = meta['title'] + ('' if BRAND['name'] in meta['title'] else ' | ' + BRAND['name'])
@@ -226,7 +269,7 @@ def page(meta, body):
 </body>
 </html>
 ''' % dict(csp=csp(), title=html.escape(title), desc=html.escape(meta['desc']), canonical=canonical, og=og, robots=robots, r=r,
-           schema=faq_schema(meta.get('faq')) + tool_schema(meta, url), header=header(r, meta.get('active')),
+           schema=faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url), header=header(r, meta.get('active')),
            body=body, footer=footer(r), scripts=scripts)
 
 def parse(path):
@@ -244,9 +287,13 @@ def main():
     write_site_config()
     pages_dir = os.path.join(HERE, 'pages')
     urls = []
-    for fn in sorted(os.listdir(pages_dir)):
-        if not fn.endswith('.html'): continue
-        meta, body = parse(os.path.join(pages_dir, fn))
+    files = []
+    for root, _, names in os.walk(pages_dir):
+        for fn in names:
+            if fn.endswith('.html'): files.append(os.path.join(root, fn))
+    parsed = [parse(f) for f in sorted(files)]
+    GUIDES[:] = sorted([m for m, b in parsed if m.get('article')], key=lambda m: m.get('order', 99))
+    for meta, body in parsed:
         slug = meta['slug']
         out = os.path.join(ROOT, '404.html') if slug == '404' else os.path.join(ROOT, slug, 'index.html') if slug else os.path.join(ROOT, 'index.html')
         os.makedirs(os.path.dirname(out), exist_ok=True)

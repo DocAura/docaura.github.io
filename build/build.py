@@ -43,7 +43,7 @@ def icon(name, size=24, color='currentColor', width=2.2):
 
 # Tool registry: drives the homepage grid, related links and sitemap.
 TOOLS = [
-  dict(slug='resume-builder', name='Free resume builder', desc='Fill simple boxes and download a clean PDF resume.', icon='resume', keys='resume cv biodata job builder maker template', group='resume'),
+  dict(slug='resume-builder', name='Free resume builder', desc='20 free designs. Fill simple boxes, download a clean PDF.', icon='resume', keys='resume cv biodata job builder maker template', group='resume'),
   dict(slug='resize-image', name='Resize photo to KB', desc='Make a photo 20KB, 50KB, 100KB — for exam and job forms.', icon='resize', keys='resize image photo kb 20kb 50kb 100kb 200kb compress jpg reduce size signature', group='image', dark=True),
   dict(slug='compress-pdf', name='Make PDF smaller', desc='Compress a PDF to 100KB, 200KB or any size you need.', icon='compress', keys='compress pdf reduce size smaller 100kb 200kb 500kb 1mb', group='pdf'),
   dict(slug='merge-pdf', name='Join PDFs', desc='Put many PDF files together into one file.', icon='merge', keys='merge join combine pdf', group='pdf'),

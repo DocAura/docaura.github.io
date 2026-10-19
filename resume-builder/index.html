@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free Resume Builder — No Sign-up, No Watermark, PDF Download | SimpleKit</title>
-<meta name="description" content="Make a professional resume in minutes. Fill simple boxes, see a live preview, pick a template and download a clean, ATS-friendly PDF. 100% free, no sign-up, no watermark.">
-<link rel="canonical" href="https://praveenkumarakumalla.github.io/simplekit/resume-builder/"><meta property="og:title" content="Free Resume Builder — No Sign-up, No Watermark, PDF Download | SimpleKit"><meta property="og:description" content="Make a professional resume in minutes. Fill simple boxes, see a live preview, pick a template and download a clean, ATS-friendly PDF. 100% free, no sign-up, no watermark."><meta property="og:url" content="https://praveenkumarakumalla.github.io/simplekit/resume-builder/"><meta property="og:type" content="website"><meta property="og:image" content="https://praveenkumarakumalla.github.io/simplekit/assets/img/share.png">
+<meta name="description" content="Make a professional resume in minutes. 20 free designs, live preview and a clean, ATS-friendly PDF download. No sign-up, no watermark, no payment at the end.">
+<link rel="canonical" href="https://praveenkumarakumalla.github.io/simplekit/resume-builder/"><meta property="og:title" content="Free Resume Builder — No Sign-up, No Watermark, PDF Download | SimpleKit"><meta property="og:description" content="Make a professional resume in minutes. 20 free designs, live preview and a clean, ATS-friendly PDF download. No sign-up, no watermark, no payment at the end."><meta property="og:url" content="https://praveenkumarakumalla.github.io/simplekit/resume-builder/"><meta property="og:type" content="website"><meta property="og:image" content="https://praveenkumarakumalla.github.io/simplekit/assets/img/share.png">
 <meta name="theme-color" content="#3B2D8F">
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,7 @@
 
 <main id="main" class="wrap">
   <div class="tool-head"><a class="back" href="../" aria-label="Back to all tools"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><h1>Free resume builder</h1></div>
-  <p class="tool-sub">Fill in the boxes. Your resume updates on the right as you type. Download a clean PDF when you’re done — free, no watermark.</p>
+  <p class="tool-sub">Pick from 20 free designs and fill in the boxes. Your resume updates as you type. Download a clean PDF when you’re done — free, no watermark.</p>
   <div class="row" style="margin-bottom:20px">
     <div style="flex:0 1 auto;display:flex;flex-wrap:wrap;gap:10px">
       <button type="button" class="btn btn-light btn-small" id="sample">Fill with an example</button>
@@ -49,6 +49,15 @@
         <div class="row">
           <div><label for="f-loc">City</label><input class="input" id="f-loc" data-k="location" autocomplete="address-level2" placeholder="e.g. Hyderabad"></div>
           <div><label for="f-link">LinkedIn or website (optional)</label><input class="input" id="f-link" data-k="link" placeholder="linkedin.com/in/yourname"></div>
+        </div>
+        <div>
+          <span style="font-weight:600;font-size:.92em;display:block;margin-bottom:6px">Photo (optional)</span>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+            <img id="photo-thumb" alt="Your photo" hidden style="width:64px;height:64px;border-radius:50%;object-fit:cover">
+            <label class="btn btn-light btn-small" style="position:relative;overflow:hidden">Choose photo<input type="file" id="photo-in" accept="image/*,.heic,.heif" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label>
+            <button type="button" class="link-btn" id="photo-remove" hidden>Remove photo</button>
+          </div>
+          <p class="hint">Designs marked “photo” show it. Many companies prefer no photo — leave it empty if unsure.</p>
         </div>
         <div><label for="f-sum">Short summary (2–3 lines)</label><textarea class="input" id="f-sum" data-k="summary" placeholder="Who you are, what you are good at, and what job you want."></textarea></div>
       </section>
@@ -76,18 +85,19 @@
     </form>
 
     <div class="rb-preview-wrap" id="preview">
-      <div>
-        <span class="field-label" id="tpl-l">Design</span>
-        <div class="rb-toolbar" id="tpl" role="group" aria-labelledby="tpl-l">
-          <button type="button" class="choice" data-value="modern" aria-pressed="true">Modern</button>
-          <button type="button" class="choice" data-value="classic" aria-pressed="false">Classic</button>
-          <button type="button" class="choice" data-value="compact" aria-pressed="false">Compact</button>
+      <div class="design-bar">
+        <div style="flex:1;min-width:0">
+          <span class="hint" style="margin:0;display:block">Design</span>
+          <b id="tpl-name" style="font-size:1.2em">Modern</b> <span id="tpl-tag" class="tpl-tag ats">Job-portal friendly</span>
         </div>
+        <button type="button" class="btn btn-small" id="open-designs">Change design (20)</button>
       </div>
+      <p class="hint" id="photo-note" hidden style="margin:0">This design has no photo spot. Pick one marked “photo” to show your photo.</p>
       <div>
         <span class="field-label" id="col-l">Colour</span>
         <div class="rb-toolbar" id="color" role="group" aria-labelledby="col-l">
-          <button type="button" class="choice" data-value="#3B2D8F" aria-pressed="true" aria-label="Indigo"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#3B2D8F;vertical-align:middle"></span></button>
+          <button type="button" class="choice" data-value="theme" aria-pressed="true">Design colour</button>
+          <button type="button" class="choice" data-value="#3B2D8F" aria-pressed="false" aria-label="Indigo"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#3B2D8F;vertical-align:middle"></span></button>
           <button type="button" class="choice" data-value="#1F5F8B" aria-pressed="false" aria-label="Blue"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#1F5F8B;vertical-align:middle"></span></button>
           <button type="button" class="choice" data-value="#1D6B45" aria-pressed="false" aria-label="Green"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#1D6B45;vertical-align:middle"></span></button>
           <button type="button" class="choice" data-value="#9B1C31" aria-pressed="false" aria-label="Maroon"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#9B1C31;vertical-align:middle"></span></button>
@@ -107,6 +117,15 @@
       <div class="status" id="status"></div>
     </div>
   </div>
+
+  <dialog id="designs" class="design-dialog" aria-labelledby="designs-h">
+    <div class="design-head">
+      <h2 id="designs-h">Choose a design</h2>
+      <button type="button" class="icon-btn" id="close-designs" aria-label="Close"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <p class="hint" style="margin:0 0 16px">All 20 designs are free. “Job-portal friendly” designs are safest for company websites. “Stylish” ones look great when you email or print them.</p>
+    <div class="design-grid" id="design-grid"></div>
+  </dialog>
 
   <div class="ad-slot"></div>
 
@@ -132,6 +151,6 @@
   <nav aria-label="Footer"><a href="../about/">About</a><a href="../privacy/">Privacy</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a></nav>
   <small>© 2026 SimpleKit. Your files are processed on your own device and are never uploaded.</small>
 </div></div></footer>
-<script src="../assets/js/tools/resume-builder.js" defer></script>
+<script src="../assets/js/tools/resume-themes.js" defer></script><script src="../assets/js/tools/resume-builder.js" defer></script>
 </body>
 </html>

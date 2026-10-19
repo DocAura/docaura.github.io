@@ -3,13 +3,14 @@
   var $ = function (id) { return document.getElementById(id); };
   var KEY = 'sk-resume-v1';
   var status = $('status');
+  var R = window.SKResume;
 
   // ---------- Data ----------
   var EMPTY = {
     name: '', title: '', email: '', phone: '', location: '', link: '', summary: '',
     exp: [{ role: '', company: '', place: '', start: '', end: '', bullets: '' }],
     edu: [{ degree: '', school: '', year: '', detail: '' }],
-    skills: '', languages: '', certs: '', tpl: 'modern', color: '#3B2D8F'
+    skills: '', languages: '', certs: '', tpl: 'modern', color: 'theme', photo: ''
   };
   var SAMPLE = {
     name: 'Priya Sharma', title: 'Senior Accountant', email: 'priya.sharma@email.com', phone: '+91 98765 43210',
@@ -26,15 +27,20 @@
       { degree: 'B.Com', school: 'Osmania University', year: '2014', detail: 'First class with distinction' }
     ],
     skills: 'GST filing, Tally Prime, MS Excel, Audit, TDS, Financial reporting, Team leadership',
-    languages: 'English, Hindi, Telugu', certs: 'GST Practitioner Certificate (2019)', tpl: 'modern', color: '#3B2D8F'
+    languages: 'English, Hindi, Telugu', certs: 'GST Practitioner Certificate (2019)', tpl: 'modern', color: 'theme', photo: ''
   };
 
   function load() {
-    try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.exp) return s; } catch (e) {}
+    try {
+      var s = JSON.parse(localStorage.getItem(KEY));
+      if (s && s.exp) { if (!s.color) s.color = 'theme'; return s; }
+    } catch (e) {}
     return JSON.parse(JSON.stringify(EMPTY));
   }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
   var data = load();
+  if (!R.byId[data.tpl]) data.tpl = 'modern';
+  var photoImg = null;
 
   // ---------- Form ----------
   var FIELDS = {
@@ -54,7 +60,7 @@
       rm.addEventListener('click', function () { data[kind].splice(i, 1); renderList(kind); changed(); });
       top.appendChild(rm); div.appendChild(top);
       var row = null;
-      FIELDS[kind].forEach(function (f, fi) {
+      FIELDS[kind].forEach(function (f) {
         var id = 'rb' + (++uid);
         var wrap = document.createElement('div');
         var lab = document.createElement('label'); lab.htmlFor = id; lab.textContent = f[1];
@@ -62,8 +68,7 @@
         inp.className = 'input'; inp.id = id; inp.placeholder = f[2]; inp.value = item[f[0]] || '';
         inp.addEventListener('input', function () { item[f[0]] = inp.value; changed(); });
         wrap.appendChild(lab); wrap.appendChild(inp);
-        var pair = (kind === 'exp' && (f[0] === 'start' || f[0] === 'end')) || (kind === 'edu' && f[0] === 'year');
-        if (pair && kind === 'exp') {
+        if (kind === 'exp' && (f[0] === 'start' || f[0] === 'end')) {
           if (f[0] === 'start') { row = document.createElement('div'); row.className = 'row'; div.appendChild(row); }
           row.appendChild(wrap);
         } else div.appendChild(wrap);
@@ -81,26 +86,101 @@
   });
   function fillSimple() {
     document.querySelectorAll('[data-k]').forEach(function (el) { el.value = data[el.getAttribute('data-k')] || ''; });
-    ['tpl', 'color'].forEach(function (g) {
-      $(g).querySelectorAll('.choice').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-value') === data[g] ? 'true' : 'false'); });
-    });
+    $('color').querySelectorAll('.choice').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-value') === (data.color || 'theme') ? 'true' : 'false'); });
+    showTheme();
   }
   document.querySelectorAll('[data-k]').forEach(function (el) {
     el.addEventListener('input', function () { data[el.getAttribute('data-k')] = el.value; changed(); });
   });
-  SK.choices($('tpl'), function (v) { data.tpl = v; changed(true); });
   SK.choices($('color'), function (v) { data.color = v; changed(true); });
+
+  // ---------- Photo ----------
+  function loadPhoto() {
+    photoImg = null;
+    $('photo-remove').hidden = !data.photo;
+    $('photo-thumb').hidden = !data.photo;
+    if (!data.photo) return Promise.resolve();
+    $('photo-thumb').src = data.photo;
+    return SK.loadImage(data.photo).then(function (im) { photoImg = im; }).catch(function () { data.photo = ''; });
+  }
+  $('photo-in').addEventListener('change', async function () {
+    var f = this.files[0]; this.value = '';
+    if (!f) return;
+    try {
+      var im = await SK.fileToImage(f);
+      var S = 480, c = document.createElement('canvas'); c.width = c.height = S;
+      var s = Math.max(S / im.naturalWidth, S / im.naturalHeight);
+      c.getContext('2d').drawImage(im, (S - im.naturalWidth * s) / 2, (S - im.naturalHeight * s) / 3, im.naturalWidth * s, im.naturalHeight * s);
+      data.photo = c.toDataURL('image/jpeg', 0.85);
+      await loadPhoto(); showTheme(); changed(true);
+    } catch (e) { SK.status(status, 'err', SK.errText(e)); }
+  });
+  $('photo-remove').addEventListener('click', function () { data.photo = ''; loadPhoto(); showTheme(); changed(true); });
+
+  // ---------- Designs ----------
+  function showTheme() {
+    var t = R.byId[data.tpl];
+    $('tpl-name').textContent = t.name;
+    $('tpl-tag').textContent = t.tag === 'ats' ? 'Job-portal friendly' : 'Stylish';
+    $('tpl-tag').className = 'tpl-tag ' + t.tag;
+    $('photo-note').hidden = !(data.photo && !t.photo);
+  }
+  var dlg = $('designs'), grid = $('design-grid'), thumbsDone = false;
+  R.THEMES.forEach(function (t) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'design-card'; b.setAttribute('data-id', t.id);
+    b.innerHTML = '<span class="design-img"><span class="design-ph">Loading…</span></span><span class="design-name"></span><span class="tpl-tag ' + t.tag + '">' +
+      (t.tag === 'ats' ? 'Job-portal friendly' : 'Stylish') + (t.photo ? ' · photo' : '') + '</span>';
+    b.querySelector('.design-name').textContent = t.name;
+    b.addEventListener('click', function () {
+      data.tpl = t.id; showTheme(); changed(true); closeDesigns();
+    });
+    grid.appendChild(b);
+  });
+  function markCurrent() {
+    grid.querySelectorAll('.design-card').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-id') === data.tpl ? 'true' : 'false'); });
+  }
+  function openDesigns() {
+    markCurrent();
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+    var cur = grid.querySelector('[aria-pressed="true"]'); if (cur) cur.focus();
+    if (!thumbsDone) { thumbsDone = true; drawThumbs(); }
+  }
+  function closeDesigns() { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); $('open-designs').focus(); }
+  $('open-designs').addEventListener('click', openDesigns);
+  $('close-designs').addEventListener('click', closeDesigns);
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) closeDesigns(); });
+
+  async function drawThumbs() {
+    var jsPDF = await SK.jsPDF(), pdfjs = await SK.pdfjs();
+    var sample = JSON.parse(JSON.stringify(SAMPLE));
+    var cards = grid.querySelectorAll('.design-card');
+    for (var i = 0; i < R.THEMES.length; i++) {
+      var t = R.THEMES[i];
+      try {
+        var bytes = R.build(jsPDF, sample, t.id, 'theme', null).output('arraybuffer');
+        var pdf = await pdfjs.getDocument({ data: bytes }).promise;
+        var page = await pdf.getPage(1);
+        var vp = page.getViewport({ scale: 360 / page.getViewport({ scale: 1 }).width });
+        var c = document.createElement('canvas'); c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+        await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+        var img = new Image(); img.alt = ''; img.src = c.toDataURL('image/jpeg', 0.82);
+        var holder = cards[i].querySelector('.design-img'); holder.innerHTML = ''; holder.appendChild(img);
+        pdf.destroy();
+      } catch (e) { /* leave placeholder */ }
+    }
+  }
 
   $('sample').addEventListener('click', function () {
     if (hasContent() && !confirm('Replace what you typed with the example?')) return;
-    data = JSON.parse(JSON.stringify(SAMPLE)); refreshAll();
+    var keep = { tpl: data.tpl, color: data.color, photo: data.photo };
+    data = JSON.parse(JSON.stringify(SAMPLE)); Object.assign(data, keep); refreshAll();
   });
   $('clear').addEventListener('click', function () {
     if (hasContent() && !confirm('Clear everything and start empty?')) return;
     data = JSON.parse(JSON.stringify(EMPTY)); refreshAll();
   });
   function hasContent() { return !!(data.name || data.summary || (data.exp[0] && data.exp[0].role)); }
-  function refreshAll() { fillSimple(); renderList('exp'); renderList('edu'); changed(true); }
+  function refreshAll() { fillSimple(); renderList('exp'); renderList('edu'); loadPhoto().then(function () { showTheme(); changed(true); }); }
 
   var timer = null;
   function changed(now) {
@@ -108,139 +188,7 @@
     clearTimeout(timer);
     timer = setTimeout(preview, now ? 0 : 350);
   }
-
-  // ---------- PDF layout ----------
-  function hexRgb(h) { return [parseInt(h.substr(1, 2), 16), parseInt(h.substr(3, 2), 16), parseInt(h.substr(5, 2), 16)]; }
-  function clean(s) { return (s || '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/–|—/g, '-').replace(/₹/g, 'Rs.').trim(); }
-
-  function buildPdf(jsPDF) {
-    var d = data, tpl = d.tpl, accent = hexRgb(d.color || '#3B2D8F');
-    var doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
-    doc.setProperties({ title: (clean(d.name) || 'Resume') + ' - Resume', creator: 'SimpleKit Resume Builder' });
-    var W = 595.28, H = 841.89;
-    var M = tpl === 'compact' ? 40 : 48;
-    var font = tpl === 'compact' ? 'times' : 'helvetica';
-    var body = tpl === 'compact' ? 10.5 : 10;
-    var lh = body * 1.38;
-    var y = M, cw = W - M * 2;
-    var dark = [29, 29, 31], grey = [90, 90, 98];
-
-    function ensure(h) { if (y + h > H - M) { doc.addPage(); y = M; } }
-    function setF(style, size, color) { doc.setFont(font, style); doc.setFontSize(size); doc.setTextColor.apply(doc, color || dark); }
-    function para(text, opts) {
-      opts = opts || {};
-      var x = opts.x || M, w = opts.w || cw;
-      var lines = doc.splitTextToSize(text, w);
-      lines.forEach(function (ln) { ensure(lh); doc.text(ln, x, y, { baseline: 'top', align: opts.align || 'left' }); y += lh; });
-    }
-
-    // Header
-    var contact = [d.email, d.phone, d.location, d.link].map(clean).filter(Boolean);
-    if (tpl === 'modern') {
-      var bandH = 34 + (d.name ? 30 : 0) + (d.title ? 18 : 0) + (contact.length ? 16 : 0);
-      doc.setFillColor.apply(doc, accent); doc.rect(0, 0, W, bandH, 'F');
-      y = 30;
-      if (d.name) { setF('bold', 26, [255, 255, 255]); doc.text(clean(d.name), M, y, { baseline: 'top' }); y += 32; }
-      if (d.title) { setF('normal', 12.5, [255, 255, 255]); doc.text(clean(d.title), M, y, { baseline: 'top' }); y += 19; }
-      if (contact.length) { setF('normal', 9.5, [235, 235, 245]); doc.text(doc.splitTextToSize(contact.join('   |   '), cw)[0], M, y, { baseline: 'top' }); }
-      y = bandH + 22;
-    } else {
-      var center = tpl === 'classic';
-      var x0 = center ? W / 2 : M, al = center ? 'center' : 'left';
-      if (d.name) { setF('bold', tpl === 'compact' ? 22 : 24, center ? dark : accent); doc.text(clean(d.name), x0, y, { baseline: 'top', align: al }); y += tpl === 'compact' ? 26 : 30; }
-      if (d.title) { setF('normal', 12, grey); doc.text(clean(d.title), x0, y, { baseline: 'top', align: al }); y += 17; }
-      if (contact.length) {
-        setF('normal', 9.5, grey);
-        doc.splitTextToSize(contact.join('  •  '), cw).forEach(function (ln) { doc.text(ln, x0, y, { baseline: 'top', align: al }); y += 13; });
-      }
-      y += 6;
-      if (center) { doc.setDrawColor.apply(doc, accent); doc.setLineWidth(1.5); doc.line(M, y, W - M, y); y += 14; }
-      else y += 6;
-    }
-
-    function heading(t) {
-      ensure(40);
-      y += tpl === 'compact' ? 4 : 8;
-      setF('bold', tpl === 'compact' ? 11 : 11.5, accent);
-      var label = tpl === 'modern' ? t : t.toUpperCase();
-      if (tpl === 'modern') { doc.setFillColor.apply(doc, accent); doc.rect(M, y + 1, 3.5, 12, 'F'); doc.text(label, M + 10, y, { baseline: 'top' }); y += 19; }
-      else {
-        if (doc.setCharSpace) doc.setCharSpace(0.8);
-        doc.text(label, M, y, { baseline: 'top' });
-        if (doc.setCharSpace) doc.setCharSpace(0);
-        y += 15; doc.setDrawColor(200, 200, 205); doc.setLineWidth(0.7); doc.line(M, y, W - M, y); y += 8;
-      }
-    }
-    function rowLR(left, right, style, size) {
-      setF(style, size);
-      var rw = right ? doc.getTextWidth(right) + 12 : 0;
-      var lines = doc.splitTextToSize(left, cw - rw);
-      ensure(lh * lines.length);
-      lines.forEach(function (ln, i) {
-        doc.text(ln, M, y, { baseline: 'top' });
-        if (i === 0 && right) { setF('normal', body - 0.5, grey); doc.text(right, W - M, y, { baseline: 'top', align: 'right' }); setF(style, size); }
-        y += lh + 0.5;
-      });
-    }
-    function bullets(text) {
-      setF('normal', body);
-      text.split(/\n+/).map(clean).filter(Boolean).forEach(function (b) {
-        b = b.replace(/^[-•*]\s*/, '');
-        var lines = doc.splitTextToSize(b, cw - 14);
-        ensure(lh * Math.min(lines.length, 2));
-        lines.forEach(function (ln, i) {
-          ensure(lh);
-          if (i === 0) doc.text('•', M + 2, y, { baseline: 'top' });
-          doc.text(ln, M + 14, y, { baseline: 'top' }); y += lh;
-        });
-      });
-    }
-
-    if (clean(d.summary)) { heading('Summary'); setF('normal', body); para(clean(d.summary)); y += 4; }
-
-    var exps = d.exp.filter(function (e) { return clean(e.role) || clean(e.company); });
-    if (exps.length) {
-      heading('Work experience');
-      exps.forEach(function (e, i) {
-        if (i) y += 7;
-        ensure(lh * 3);
-        var dates = [clean(e.start), clean(e.end)].filter(Boolean).join(' - ');
-        rowLR(clean(e.role) || clean(e.company), dates, 'bold', body + 1);
-        var sub = [clean(e.role) ? clean(e.company) : '', clean(e.place)].filter(Boolean).join(', ');
-        if (sub) { setF('italic', body, grey); para(sub); }
-        y += 2;
-        if (clean(e.bullets)) bullets(e.bullets);
-      });
-      y += 4;
-    }
-
-    var edus = d.edu.filter(function (e) { return clean(e.degree) || clean(e.school); });
-    if (edus.length) {
-      heading('Education');
-      edus.forEach(function (e, i) {
-        if (i) y += 6;
-        ensure(lh * 2);
-        rowLR(clean(e.degree) || clean(e.school), clean(e.year), 'bold', body + 0.5);
-        var sub = [clean(e.degree) ? clean(e.school) : '', clean(e.detail)].filter(Boolean).join(' - ');
-        if (sub) { setF('normal', body, grey); para(sub); }
-      });
-      y += 4;
-    }
-
-    if (clean(d.skills)) {
-      heading('Skills'); setF('normal', body);
-      para(clean(d.skills).split(/\s*,\s*/).filter(Boolean).join('  •  '));
-      y += 4;
-    }
-    if (clean(d.languages)) { heading('Languages'); setF('normal', body); para(clean(d.languages)); y += 4; }
-    if (clean(d.certs)) { heading('Certificates and awards'); bullets(d.certs); }
-
-    if (!d.name && !exps.length && !edus.length && !clean(d.summary)) {
-      setF('normal', 12, [150, 150, 160]);
-      doc.text('Start typing on the left — your resume will appear here.', W / 2, H / 2, { align: 'center' });
-    }
-    return doc;
-  }
+  function buildPdf(jsPDF) { return R.build(jsPDF, data, data.tpl, data.color, photoImg); }
 
   // ---------- Preview ----------
   var pdfDoc = null, pageNo = 1, rendering = false, again = false;
@@ -279,15 +227,15 @@
   $('dl').addEventListener('click', async function () {
     try {
       var jsPDF = await SK.jsPDF();
-      var name = (clean(data.name) || 'my').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-');
+      var name = (R.clean(data.name) || 'my').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-');
       var blob = buildPdf(jsPDF).output('blob');
       SK.download(blob, name + '-resume.pdf');
       SK.status(status, 'ok', 'Your resume has been downloaded (' + SK.bytes(blob.size) + '). Good luck!');
     } catch (e) { SK.status(status, 'err', SK.errText(e)); }
   });
 
-  // Expose layout for tests
-  window.__skResume = { build: function (jsPDF) { return buildPdf(jsPDF); }, set: function (d) { data = d; refreshAll(); } };
+  // For automated tests
+  window.__skResume = { set: function (d) { data = d; refreshAll(); }, get: function () { return data; } };
 
   refreshAll();
 })();

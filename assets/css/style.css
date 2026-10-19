@@ -247,6 +247,24 @@ textarea.input { min-height: 110px; resize: vertical; line-height: 1.5; }
 .paper { background: #fff; color: #1d1d1f; aspect-ratio: 210 / 297; width: 100%; overflow: hidden; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,.15); font-family: Helvetica, Arial, sans-serif; position: relative; }
 .paper canvas { width: 100%; height: auto; display: block; }
 .mobile-jump { display: none; }
+.design-bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; background: var(--white); border-radius: 26px; padding: 14px 16px 14px 20px; box-shadow: var(--clay); }
+.tpl-tag { display: inline-block; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; vertical-align: middle; }
+.tpl-tag.ats { background: var(--ok-bg); color: var(--ok); }
+.tpl-tag.stylish { background: var(--pink); color: var(--ink); }
+#color .choice[data-value="theme"] { flex: 2 1 150px; font-size: .9em; }
+.design-dialog { border: 0; border-radius: 34px; padding: clamp(18px, 3vw, 30px); width: min(1100px, calc(100vw - 24px)); max-height: calc(100vh - 24px); background: var(--ground); color: var(--ink); box-shadow: 0 40px 80px rgba(34,26,92,.4); font-family: inherit; }
+.design-dialog::backdrop { background: rgba(34,26,92,.55); }
+.design-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; position: sticky; top: -30px; background: var(--ground); padding: 6px 0; z-index: 1; }
+.design-head h2 { font-size: 1.5em; font-weight: 800; }
+.design-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
+@media (max-width: 560px) { .design-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
+.design-card { font: inherit; color: var(--ink); background: var(--white); border: 4px solid transparent; border-radius: 24px; padding: 10px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; text-align: left; box-shadow: var(--clay); }
+.design-card[aria-pressed="true"] { border-color: var(--indigo); }
+.design-img { width: 100%; aspect-ratio: 210 / 297; border-radius: 12px; overflow: hidden; background: #F1EEF7; display: grid; place-items: center; box-shadow: inset 0 0 0 1px #E3DEF0; }
+.design-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.design-ph { color: var(--muted); font-size: 14px; }
+.design-name { font-weight: 700; font-size: 1.02em; padding: 0 4px; }
+.design-card .tpl-tag { margin: 0 4px 4px; font-size: 12px; }
 @media (max-width: 980px) {
   .mobile-jump { display: flex; position: sticky; bottom: 12px; z-index: 5; }
 }

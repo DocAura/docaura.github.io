@@ -6,7 +6,7 @@ Free, private, easy-to-use tools: a resume builder plus PDF and photo tools. Eve
 
 | Page | What it does |
 |---|---|
-| `/resume-builder/` | Form with live preview, 3 designs, 5 colours, autosave, real-text (ATS-friendly) PDF |
+| `/resume-builder/` | 25 designs, live preview, job-match checker, fonts, A4/Letter, autosave, real-text (ATS-friendly) PDF |
 | `/resize-image/` | Resize a photo to 20 / 50 / 100 / 200 KB or a custom size, with optional exact pixels |
 | `/compress-pdf/` | Shrink a PDF to "Smaller", 100 KB, 200 KB, 500 KB, 1 MB or a custom size |
 | `/merge-pdf/` | Join PDFs in any order |
@@ -29,8 +29,8 @@ This regenerates every `index.html`, plus `sitemap.xml` and `robots.txt`. Commit
 ## Settings to fill in before launch
 
 1. **`build/config.json`**
-   - `site_url`: your real domain, e.g. `https://simplekit.in`. It's used for canonical links, the sitemap and share previews.
-   - `base_path`: leave empty for a custom domain. For `username.github.io/simplekit`, set it to `simplekit`.
+   - `site_url`: your real domain, e.g. `https://docaura.github.io` or your own domain. It's used for canonical links, the sitemap and share previews.
+   - `base_path`: leave empty for a custom domain. For a project page like `username.github.io/repo`, set it to `repo`.
    - `contact_email`: the email shown on the Contact, Privacy and Terms pages.
    - `brand`: the site name.
 2. **AdSense**: once approved, put your publisher id (`ca-pub-…`) in `adsense_client` in `build/config.json`. Then add an `ads.txt` file at the repo root containing the line Google gives you, and rebuild. Ads appear automatically in every `.ad-slot`, and the security policy automatically allows Google's ad domains. See `SECURITY.md`.

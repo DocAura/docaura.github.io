@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' blob: data:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Terms of Use | SimpleKit</title>
 <meta name="description" content="Terms of use for SimpleKit free online tools.">
@@ -12,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site-config.js"></script>
 <script src="../assets/js/common.js" data-root="../"></script>
 
 </head>
@@ -28,7 +31,7 @@
 <main id="main" class="wrap narrow">
   <div class="tool-head"><a class="back" href="../" aria-label="Back to all tools"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><h1>Terms of use</h1></div>
   <div class="panel prose">
-    <p><em>Last updated: 19 October 2026</em></p>
+    <p><em>Last updated: 20 October 2026</em></p>
     <p>By using SimpleKit, you agree to these simple terms.</p>
     <h2>Free to use</h2>
     <p>All tools are free for personal and business use. You keep full ownership of every file you create.</p>
@@ -39,7 +42,7 @@
     <h2>Changes</h2>
     <p>We may update these terms from time to time. The date at the top shows the latest version.</p>
     <h2>Contact</h2>
-    <p>Email <a href="mailto:hello@yourdomain.com">hello@yourdomain.com</a>.</p>
+    <p>Email <a class="js-email" href="../contact/" data-u="praveen.kumar" data-d="gmail.com">praveen.kumar [at] gmail [dot] com</a>.</p>
   </div>
 </main>
 

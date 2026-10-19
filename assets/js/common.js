@@ -2,9 +2,26 @@
 (function () {
   'use strict';
 
-  // ---- Settings you fill in later ----
-  // Paste your AdSense publisher id (looks like "ca-pub-1234567890123456") once approved.
-  var ADSENSE_CLIENT = '';
+  // Settings come from build/config.json (via assets/js/site-config.js)
+  var CFG = window.SK_CONFIG || {};
+  var ADSENSE_CLIENT = CFG.adsenseClient || '';
+
+  // ---- Security: refuse to run inside another site's frame (stops "clickjacking") ----
+  var framed = false;
+  try { framed = window.top !== window.self; } catch (e) { framed = true; }
+  if (framed) {
+    // Hide every button so nobody can be tricked into clicking them, and offer a safe link instead
+    document.documentElement.classList.add('sk-framed');
+    var st = document.createElement('style');
+    st.textContent = 'html.sk-framed body > *:not(.sk-frame-msg){display:none!important}.sk-frame-msg{font:600 20px/1.5 system-ui,sans-serif;padding:40px 20px;text-align:center;color:#221A5C}.sk-frame-msg a{color:#3B2D8F}';
+    document.head.appendChild(st);
+    document.addEventListener('DOMContentLoaded', function () {
+      var m = document.createElement('div'); m.className = 'sk-frame-msg';
+      var a = document.createElement('a'); a.href = location.href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Open SimpleKit safely in a new tab';
+      m.appendChild(document.createTextNode('For your safety, SimpleKit does not work inside other websites. ')); m.appendChild(a);
+      document.body.appendChild(m);
+    });
+  }
 
   var ROOT = (document.currentScript && document.currentScript.getAttribute('data-root')) || './';
 
@@ -18,7 +35,15 @@
     store('sk-big', on ? '1' : '0');
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
+  // Forms on our pages never post anywhere
+  document.addEventListener('submit', function (e) { if (e.target.closest('.rb-form')) e.preventDefault(); });
+
   document.addEventListener('DOMContentLoaded', function () {
+    // Spam-protected email links
+    document.querySelectorAll('a.js-email').forEach(function (a) {
+      var addr = a.getAttribute('data-u') + '@' + a.getAttribute('data-d');
+      a.href = 'mailto:' + addr; a.textContent = addr;
+    });
     var b = document.querySelector('[data-big-text]');
     if (b) b.setAttribute('aria-pressed', document.documentElement.classList.contains('big-text') ? 'true' : 'false');
     initAds();
@@ -71,8 +96,13 @@
   // Drop zone: el = .drop element containing <input type=file>
   SK.drop = function (el, onFiles) {
     var input = el.querySelector('input[type=file]');
+    function guard(files) {
+      var big = files.filter(function (f) { return f.size > 300 * 1024 * 1024; });
+      if (big.length && !window.confirm('“' + big[0].name + '” is very large (' + SK.bytes(big[0].size) + '). It may be slow or fail on a phone. Continue?')) return;
+      onFiles(files);
+    }
     input.addEventListener('change', function () {
-      if (input.files.length) onFiles(Array.prototype.slice.call(input.files));
+      if (input.files.length) guard(Array.prototype.slice.call(input.files));
       input.value = '';
     });
     ['dragenter', 'dragover'].forEach(function (t) {
@@ -83,7 +113,7 @@
     });
     el.addEventListener('drop', function (e) {
       var f = Array.prototype.slice.call(e.dataTransfer.files || []);
-      if (f.length) onFiles(f);
+      if (f.length) guard(f);
     });
   };
 
@@ -133,14 +163,39 @@
 
   // Opens any image file (including iPhone HEIC) as an <img>.
   SK.fileToImage = function (file) {
-    var p = SK.isHeic(file)
-      ? SK.loadScript(ROOT + 'assets/vendor/heic2any.min.js').then(function () {
-          return window.heic2any({ blob: file, toType: 'image/jpeg', quality: 0.95 });
-        }).then(function (b) { return Array.isArray(b) ? b[0] : b; })
-      : Promise.resolve(file);
+    var p = SK.isHeic(file) ? SK.heicToJpeg(file, 0.95) : Promise.resolve(file);
     return p.then(function (blob) {
       var url = URL.createObjectURL(blob);
       return SK.loadImage(url);
+    });
+  };
+
+  // iPhone HEIC/HEIF → JPEG blob. Safari can open HEIC itself; other browsers use the libheif decoder (WebAssembly).
+  var heifLib = null;
+  SK.heicToJpeg = function (file, quality) {
+    var url = URL.createObjectURL(file);
+    return SK.loadImage(url).then(function (img) { // native support (Safari)
+      var c = document.createElement('canvas'); c.width = img.naturalWidth; c.height = img.naturalHeight;
+      c.getContext('2d').drawImage(img, 0, 0); URL.revokeObjectURL(url);
+      return SK.canvasToBlob(c, 'image/jpeg', quality || 0.92);
+    }, function () {
+      URL.revokeObjectURL(url);
+      if (!heifLib) heifLib = SK.loadScript(ROOT + 'assets/vendor/libheif-bundle.js').then(function () {
+        var lib = window.libheif; return typeof lib === 'function' ? lib() : lib;
+      });
+      return Promise.all([heifLib, file.arrayBuffer()]).then(function (r) {
+        var dec = new r[0].HeifDecoder(), imgs = dec.decode(new Uint8Array(r[1]));
+        if (!imgs || !imgs.length) throw new Error('This photo could not be opened.');
+        var im = imgs[0], w = im.get_width(), h = im.get_height();
+        var c = document.createElement('canvas'); c.width = w; c.height = h;
+        var ctx = c.getContext('2d'), id = ctx.createImageData(w, h);
+        return new Promise(function (res, rej) {
+          im.display(id, function (out) { if (!out) return rej(new Error('This photo could not be opened.')); ctx.putImageData(id, 0, 0); res(); });
+        }).then(function () {
+          imgs.forEach(function (x) { if (x.free) x.free(); });
+          return SK.canvasToBlob(c, 'image/jpeg', quality || 0.92);
+        });
+      });
     });
   };
 
@@ -172,7 +227,13 @@
       var base = new URL(ROOT + 'assets/vendor/', location.href).href;
       pdfjsP = import(base + 'pdf.min.mjs').then(function (m) {
         m.GlobalWorkerOptions.workerSrc = base + 'pdf.worker.min.mjs';
-        return m;
+        // Safety: never run code from inside a PDF, never fetch anything from the internet for it
+        var safe = Object.assign({}, m);
+        safe.getDocument = function (src) {
+          src = Object.assign({}, src, { isEvalSupported: false, enableXfa: false, disableAutoFetch: true, disableStream: true });
+          return m.getDocument(src);
+        };
+        return safe;
       });
     }
     return pdfjsP;

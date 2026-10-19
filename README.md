@@ -33,9 +33,9 @@ This regenerates every `index.html`, plus `sitemap.xml` and `robots.txt`. Commit
    - `base_path`: leave empty for a custom domain. For `username.github.io/simplekit`, set it to `simplekit`.
    - `contact_email`: the email shown on the Contact, Privacy and Terms pages.
    - `brand`: the site name.
-2. **AdSense**: once approved, put your publisher id in `ADSENSE_CLIENT` at the top of `assets/js/common.js`. Then add an `ads.txt` file at the repo root containing the line Google gives you. Ads appear automatically in every `.ad-slot`.
+2. **AdSense**: once approved, put your publisher id (`ca-pub-…`) in `adsense_client` in `build/config.json`. Then add an `ads.txt` file at the repo root containing the line Google gives you, and rebuild. Ads appear automatically in every `.ad-slot`, and the security policy automatically allows Google's ad domains. See `SECURITY.md`.
 3. Run `python3 build/build.py`, then commit and push.
 
 ## Libraries (in `assets/vendor/`, all open source)
 
-pdf-lib (MIT), PDF.js (Apache-2.0), jsPDF (MIT), heic2any (MIT).
+pdf-lib (MIT), PDF.js (Apache-2.0), jsPDF 4.2.1 (MIT), docx (MIT), libheif-js (LGPL-3.0), plus the Lato, Montserrat and Lora fonts (SIL Open Font License) in `assets/fonts/`.

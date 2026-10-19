@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' blob: data:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contact SimpleKit</title>
 <meta name="description" content="Contact the SimpleKit team with questions, problems or ideas for new free tools.">
@@ -12,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site-config.js"></script>
 <script src="../assets/js/common.js" data-root="../"></script>
 
 </head>
@@ -29,7 +32,7 @@
   <div class="tool-head"><a class="back" href="../" aria-label="Back to all tools"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><h1>Contact us</h1></div>
   <div class="panel prose">
     <p>Have a question, found something that doesn’t work, or want us to build a new tool? We’d love to hear from you.</p>
-    <p style="font-size:1.2em;font-weight:700">Email: <a href="mailto:hello@yourdomain.com">hello@yourdomain.com</a></p>
+    <p style="font-size:1.2em;font-weight:700">Email: <a class="js-email" href="../contact/" data-u="praveen.kumar" data-d="gmail.com">praveen.kumar [at] gmail [dot] com</a></p>
     <p>When reporting a problem, please tell us which tool you used, what kind of phone or computer you have, and what happened. Please do not email us private documents.</p>
   </div>
 </main>

@@ -12,15 +12,13 @@
     var failed = 0;
     try {
       SK.status(status, 'info', 'Getting ready…', 0);
-      await SK.loadScript(SK.root + 'assets/vendor/heic2any.min.js');
       for (var i = 0; i < list.length; i++) {
         var f = list[i];
         SK.status(status, 'info', 'Converting photo ' + (i + 1) + ' of ' + list.length + '…', (i / list.length) * 100);
         var blob;
         try {
           if (SK.isHeic(f)) {
-            blob = await window.heic2any({ blob: f, toType: 'image/jpeg', quality: 0.92 });
-            if (Array.isArray(blob)) blob = blob[0];
+            blob = await SK.heicToJpeg(f, 0.92);
           } else {
             // Already a normal picture — re-save as JPG
             var img = await SK.fileToImage(f);

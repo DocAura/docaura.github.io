@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' blob: data:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free Cover Letter Builder — Matches Your Resume, PDF Download | SimpleKit</title>
 <meta name="description" content="Write a professional cover letter in minutes. We fill it in from your resume, match your resume design, and you download a clean PDF. Free, no sign-up, no watermark.">
@@ -12,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site-config.js"></script>
 <script src="../assets/js/common.js" data-root="../"></script>
 
 </head>
@@ -31,7 +34,7 @@
   <p class="promise"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D6B45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Free</span><span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D6B45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> No watermark</span><span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D6B45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> No sign-up</span><span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D6B45" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Saved only on your device</span></p>
 
   <div class="rb">
-    <form class="rb-form" onsubmit="return false">
+    <form class="rb-form">
       <p class="status show info" id="from-resume" hidden></p>
       <section class="rb-sec">
         <h2><span class="num">1</span> The job</h2>

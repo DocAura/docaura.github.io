@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' blob: data:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free Resume Builder — No Sign-up, No Watermark, PDF Download | SimpleKit</title>
 <meta name="description" content="Make a professional resume in minutes. 20 free designs, live preview and a clean, ATS-friendly PDF download. No sign-up, no watermark, no payment at the end.">
@@ -12,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/site-config.js"></script>
 <script src="../assets/js/common.js" data-root="../"></script>
 
 </head>
@@ -47,7 +50,7 @@
   </div>
 
   <div class="rb">
-    <form class="rb-form" id="form" autocomplete="on" onsubmit="return false">
+    <form class="rb-form" id="form" autocomplete="on">
       <section class="rb-sec">
         <h2><span class="num">1</span> About you</h2>
         <div><label for="f-name">Full name</label><input class="input" id="f-name" data-k="name" autocomplete="name" placeholder="e.g. Alex Morgan"></div>

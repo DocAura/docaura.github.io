@@ -1,0 +1,112 @@
+<!---
+{"slug": "sign-pdf", "tool": true,
+ "title": "Sign PDF Online Free — Draw, Type or Upload Your Signature",
+ "desc": "Add your signature to a PDF for free. Draw it, type it or upload a photo of it, then tap where to sign. Add the date and sign many pages. No sign-up, no watermark, nothing uploaded.",
+ "h1": "Sign a PDF",
+ "sub": "Draw, type or upload your signature, then tap where it should go. Add the date and sign as many pages as you need.",
+ "steps": ["Choose PDF", "Make signature", "Place & save"],
+ "scripts": ["assets/js/tools/sign-pdf.js"],
+ "related": ["page-numbers", "organize-pdf", "merge-pdf", "jpg-to-pdf"],
+ "faq": [
+  ["How do I sign a PDF on my phone?", "Choose the PDF, draw your signature with your finger in the white box, then tap the page where it should go. Drag it to adjust, and press “Save signed PDF”."],
+  ["Can I use a photo of my real signature?", "Yes. Sign on white paper, take a photo, and choose “Upload”. The white paper is removed automatically so only the ink shows."],
+  ["Is this a legal signature?", "This adds an electronic signature — an image of your signature — to the document. It is accepted for many everyday papers like forms, letters, agreements and school slips. It is not a certified digital signature (such as Aadhaar eSign or a certificate-based signature). If a document needs that, the organisation will tell you."],
+  ["Is my signature stored anywhere?", "No. Everything happens in your browser. Your signature is only kept on this device if you tick “Remember my signature”, and you can remove it any time."],
+  ["Can I sign more than one page?", "Yes. Go to any page with the arrows and tap “Add signature” or tap the page again."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:upload:42:#3B2D8F}}</span>
+    <b>Tap here to choose a PDF</b>
+    <span>or drag it here · stays on your device</span>
+    <input type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF">
+  </label>
+
+  <ul class="file-list" id="file-info" hidden></ul>
+
+  <!-- Step 2: make the signature -->
+  <section id="make" hidden style="display:flex;flex-direction:column;gap:18px">
+    <h2 style="font-size:1.3em">Make your signature</h2>
+    <div class="choices" id="mode" role="group" aria-label="How to make your signature">
+      <button type="button" class="choice" data-value="draw" aria-pressed="true">Draw</button>
+      <button type="button" class="choice" data-value="type" aria-pressed="false">Type</button>
+      <button type="button" class="choice" data-value="upload" aria-pressed="false">Upload photo</button>
+    </div>
+
+    <div id="pane-draw" style="display:flex;flex-direction:column;gap:12px">
+      <p class="hint" style="margin:0">Sign with your finger or mouse in the white box.</p>
+      <div class="sig-pad-wrap"><canvas id="pad" class="sig-pad" aria-label="Signature drawing area"></canvas><span class="sig-line" aria-hidden="true">✕</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <div class="choices" id="ink" role="group" aria-label="Ink colour" style="flex:1 1 220px">
+          <button type="button" class="choice" data-value="#111111" aria-pressed="true">Black ink</button>
+          <button type="button" class="choice" data-value="#1A3DA8" aria-pressed="false">Blue ink</button>
+        </div>
+        <button type="button" class="btn btn-light btn-small" id="pad-clear">Clear</button>
+      </div>
+    </div>
+
+    <div id="pane-type" hidden style="display:flex;flex-direction:column;gap:12px">
+      <label class="field-label" for="typed" style="margin:0">Type your name</label>
+      <input class="input" id="typed" placeholder="e.g. Priya Sharma" maxlength="40" autocomplete="name">
+      <div class="choices" id="font" role="group" aria-label="Signature style"></div>
+    </div>
+
+    <div id="pane-upload" hidden style="display:flex;flex-direction:column;gap:12px">
+      <p class="hint" style="margin:0">Sign on plain white paper with a dark pen, take a clear photo, then choose it here. We remove the paper.</p>
+      <label class="btn btn-light" style="position:relative;overflow:hidden">Choose signature photo<input type="file" id="sig-file" accept="image/*,.heic,.heif" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label>
+      <img id="up-prev" alt="Your uploaded signature" hidden style="max-height:140px;align-self:center;background:repeating-conic-gradient(#eee 0 25%,#fff 0 50%) 0/16px 16px;border-radius:12px;padding:8px">
+    </div>
+
+    <label style="display:flex;align-items:center;gap:12px;font-weight:600;cursor:pointer;min-height:44px">
+      <input type="checkbox" id="remember" style="width:26px;height:26px;accent-color:#3B2D8F"> Remember my signature on this device
+    </label>
+    <button type="button" class="btn btn-big" id="use">Use this signature {{ICON:arrow:26:#FFFFFF}}</button>
+  </section>
+
+  <!-- Step 3: place it -->
+  <section id="place" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <img id="sig-chip" alt="Your signature" style="height:54px;max-width:180px;object-fit:contain;background:#fff;border-radius:12px;padding:4px 10px">
+      <button type="button" class="link-btn" id="change-sig">Change signature</button>
+    </div>
+    <p class="field-label" style="margin:0">Tap the page where you want to sign. Drag to move it.</p>
+    <div class="sign-stage" id="stage"><canvas id="page-cv" aria-hidden="true"></canvas><div id="layer" class="sign-layer"></div></div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:14px;font-weight:700">
+      <button type="button" class="icon-btn" id="pprev" aria-label="Previous page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+      <span id="pno">Page 1 of 1</span>
+      <button type="button" class="icon-btn" id="pnext" aria-label="Next page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <button type="button" class="btn btn-light btn-small" id="add-sig" style="flex:1 1 160px">+ Add signature</button>
+      <button type="button" class="btn btn-light btn-small" id="add-date" style="flex:1 1 160px">+ Add today’s date</button>
+    </div>
+    <div class="sel-bar" id="selbar" hidden>
+      <span id="sel-name" style="font-weight:700;flex:1 1 120px">Signature</span>
+      <button type="button" class="btn btn-light btn-small" id="smaller" aria-label="Make smaller">− Smaller</button>
+      <button type="button" class="btn btn-light btn-small" id="bigger" aria-label="Make bigger">+ Bigger</button>
+      <button type="button" class="btn btn-light btn-small" id="remove">Remove</button>
+    </div>
+    <p class="hint" id="placed" style="margin:0"></p>
+    <button type="button" class="btn btn-big" id="go" disabled>Save signed PDF {{ICON:arrow:26:#FFFFFF}}</button>
+  </section>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your signed PDF is ready</h2>
+    <img class="preview-img" id="out-img" alt="First signed page" hidden>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns" id="out-btns">
+      <button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download signed PDF</button>
+      <button type="button" class="btn btn-light" id="back-edit">Change something</button>
+    </div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to sign a PDF</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your PDF</b><span>Pick the document you need to sign.</span></div>
+  <div class="step"><span class="num">2</span><b>Make your signature</b><span>Draw it, type your name, or upload a photo of your real signature.</span></div>
+  <div class="step"><span class="num">3</span><b>Tap to place, then save</b><span>Tap where it goes, drag and resize it, add the date, and download.</span></div>
+</div></section>

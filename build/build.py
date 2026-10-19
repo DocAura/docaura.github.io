@@ -35,6 +35,7 @@ ICONS = {
   'up': '<path d="m6 15 6-6 6 6"/>',
   'down': '<path d="m6 9 6 6 6-6"/>',
   'plus': '<path d="M12 5v14M5 12h14"/>',
+  'sign': '<path d="M3 17c3-4 5-9 7-9s-1 9 1 9 3-5 5-5-1 5 1 5 3-2 4-3"/><path d="M3 21h18"/>',
   'organize': '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><path d="M21 16a5 5 0 0 1-9 3M12 21v-3h3"/>',
   'numbers': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M10 17h1.5v-5L10 13M14 12h2.5l-2.5 5h2.5"/>',
 }
@@ -52,6 +53,7 @@ TOOLS = [
   dict(slug='split-pdf', name='Split a PDF', desc='Take out only the pages you want.', icon='split', keys='split pdf extract pages remove pages cut', group='pdf'),
   dict(slug='jpg-to-pdf', name='Photos to PDF', desc='Scan homework or documents into one clean PDF.', icon='image', keys='jpg to pdf image to pdf photo png scan convert homework scanner document camera', group='pdf'),
   dict(slug='pdf-to-jpg', name='PDF to photos', desc='Save each PDF page as a JPG picture.', icon='pdfimg', keys='pdf to jpg pdf to image png convert pages', group='pdf'),
+  dict(slug='sign-pdf', name='Sign a PDF', desc='Draw, type or upload your signature and place it.', icon='sign', keys='sign pdf signature esign e-sign electronic signature fill sign document', group='pdf', dark=True),
   dict(slug='organize-pdf', name='Turn & reorder pages', desc='Fix upside-down pages, change order, delete pages.', icon='organize', keys='rotate pdf pages reorder delete remove pages organize upside down sideways', group='pdf'),
   dict(slug='page-numbers', name='Add page numbers', desc='Number pages and add your name to every page.', icon='numbers', keys='page numbers pdf add name header roll number student', group='pdf'),
   dict(slug='passport-photo', name='Passport photo', desc='Crop your photo to passport size and print a sheet.', icon='passport', keys='passport photo size visa crop 35x45 2x2 print sheet', group='image'),

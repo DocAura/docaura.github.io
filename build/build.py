@@ -50,7 +50,7 @@ def icon(name, size=24, color='currentColor', width=2.2):
 
 # Tool registry: drives the homepage grid, related links and sitemap.
 TOOLS = [
-  dict(slug='resume-builder', name='Free resume builder', desc='20 free designs. Fill simple boxes, download a clean PDF.', icon='resume', keys='resume cv biodata job builder maker template', group='resume'),
+  dict(slug='resume-builder', name='Free resume builder', desc='25 free designs. Fill simple boxes, download a clean PDF.', icon='resume', keys='resume cv biodata job builder maker template', group='resume'),
   dict(slug='cover-letter', name='Cover letter builder', desc='Written from your resume, in the same design.', icon='letter', keys='cover letter builder application letter job letter write', group='resume'),
   dict(slug='pdf-to-word', name='PDF to Word', desc='Turn a PDF into a Word file you can edit.', icon='word', keys='pdf to word docx convert editable doc microsoft word', group='pdf', dark=True),
   dict(slug='edit-pdf', name='Edit a PDF', desc='Add text, white-out, highlight, ticks and pictures.', icon='edit', keys='edit pdf add text write on pdf whiteout white out highlight annotate typewriter', group='pdf'),

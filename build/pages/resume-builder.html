@@ -1,11 +1,61 @@
 <!---
 {"slug": "resume-builder", "title": "Free Resume Builder — No Sign-up, No Watermark, PDF Download",
- "desc": "Make a professional resume in minutes. 20 free designs, live preview and a clean, ATS-friendly PDF download. No sign-up, no watermark, no payment at the end.",
+ "desc": "Make a professional resume in minutes. 25 free designs, live preview and a clean, ATS-friendly PDF download. No sign-up, no watermark, no payment at the end.",
  "active": "resume", "priority": "0.9", "scripts": ["assets/js/tools/resume-themes.js", "assets/js/tools/resume-check.js", "assets/js/tools/resume-builder.js"]}
 --->
 <main id="main" class="wrap">
   <div class="tool-head"><a class="back" href="{{R}}" aria-label="Back to all tools">{{ICON:back:26:#3B2D8F}}</a><h1>Free resume builder</h1></div>
-  <p class="tool-sub">Pick from 20 free designs and fill in the boxes. Your resume updates as you type. Download a clean PDF when you’re done — free, no watermark.</p>
+  <p class="tool-sub">Pick from 25 free designs and fill in the boxes. Your resume updates as you type. Download a clean PDF when you’re done — free, no watermark.</p>
+
+  <section class="showcase" aria-labelledby="pick-h">
+    <div class="show-head">
+      <div><h2 id="pick-h">1. Pick a design you love</h2><p class="hint" style="margin:4px 0 0">All 25 are free — no watermark, no sign-up. You can change it any time.</p></div>
+      <button type="button" class="btn btn-light btn-small" id="see-all">See all 25 designs</button>
+    </div>
+    <div class="show-grid">
+      <article class="show-card">
+        <button type="button" class="show-img" data-design="modern" aria-label="Use the Modern design"><img src="{{R}}assets/img/designs/modern.webp" width="600" height="849" loading="lazy" alt="Modern resume design preview"></button>
+        <div class="show-info"><b>Modern</b><span class="design-best">Best for: Any job, IT, sales</span><span class="tpl-tag ats">Job-portal friendly · photo</span></div>
+        <button type="button" class="btn btn-small show-use" data-design="modern">Use this design</button>
+      </article>
+      <article class="show-card">
+        <button type="button" class="show-img" data-design="slate" aria-label="Use the Slate Sidebar design"><img src="{{R}}assets/img/designs/slate.webp" width="600" height="849" loading="lazy" alt="Slate Sidebar resume design preview"></button>
+        <div class="show-info"><b>Slate Sidebar</b><span class="design-best">Best for: Marketing, sales, managers</span><span class="tpl-tag stylish">Stylish · photo</span></div>
+        <button type="button" class="btn btn-small show-use" data-design="slate">Use this design</button>
+      </article>
+      <article class="show-card">
+        <button type="button" class="show-img" data-design="scholar" aria-label="Use the Scholar design"><img src="{{R}}assets/img/designs/scholar.webp" width="600" height="849" loading="lazy" alt="Scholar resume design preview"></button>
+        <div class="show-info"><b>Scholar</b><span class="design-best">Best for: Tech, engineering, freshers</span><span class="tpl-tag ats">Job-portal friendly</span></div>
+        <button type="button" class="btn btn-small show-use" data-design="scholar">Use this design</button>
+      </article>
+      <article class="show-card">
+        <button type="button" class="show-img" data-design="teal" aria-label="Use the Teal Profile design"><img src="{{R}}assets/img/designs/teal.webp" width="600" height="849" loading="lazy" alt="Teal Profile resume design preview"></button>
+        <div class="show-info"><b>Teal Profile</b><span class="design-best">Best for: Creative, design, hospitality</span><span class="tpl-tag stylish">Stylish · photo</span></div>
+        <button type="button" class="btn btn-small show-use" data-design="teal">Use this design</button>
+      </article>
+      <article class="show-card">
+        <button type="button" class="show-img" data-design="executive" aria-label="Use the Executive design"><img src="{{R}}assets/img/designs/executive.webp" width="600" height="849" loading="lazy" alt="Executive resume design preview"></button>
+        <div class="show-info"><b>Executive</b><span class="design-best">Best for: Managers, finance</span><span class="tpl-tag ats">Job-portal friendly</span></div>
+        <button type="button" class="btn btn-small show-use" data-design="executive">Use this design</button>
+      </article>
+      <article class="show-card">
+        <button type="button" class="show-img" data-design="coral" aria-label="Use the Coral design"><img src="{{R}}assets/img/designs/coral.webp" width="600" height="849" loading="lazy" alt="Coral resume design preview"></button>
+        <div class="show-info"><b>Coral</b><span class="design-best">Best for: Creative, hospitality</span><span class="tpl-tag stylish">Stylish · photo</span></div>
+        <button type="button" class="btn btn-small show-use" data-design="coral">Use this design</button>
+      </article>
+      <article class="show-card">
+        <button type="button" class="show-img" data-design="mono" aria-label="Use the Mono Bold design"><img src="{{R}}assets/img/designs/mono.webp" width="600" height="849" loading="lazy" alt="Mono Bold resume design preview"></button>
+        <div class="show-info"><b>Mono Bold</b><span class="design-best">Best for: Executives, engineers</span><span class="tpl-tag ats">Job-portal friendly</span></div>
+        <button type="button" class="btn btn-small show-use" data-design="mono">Use this design</button>
+      </article>
+      <article class="show-card">
+        <button type="button" class="show-img" data-design="fresher" aria-label="Use the Fresher design"><img src="{{R}}assets/img/designs/fresher.webp" width="600" height="849" loading="lazy" alt="Fresher resume design preview"></button>
+        <div class="show-info"><b>Fresher</b><span class="design-best">Best for: Students, first job</span><span class="tpl-tag ats">Job-portal friendly · photo</span></div>
+        <button type="button" class="btn btn-small show-use" data-design="fresher">Use this design</button>
+      </article>
+    </div>
+  </section>
+  <h2 id="fill-h" class="fill-h">2. Fill in your details</h2>
   <div class="row" style="margin-bottom:20px">
     <div style="flex:0 1 auto;display:flex;flex-wrap:wrap;gap:10px">
       <label class="sr-only" for="sample-kind">Example for</label>
@@ -23,7 +73,6 @@
     </div>
     <p class="hint" id="saved" style="flex:1 1 200px;margin:0;text-align:right">Your work is saved on this device automatically.</p>
   </div>
-
   <div class="rb">
     <form class="rb-form" id="form" autocomplete="on">
       <section class="rb-sec">
@@ -78,7 +127,7 @@
           <span class="hint" style="margin:0;display:block">Design</span>
           <b id="tpl-name" style="font-size:1.2em">Modern</b> <span id="tpl-tag" class="tpl-tag ats">Job-portal friendly</span>
         </div>
-        <button type="button" class="btn btn-small" id="open-designs">Change design (20)</button>
+        <button type="button" class="btn btn-small" id="open-designs">Change design (25)</button>
       </div>
       <p class="hint" id="photo-note" hidden style="margin:0">This design has no photo spot. Pick one marked “photo” to show your photo.</p>
       <div>
@@ -130,7 +179,7 @@
       <button type="button" class="icon-btn" id="close-designs" aria-label="Close">{{ICON:x:24:#3B2D8F}}</button>
     </div>
     <div class="design-filter" id="design-filter" role="group" aria-label="Show designs for"></div>
-    <p class="hint" style="margin:0 0 16px">All 20 designs are free. “Job-portal friendly” designs are safest for company websites. “Stylish” ones look great when you email or print them.</p>
+    <p class="hint" style="margin:0 0 16px">All 25 designs are free. “Job-portal friendly” designs are safest for company websites. “Stylish” ones look great when you email or print them.</p>
     <div class="design-grid" id="design-grid"></div>
   </dialog>
 

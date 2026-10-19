@@ -23,6 +23,11 @@
     { id: 'chrono', name: 'Chronological', tag: 'ats', accent: '#1F5F8B', header: 'left', heading: 'side', best: ["Experienced", "Finance"] },
     { id: 'corporate', name: 'Corporate', tag: 'ats', accent: '#0B4F8A', header: 'split', heading: 'accentrule', photo: true, best: ["Finance", "Executive"] },
     { id: 'coral', name: 'Coral', tag: 'stylish', accent: '#D9485F', header: 'band', heading: 'bar', skills: 'tags', photo: true, best: ["Creative", "Hospitality"] },
+    { id: 'scholar', name: 'Scholar', tag: 'ats', accent: '#111111', font: 'times', header: 'center', heading: 'smallcaps', size: 10.5, tight: true, nameSize: 26, subRight: true, best: ["IT & tech", "Fresher", "Engineering"] },
+    { id: 'academic', name: 'Academic', tag: 'ats', accent: '#2B5D8A', font: 'times', header: 'split', heading: 'smallcaps', eduFirst: true, subRight: true, size: 10.5, best: ["Fresher", "Academic", "Teaching"] },
+    { id: 'slate', name: 'Slate Sidebar', tag: 'stylish', accent: '#2E3A4B', layout: 'sidebarL', side: 'fill', sideName: true, nameColor: '#5CC2F2', heading: 'accentrule', photo: true, best: ["Marketing", "Sales", "Executive"] },
+    { id: 'teal', name: 'Teal Profile', tag: 'stylish', accent: '#0E9C9C', layout: 'sidebarL', side: 'fill', sideName: true, upperName: true, heading: 'bar', exp: 'timeline', photo: true, best: ["Creative", "Design", "Hospitality"] },
+    { id: 'mono', name: 'Mono Bold', tag: 'ats', accent: '#111111', header: 'monotop', heading: 'shortbar', upperName: true, best: ["Executive", "Engineering", "Any job"] },
     { id: 'simple', name: 'Simple', tag: 'ats', accent: '#222222', header: 'left', heading: 'rule', best: ["Any job", "Government", "Teaching"] }
   ];
   var BY_ID = {};
@@ -184,14 +189,22 @@
     }
     function headerSidebar() {
       var y = main.y + 4;
-      if (name) { font(HEAD, 'bold', nameSize, accent); doc.splitTextToSize(name, main.w).forEach(function (l) { text(l, main.x, y); y += nameSize + 4; }); }
-      if (title) { font(BODY, 'normal', 12.5, GREY); text(title, main.x, y); y += 18; }
-      main.y = y + 14;
+      if (!T.sideName) {
+        if (name) { font(HEAD, 'bold', nameSize, accent); doc.splitTextToSize(name, main.w).forEach(function (l) { text(l, main.x, y); y += nameSize + 4; }); }
+        if (title) { font(BODY, 'normal', 12.5, GREY); text(title, main.x, y); y += 18; }
+        main.y = y + 14;
+      }
       // Sidebar: photo + contact
       if (hasPhoto) {
         var ps = Math.min(110, side.w);
         doc.addImage(roundPhoto(photoImg, T.side === 'fill' ? accent : tint), 'JPEG', side.x + (side.w - ps) / 2, side.y, ps, ps);
         side.y += ps + 20;
+      }
+      if (T.sideName) {
+        var nc = T.nameColor ? hexRgb(T.nameColor) : (T.side === 'fill' ? WHITE : accent), ns = Math.min(nameSize, 22);
+        if (name) { font(HEAD, 'bold', ns, nc); if (T.upperName) spaced(1); doc.splitTextToSize(name, side.w).forEach(function (l) { text(l, side.x, side.y); side.y += ns + 3; }); spaced(0); }
+        if (title) { font(BODY, 'normal', 10.5, sideMuted); doc.splitTextToSize(title, side.w).forEach(function (l) { text(l, side.x, side.y); side.y += 14; }); }
+        side.y += 18;
       }
       if (contact.length) {
         sideHeading('Contact');
@@ -205,6 +218,14 @@
     else if (T.header === 'band') headerBand();
     else if (T.header === 'strip') { doc.setFillColor.apply(doc, accent); doc.rect(0, 0, W, 10, 'F'); main.y = M + 6; headerStacked('left'); }
     else if (T.header === 'split') headerSplit();
+    else if (T.header === 'monotop') {
+      doc.setFillColor.apply(doc, accent); doc.rect(M, M - 14, W - M * 2, 5, 'F');
+      main.y = M + 6;
+      if (name) { font(HEAD, 'bold', nameSize + 3, DARK); spaced(3); doc.splitTextToSize(name, W - M * 2).forEach(function (l) { text(l, M, main.y); main.y += nameSize + 6; }); spaced(0); }
+      if (title) { font(BODY, 'bold', 10.5, GREY); spaced(2.2); text(title.toUpperCase(), M, main.y); spaced(0); main.y += 18; }
+      if (contact.length) { font(BODY, 'normal', 9.5, GREY); doc.splitTextToSize(contact.join('   /   '), W - M * 2).forEach(function (l) { text(l, M, main.y); main.y += 13; }); }
+      main.y += 8; doc.setDrawColor.apply(doc, accent); doc.setLineWidth(1.2); doc.line(M, main.y, W - M, main.y); main.y += 14;
+    }
     else headerStacked(T.header === 'center' ? 'center' : 'left');
 
     // Chronological: labels on the left, content to the right
@@ -244,6 +265,12 @@
           doc.setDrawColor.apply(doc, accent); doc.setLineWidth(0.6);
           doc.line(x, col.y + 6, x + w / 2 - tw / 2 - 10, col.y + 6); doc.line(x + w / 2 + tw / 2 + 10, col.y + 6, x + w, col.y + 6);
           col.y += 20; break;
+        case 'smallcaps':
+          font(HEAD, 'normal', 13, T.accent === '#111111' && !(colorChoice && colorChoice !== 'theme') ? DARK : accent); spaced(0.8); text(up, x, col.y); spaced(0);
+          col.y += 16; doc.setDrawColor.apply(doc, T.accent === '#111111' ? [30, 30, 30] : accent); doc.setLineWidth(0.7); doc.line(x, col.y, x + w, col.y); col.y += 7; break;
+        case 'shortbar':
+          font(HEAD, 'bold', 11, DARK); spaced(1.8); text(up, x, col.y); spaced(0);
+          col.y += 15; doc.setFillColor.apply(doc, accent); doc.rect(x, col.y, 34, 3, 'F'); col.y += 12; break;
         case 'center':
           font(HEAD, 'bold', 11, DARK); spaced(1); text(up, x + w / 2, col.y, { align: 'center' }); spaced(0);
           col.y += 15; doc.setDrawColor(40, 40, 40); doc.setLineWidth(0.6); doc.line(x, col.y, x + w, col.y); col.y += 8; break;
@@ -321,7 +348,12 @@
         var dates = [clean(e.start), clean(e.end)].filter(Boolean).join(' - ');
         rowLR(main, x, w, clean(e.role) || clean(e.company), dates, size + 1);
         var sub = [clean(e.role) ? clean(e.company) : '', clean(e.place)].filter(Boolean).join(', ');
-        if (sub) { font(BODY, T.heading === 'caps' ? 'normal' : 'italic', size, T.tag === 'stylish' || T.heading === 'plain' ? accent : GREY); para(main, sub, { x: x, w: w }); }
+        if (T.subRight && clean(e.role) && (clean(e.company) || clean(e.place))) {
+          ensure(main, lh); font(BODY, 'italic', size, GREY);
+          text(doc.splitTextToSize(clean(e.company), w * 0.7)[0] || '', x, main.y);
+          if (clean(e.place)) text(clean(e.place), x + w, main.y, { align: 'right' });
+          main.y += lh;
+        } else if (sub) { font(BODY, T.heading === 'caps' ? 'normal' : 'italic', size, T.tag === 'stylish' || T.heading === 'plain' ? accent : GREY); para(main, sub, { x: x, w: w }); }
         main.y += 2;
         if (clean(e.bullets)) bullets(main, x, w, e.bullets);
         if (tl) {

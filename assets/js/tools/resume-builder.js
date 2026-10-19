@@ -172,6 +172,11 @@
   // ---------- Designs ----------
   function showTheme() {
     var t = R.byId[data.tpl];
+    document.querySelectorAll('.show-card').forEach(function (c) {
+      var on = c.querySelector('[data-design]').getAttribute('data-design') === data.tpl;
+      c.classList.toggle('on', on);
+      c.querySelector('.show-use').textContent = on ? '✓ Selected' : 'Use this design';
+    });
     $('tpl-name').textContent = t.name;
     $('tpl-tag').textContent = t.tag === 'ats' ? 'Job-portal friendly' : 'Stylish';
     $('tpl-tag').className = 'tpl-tag ' + t.tag;
@@ -180,7 +185,7 @@
   var dlg = $('designs'), grid = $('design-grid'), thumbsDone = false;
   R.THEMES.forEach(function (t) {
     var b = document.createElement('button'); b.type = 'button'; b.className = 'design-card'; b.setAttribute('data-id', t.id);
-    b.innerHTML = '<span class="design-img"><span class="design-ph">Loading…</span></span><span class="design-name"></span><span class="tpl-tag ' + t.tag + '">' +
+    b.innerHTML = '<span class="design-img"><img loading="lazy" alt="" width="600" height="849" src="' + SK.root + 'assets/img/designs/' + t.id + '.webp"></span><span class="design-name"></span><span class="tpl-tag ' + t.tag + '">' +
       (t.tag === 'ats' ? 'Job-portal friendly' : 'Stylish') + (t.photo ? ' · photo' : '') + '</span>';
     b.querySelector('.design-name').textContent = t.name;
     var bf = document.createElement('span'); bf.className = 'design-best'; bf.textContent = 'Best for: ' + (t.best || []).join(', ');
@@ -208,10 +213,22 @@
     markCurrent();
     if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
     var cur = grid.querySelector('[aria-pressed="true"]'); if (cur) cur.focus();
-    if (!thumbsDone) { thumbsDone = true; drawThumbs(); }
+
   }
   function closeDesigns() { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); $('open-designs').focus(); }
   $('open-designs').addEventListener('click', openDesigns);
+  $('see-all').addEventListener('click', openDesigns);
+  // Showcase at the top of the page: pick a design, then jump to the form
+  document.querySelectorAll('.showcase [data-design]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var id = b.getAttribute('data-design');
+      if (!R.byId[id]) return;
+      data.tpl = id; showTheme(); changed(true);
+      SK.status(status, 'ok', 'Design chosen: ' + R.byId[id].name + '. Now fill in your details.');
+      var target = $('fill-h'); if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function () { $('f-name').focus({ preventScroll: true }); }, 500);
+    });
+  });
   $('close-designs').addEventListener('click', closeDesigns);
   dlg.addEventListener('click', function (e) { if (e.target === dlg) closeDesigns(); });
 
@@ -361,7 +378,7 @@
   $('fix-all').addEventListener('click', function () { SKCheck.tips(data).forEach(function (t) { if (t.apply) t.apply(data); }); renderList('exp'); changed(true); renderTips(); });
 
   // For automated tests
-  window.__skResume = { set: function (d) { data = d; refreshAll(); }, get: function () { return data; }, build: function (jsPDF) { return buildPdf(jsPDF); } };
+  window.__skResume = { set: function (d) { data = d; refreshAll(); }, get: function () { return data; }, samples: SAMPLES, build: function (jsPDF) { return buildPdf(jsPDF); } };
 
   refreshAll();
 })();

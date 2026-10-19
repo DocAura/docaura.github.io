@@ -35,6 +35,7 @@ ICONS = {
   'up': '<path d="m6 15 6-6 6 6"/>',
   'down': '<path d="m6 9 6 6 6-6"/>',
   'plus': '<path d="M12 5v14M5 12h14"/>',
+  'letter': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
   'word': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m7.5 12 1.5 6 1.5-4.5 1.5 4.5 1.5-6"/>',
   'edit': '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
   'form': '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/><path d="m14 16 1.5 1.5L18 15"/>',
@@ -50,6 +51,7 @@ def icon(name, size=24, color='currentColor', width=2.2):
 # Tool registry: drives the homepage grid, related links and sitemap.
 TOOLS = [
   dict(slug='resume-builder', name='Free resume builder', desc='20 free designs. Fill simple boxes, download a clean PDF.', icon='resume', keys='resume cv biodata job builder maker template', group='resume'),
+  dict(slug='cover-letter', name='Cover letter builder', desc='Written from your resume, in the same design.', icon='letter', keys='cover letter builder application letter job letter write', group='resume'),
   dict(slug='pdf-to-word', name='PDF to Word', desc='Turn a PDF into a Word file you can edit.', icon='word', keys='pdf to word docx convert editable doc microsoft word', group='pdf', dark=True),
   dict(slug='edit-pdf', name='Edit a PDF', desc='Add text, white-out, highlight, ticks and pictures.', icon='edit', keys='edit pdf add text write on pdf whiteout white out highlight annotate typewriter', group='pdf'),
   dict(slug='fill-pdf', name='Fill a PDF form', desc='Type into any PDF form and tick boxes.', icon='form', keys='fill pdf form fillable application form type on form checkbox', group='pdf'),

@@ -4,26 +4,26 @@
 
   // tag: 'ats' = single column, safe for company job portals; 'stylish' = sidebar layouts
   var THEMES = [
-    { id: 'modern', name: 'Modern', tag: 'ats', accent: '#3B2D8F', header: 'band', heading: 'bar', photo: true },
-    { id: 'classic', name: 'Classic', tag: 'ats', accent: '#3B2D8F', header: 'center', heading: 'rule' },
-    { id: 'compact', name: 'Compact', tag: 'ats', accent: '#1F5F8B', font: 'times', header: 'left', heading: 'rule', size: 10.5, margin: 40, tight: true },
-    { id: 'harvard', name: 'Harvard', tag: 'ats', accent: '#222222', font: 'times', header: 'center', heading: 'center', eduFirst: true, size: 10.5 },
-    { id: 'executive', name: 'Executive', tag: 'ats', accent: '#1F3A5F', header: 'underline', heading: 'tint', nameSize: 28 },
-    { id: 'minimal', name: 'Minimal', tag: 'ats', accent: '#333333', header: 'left', heading: 'caps', margin: 56, loose: true },
-    { id: 'fresher', name: 'Fresher', tag: 'ats', accent: '#1D6B45', header: 'split', heading: 'accentrule', eduFirst: true, skills: 'tags', photo: true },
-    { id: 'swiss', name: 'Swiss', tag: 'ats', accent: '#D9480F', header: 'left', heading: 'accentrule', nameSize: 30 },
-    { id: 'spearmint', name: 'Spearmint', tag: 'ats', accent: '#0F7B5F', header: 'left', heading: 'plain', skills: 'tags' },
-    { id: 'elegant', name: 'Elegant', tag: 'ats', accent: '#1B2A4A', font: 'times', header: 'center', heading: 'lines', upperName: true },
-    { id: 'bright', name: 'Bright', tag: 'ats', accent: '#E8590C', header: 'strip', heading: 'bar', skills: 'tags' },
-    { id: 'tech', name: 'Tech', tag: 'ats', accent: '#0B7285', headFont: 'courier', header: 'left', heading: 'plain', skills: 'tags' },
-    { id: 'timeline', name: 'Timeline', tag: 'ats', accent: '#5F3DC4', header: 'left', heading: 'bar', exp: 'timeline' },
-    { id: 'sidebar', name: 'Sidebar', tag: 'stylish', accent: '#3B2D8F', layout: 'sidebarL', side: 'fill', heading: 'bar', photo: true },
-    { id: 'softside', name: 'Soft Sidebar', tag: 'stylish', accent: '#1F5F8B', layout: 'sidebarR', side: 'tint', heading: 'accentrule', photo: true },
-    { id: 'blocks', name: 'Bold Blocks', tag: 'ats', accent: '#222222', header: 'band', heading: 'fill' },
-    { id: 'chrono', name: 'Chronological', tag: 'ats', accent: '#1F5F8B', header: 'left', heading: 'side' },
-    { id: 'corporate', name: 'Corporate', tag: 'ats', accent: '#0B4F8A', header: 'split', heading: 'accentrule', photo: true },
-    { id: 'coral', name: 'Coral', tag: 'stylish', accent: '#D9485F', header: 'band', heading: 'bar', skills: 'tags', photo: true },
-    { id: 'simple', name: 'Simple', tag: 'ats', accent: '#222222', header: 'left', heading: 'rule' }
+    { id: 'modern', name: 'Modern', tag: 'ats', accent: '#3B2D8F', header: 'band', heading: 'bar', photo: true, best: ["Any job", "IT & tech", "Sales"] },
+    { id: 'classic', name: 'Classic', tag: 'ats', accent: '#3B2D8F', header: 'center', heading: 'rule', best: ["Finance", "Government", "Any job"] },
+    { id: 'compact', name: 'Compact', tag: 'ats', accent: '#1F5F8B', font: 'times', header: 'left', heading: 'rule', size: 10.5, margin: 40, tight: true, best: ["Experienced", "Engineering"] },
+    { id: 'harvard', name: 'Harvard', tag: 'ats', accent: '#222222', font: 'times', header: 'center', heading: 'center', eduFirst: true, size: 10.5, best: ["Fresher", "Academic", "Finance"] },
+    { id: 'executive', name: 'Executive', tag: 'ats', accent: '#1F3A5F', header: 'underline', heading: 'tint', nameSize: 28, best: ["Executive", "Finance"] },
+    { id: 'minimal', name: 'Minimal', tag: 'ats', accent: '#333333', header: 'left', heading: 'caps', margin: 56, loose: true, best: ["IT & tech", "Design"] },
+    { id: 'fresher', name: 'Fresher', tag: 'ats', accent: '#1D6B45', header: 'split', heading: 'accentrule', eduFirst: true, skills: 'tags', photo: true, best: ["Fresher"] },
+    { id: 'swiss', name: 'Swiss', tag: 'ats', accent: '#D9480F', header: 'left', heading: 'accentrule', nameSize: 30, best: ["Creative", "Marketing"] },
+    { id: 'spearmint', name: 'Spearmint', tag: 'ats', accent: '#0F7B5F', header: 'left', heading: 'plain', skills: 'tags', best: ["Healthcare"] },
+    { id: 'elegant', name: 'Elegant', tag: 'ats', accent: '#1B2A4A', font: 'times', header: 'center', heading: 'lines', upperName: true, best: ["Executive", "Legal"] },
+    { id: 'bright', name: 'Bright', tag: 'ats', accent: '#E8590C', header: 'strip', heading: 'bar', skills: 'tags', best: ["Sales", "Marketing"] },
+    { id: 'tech', name: 'Tech', tag: 'ats', accent: '#0B7285', headFont: 'courier', header: 'left', heading: 'plain', skills: 'tags', best: ["IT & tech"] },
+    { id: 'timeline', name: 'Timeline', tag: 'ats', accent: '#5F3DC4', header: 'left', heading: 'bar', exp: 'timeline', best: ["Experienced", "Any job"] },
+    { id: 'sidebar', name: 'Sidebar', tag: 'stylish', accent: '#3B2D8F', layout: 'sidebarL', side: 'fill', heading: 'bar', photo: true, best: ["Creative", "Sales"] },
+    { id: 'softside', name: 'Soft Sidebar', tag: 'stylish', accent: '#1F5F8B', layout: 'sidebarR', side: 'tint', heading: 'accentrule', photo: true, best: ["Healthcare", "Teaching"] },
+    { id: 'blocks', name: 'Bold Blocks', tag: 'ats', accent: '#222222', header: 'band', heading: 'fill', best: ["Engineering", "Executive"] },
+    { id: 'chrono', name: 'Chronological', tag: 'ats', accent: '#1F5F8B', header: 'left', heading: 'side', best: ["Experienced", "Finance"] },
+    { id: 'corporate', name: 'Corporate', tag: 'ats', accent: '#0B4F8A', header: 'split', heading: 'accentrule', photo: true, best: ["Finance", "Executive"] },
+    { id: 'coral', name: 'Coral', tag: 'stylish', accent: '#D9485F', header: 'band', heading: 'bar', skills: 'tags', photo: true, best: ["Creative", "Hospitality"] },
+    { id: 'simple', name: 'Simple', tag: 'ats', accent: '#222222', header: 'left', heading: 'rule', best: ["Any job", "Government", "Teaching"] }
   ];
   var BY_ID = {};
   THEMES.forEach(function (t) { BY_ID[t.id] = t; });
@@ -47,16 +47,47 @@
     return c.toDataURL('image/jpeg', 0.9);
   }
 
-  function build(jsPDF, d, themeId, colorChoice, photoImg) {
+  // Extra fonts (Lato, Montserrat, Lora) are loaded on demand as base64 TTF
+  var FONT_FILES = { lato: 'lato', montserrat: 'montserrat', lora: 'lora' };
+  function registerFonts(doc, fonts) {
+    if (!fonts) return;
+    Object.keys(fonts).forEach(function (fam) {
+      var f = fonts[fam];
+      [['regular', 'normal'], ['bold', 'bold'], ['italic', 'italic']].forEach(function (st) {
+        if (!f[st[0]]) return;
+        var file = fam + '-' + st[0] + '.ttf';
+        doc.addFileToVFS(file, f[st[0]]); doc.addFont(file, fam, st[1]);
+      });
+    });
+  }
+  function loadFont(root, fam) {
+    if (!FONT_FILES[fam]) return Promise.resolve(null);
+    if (loadFont.cache[fam]) return loadFont.cache[fam];
+    loadFont.cache[fam] = Promise.all(['regular', 'bold', 'italic'].map(function (st) {
+      return fetch(root + 'assets/fonts/' + fam + '-' + st + '.ttf').then(function (r) { if (!r.ok) throw new Error('font'); return r.arrayBuffer(); }).then(function (b) {
+        var u = new Uint8Array(b), bin = '', CH = 0x8000;
+        for (var i = 0; i < u.length; i += CH) bin += String.fromCharCode.apply(null, u.subarray(i, i + CH));
+        return btoa(bin);
+      });
+    })).then(function (a) { return { regular: a[0], bold: a[1], italic: a[2] }; }).catch(function () { delete loadFont.cache[fam]; return null; });
+    return loadFont.cache[fam];
+  }
+  loadFont.cache = {};
+
+  function build(jsPDF, d, themeId, colorChoice, photoImg, opts) {
+    opts = opts || {};
     var T = BY_ID[themeId] || THEMES[0];
     var accent = hexRgb(colorChoice && colorChoice !== 'theme' ? colorChoice : T.accent);
     var WHITE = [255, 255, 255], DARK = [29, 29, 31], GREY = [88, 88, 98], LINE = [205, 205, 212];
     var tint = mix(accent, WHITE, 0.88);
-    var doc = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
+    var letter = opts.paper === 'letter';
+    var doc = new jsPDF({ unit: 'pt', format: letter ? 'letter' : 'a4', compress: true });
+    registerFonts(doc, opts.fonts);
     doc.setProperties({ title: (clean(d.name) || 'Resume') + ' - Resume', creator: 'SimpleKit Resume Builder' });
-    var W = 595.28, H = 841.89;
+    var W = letter ? 612 : 595.28, H = letter ? 792 : 841.89;
     var M = T.margin || 46;
     var BODY = T.font || 'helvetica', HEAD = T.headFont || BODY;
+    if (opts.font && opts.font !== 'theme' && (opts.font === 'helvetica' || opts.font === 'times' || (opts.fonts && opts.fonts[opts.font]))) { BODY = HEAD = opts.font; }
     var size = T.size || 10;
     var lh = size * (T.tight ? 1.32 : T.loose ? 1.5 : 1.4);
     var gap = T.tight ? 0.75 : T.loose ? 1.3 : 1;
@@ -356,5 +387,5 @@
     return doc;
   }
 
-  window.SKResume = { THEMES: THEMES, byId: BY_ID, build: build, clean: clean };
+  window.SKResume = { THEMES: THEMES, byId: BY_ID, build: build, clean: clean, loadFont: loadFont };
 })();

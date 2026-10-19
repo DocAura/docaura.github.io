@@ -9,7 +9,17 @@
   var formVals = {};    // field name -> value (string, bool)
   var selected = -1, vp = null, scale = 1;
   var fname = SK.nameField($('out-btns'), '.pdf');
-  var getTool = SK.choices($('tool'), function (t) { if (t === 'img') $('img-in').click(); });
+  var getTool = SK.choices($('tool'), function (t) {
+    if (t === 'img') $('img-in').click();
+    if (t === 'sig') {
+      if (mySig) {
+        SK.status(status, 'info', 'Tap the page to add your saved signature. ');
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'link-btn'; b.textContent = 'Draw a new one';
+        b.addEventListener('click', function () { mySig = null; SK.status(status); openSig(); });
+        status.appendChild(b);
+      } else SK.status(status, 'info', 'Tap the page where you want to sign.');
+    } else if (status.classList.contains('info')) SK.status(status);
+  });
 
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
@@ -152,8 +162,54 @@
     var r = stage.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
     var t = getTool();
     if (t === 'img') { if (pendingImg) addItem('img', fx, fy, pendingImg); else $('img-in').click(); return; }
+    if (t === 'sig') {
+      if (mySig) addItem('img', fx, fy, { src: mySig.src, aspect: mySig.aspect, w: 0.24 });
+      else { sigAt = [fx, fy]; openSig(); }
+      return;
+    }
     e.preventDefault();
+    if (t === 'date') {
+      addItem('text', fx, fy);
+      var it = items[items.length - 1];
+      it.text = new Date().toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+      renderItems();
+      return;
+    }
     addItem(t, fx, fy);
+  });
+
+  // ---------- Signature (shared with the Sign PDF tool) ----------
+  var SIGKEY = 'sk-sign-v1', mySig = null, sigAt = null;
+  try { mySig = JSON.parse(localStorage.getItem(SIGKEY)); } catch (e) { mySig = null; }
+  var sdlg = $('sig-dlg'), spad = $('sig-pad'), sctx = spad.getContext('2d'), sInk = false, sLast = null, sDown = false;
+  function openSig() {
+    if (sdlg.showModal) sdlg.showModal(); else sdlg.setAttribute('open', '');
+    var r = spad.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    spad.width = Math.round(r.width * dpr); spad.height = Math.round(r.height * dpr);
+    sctx.setTransform(dpr, 0, 0, dpr, 0, 0); sctx.lineCap = sctx.lineJoin = 'round'; sctx.strokeStyle = sctx.fillStyle = '#111'; sInk = false;
+  }
+  function closeSig() { if (sdlg.close) sdlg.close(); else sdlg.removeAttribute('open'); }
+  $('sig-close').addEventListener('click', closeSig);
+  $('sig-clear').addEventListener('click', function () { sctx.clearRect(0, 0, spad.width, spad.height); sInk = false; });
+  function sp(e) { var r = spad.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  spad.addEventListener('pointerdown', function (e) { e.preventDefault(); spad.setPointerCapture(e.pointerId); sDown = true; sLast = sp(e); sctx.beginPath(); sctx.arc(sLast.x, sLast.y, 1.4, 0, 7); sctx.fill(); sInk = true; });
+  spad.addEventListener('pointermove', function (e) {
+    if (!sDown) return; var q = sp(e), d = Math.hypot(q.x - sLast.x, q.y - sLast.y);
+    sctx.lineWidth = Math.max(1.8, Math.min(3.6, 4.2 - d * 0.12));
+    sctx.beginPath(); sctx.moveTo(sLast.x, sLast.y); sctx.quadraticCurveTo(sLast.x, sLast.y, (sLast.x + q.x) / 2, (sLast.y + q.y) / 2); sctx.lineTo(q.x, q.y); sctx.stroke(); sLast = q;
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { spad.addEventListener(t, function () { sDown = false; }); });
+  $('sig-use').addEventListener('click', function () {
+    if (!sInk) return;
+    var w = spad.width, h = spad.height, d = sctx.getImageData(0, 0, w, h).data, x0 = w, y0 = h, x1 = -1, y1 = -1;
+    for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) if (d[(y * w + x) * 4 + 3] > 20) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    var o = document.createElement('canvas'); o.width = x1 - x0 + 9; o.height = y1 - y0 + 9;
+    o.getContext('2d').drawImage(spad, x0 - 4, y0 - 4, o.width, o.height, 0, 0, o.width, o.height);
+    mySig = { src: o.toDataURL('image/png'), aspect: o.height / o.width };
+    if ($('sig-remember').checked) { try { localStorage.setItem(SIGKEY, JSON.stringify(mySig)); } catch (e) {} }
+    closeSig();
+    var at = sigAt || [0.5, 0.8]; sigAt = null;
+    addItem('img', at[0], at[1], { src: mySig.src, aspect: mySig.aspect, w: 0.24 });
   });
   var pendingImg = null;
   $('img-in').addEventListener('change', async function () {

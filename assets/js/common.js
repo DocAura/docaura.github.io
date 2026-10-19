@@ -1,4 +1,4 @@
-/* SimpleKit shared helpers. Everything runs in the browser — no uploads. */
+/* DocAura shared helpers. Everything runs in the browser — no uploads. */
 (function () {
   'use strict';
 
@@ -17,8 +17,8 @@
     document.head.appendChild(st);
     document.addEventListener('DOMContentLoaded', function () {
       var m = document.createElement('div'); m.className = 'sk-frame-msg';
-      var a = document.createElement('a'); a.href = location.href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Open SimpleKit safely in a new tab';
-      m.appendChild(document.createTextNode('For your safety, SimpleKit does not work inside other websites. ')); m.appendChild(a);
+      var a = document.createElement('a'); a.href = location.href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Open DocAura safely in a new tab';
+      m.appendChild(document.createTextNode('For your safety, DocAura does not work inside other websites. ')); m.appendChild(a);
       document.body.appendChild(m);
     });
   }

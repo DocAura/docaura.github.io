@@ -14,7 +14,7 @@ BRAND = CONFIG['brand']
 SITE_URL = CONFIG['site_url'].rstrip('/')
 
 ICONS = {
-  'logo': '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>',
+  'logo': '<path d="M13.5 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8.5z"/><path d="M13.5 2.5v6h6"/><path d="M12 11.2c.35 1.75 1.05 2.45 2.8 2.8-1.75.35-2.45 1.05-2.8 2.8-.35-1.75-1.05-2.45-2.8-2.8 1.75-.35 2.45-1.05 2.8-2.8z" fill="currentColor"/>',
   'resume': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/>',
   'compress': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 13 3 3 3-3M12 9v7"/>',
   'merge': '<rect x="3" y="3" width="11" height="14" rx="2"/><rect x="10" y="7" width="11" height="14" rx="2"/>',
@@ -90,10 +90,10 @@ def header(r, active):
 def footer(r):
     year = datetime.date.today().year
     return '''<footer class="site-footer"><div class="wrap"><div class="card">
-  <span style="font-size:21px">%(b1)s<strong>%(b2)s</strong> · free tools for everyone</span>
+  <span style="font-size:21px">%(b1)s<strong>%(b2)s</strong> · %(tag)s</span>
   <nav aria-label="Footer"><a href="%(r)sabout/">About</a><a href="%(r)sprivacy/">Privacy</a><a href="%(r)scontact/">Contact</a><a href="%(r)sterms/">Terms</a></nav>
   <small>© %(y)s %(brand)s. Your files are processed on your own device and are never uploaded.</small>
-</div></div></footer>''' % dict(r=r, b1=BRAND['name_light'], b2=BRAND['name_bold'], brand=BRAND['name'], y=year)
+</div></div></footer>''' % dict(r=r, b1=BRAND['name_light'], b2=BRAND['name_bold'], brand=BRAND['name'], y=year, tag=html.escape(BRAND.get('tagline', 'free tools for everyone')))
 
 def tool_card(t, r):
     cls = 'ic dark' if t.get('dark') else 'ic'

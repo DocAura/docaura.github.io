@@ -1,4 +1,4 @@
-/* SimpleKit resume checks: job-advert keyword match + plain-English improvement tips. Runs in the browser. */
+/* DocAura resume checks: job-advert keyword match + plain-English improvement tips. Runs in the browser. */
 (function () {
   'use strict';
 

@@ -1,4 +1,4 @@
-# SimpleKit
+# DocAura
 
 Free, private, easy-to-use tools: a resume builder plus PDF and photo tools. Everything runs in the visitor's browser. No files are uploaded, and there's no server to pay for.
 

@@ -79,7 +79,7 @@
     var FONT = resume.font && resume.font !== 'theme' && (resume.font === 'helvetica' || resume.font === 'times' || fontData[resume.font]) ? resume.font : (theme.font || 'helvetica');
     var accent = hexRgb(resume.color && resume.color !== 'theme' ? resume.color : theme.accent);
     var DARK = [29, 29, 31], GREY = [88, 88, 98];
-    doc.setProperties({ title: (resume.name || 'Cover letter') + ' - Cover letter', creator: 'SimpleKit' });
+    doc.setProperties({ title: (resume.name || 'Cover letter') + ' - Cover letter', creator: 'DocAura' });
     var clean = R.clean;
     var name = clean(resume.name), title = clean(resume.title);
     var contact = [resume.email, resume.phone, resume.location, resume.link].map(clean).filter(Boolean);

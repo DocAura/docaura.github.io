@@ -1,4 +1,4 @@
-/* SimpleKit resume designs: 20 themes drawn with jsPDF as real text (readable by job portals). */
+/* DocAura resume designs: 20 themes drawn with jsPDF as real text (readable by job portals). */
 (function () {
   'use strict';
 
@@ -88,7 +88,7 @@
     var letter = opts.paper === 'letter';
     var doc = new jsPDF({ unit: 'pt', format: letter ? 'letter' : 'a4', compress: true });
     registerFonts(doc, opts.fonts);
-    doc.setProperties({ title: (clean(d.name) || 'Resume') + ' - Resume', creator: 'SimpleKit Resume Builder' });
+    doc.setProperties({ title: (clean(d.name) || 'Resume') + ' - Resume', creator: 'DocAura Resume Builder' });
     var W = letter ? 612 : 595.28, H = letter ? 792 : 841.89;
     var M = T.margin || 46;
     var BODY = T.font || 'helvetica', HEAD = T.headFont || BODY;

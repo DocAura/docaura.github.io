@@ -1,6 +1,6 @@
 # Security
 
-SimpleKit is a static website. All file processing happens in the visitor's browser, and nothing is uploaded.
+DocAura is a static website. All file processing happens in the visitor's browser, and nothing is uploaded.
 
 ## Protections in place
 - A **Content-Security-Policy** on every page (set in `build/build.py`). Only scripts from this site run, and pages cannot send data to other origins (`connect-src 'self'`). Ad domains are allowed only when `adsense_client` is set in `build/config.json`.

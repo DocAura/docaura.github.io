@@ -125,7 +125,7 @@
       });
       var first = ex.pages[0];
       var doc = new D.Document({
-        creator: 'SimpleKit', title: SK.baseName(file.name),
+        creator: 'DocAura', title: SK.baseName(file.name),
         styles: { default: { document: { run: { font: 'Calibri', size: Math.round(ex.body * 2) } } } },
         sections: [{ properties: { page: { size: { width: Math.round(first.w * 20), height: Math.round(first.h * 20) }, margin: { top: 1080, bottom: 1080, left: 1080, right: 1080 } } }, children: children }]
       });

@@ -1,0 +1,108 @@
+<!---
+{
+ "slug": "fill-pdf",
+ "tool": true,
+ "title": "Fill PDF Forms Online Free — Type Into Any PDF Form",
+ "desc": "Fill in PDF forms for free on phone or computer. Type into form boxes, tick checkboxes, or type anywhere on forms without boxes. Lock the answers if you like. No sign-up, nothing uploaded.",
+ "h1": "Fill a PDF form",
+ "sub": "Type into the boxes of any PDF form. If the form has no boxes, just tap and type anywhere — then tick, sign and save.",
+ "steps": [
+  "Choose form",
+  "Fill it in",
+  "Download"
+ ],
+ "scripts": [
+  "assets/js/tools/edit-pdf.js"
+ ],
+ "related": [
+  "sign-pdf",
+  "edit-pdf",
+  "jpg-to-pdf",
+  "compress-pdf"
+ ],
+ "faq": [
+  [
+   "How do I fill a PDF form?",
+   "Choose the form. If it has fillable boxes, they turn light blue — tap them and type. If not, choose “Text” and tap anywhere to type."
+  ],
+  [
+   "Can I tick boxes?",
+   "Yes. Fillable checkboxes can be ticked directly, and on any form you can use “Tick” or “Cross” and tap the box."
+  ],
+  [
+   "What does “Lock the answers” do?",
+   "It turns your answers into a normal part of the page, so nobody can change them later. Leave it off if you may need to edit the form again."
+  ],
+  [
+   "Can I sign the form too?",
+   "Yes — after saving, open “Sign a PDF” to add your signature, or add a picture of your signature with “Picture”."
+  ]
+ ]
+}
+--->
+<div class="panel" id="editor" data-mode="fill">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:upload:42:#3B2D8F}}</span>
+    <b>Tap here to choose a PDF</b>
+    <span>or drag it here · stays on your device</span>
+    <input type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF">
+  </label>
+
+  <section id="work" hidden style="display:flex;flex-direction:column;gap:16px">
+    <p class="status show info" id="form-note" hidden></p>
+    <div>
+      <span class="field-label" id="tool-l">Choose what to add, then tap the page</span>
+      <div class="choices ed-tools" id="tool" role="group" aria-labelledby="tool-l">
+        <button type="button" class="choice" data-value="text" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 5h14M12 5v14"/></svg>Text</button>
+        <button type="button" class="choice" data-value="tick" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>Tick</button>
+        <button type="button" class="choice" data-value="cross" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Cross</button>
+        <button type="button" class="choice" data-value="white" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/></svg>White-out</button>
+        <button type="button" class="choice" data-value="hl" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 20h16M7 15l7-9 4 3-7 9H7z"/></svg>Highlight</button>
+        <button type="button" class="choice" data-value="img" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>Picture</button>
+      </div>
+      <input type="file" id="img-in" accept="image/*,.heic,.heif" hidden>
+    </div>
+    <div class="ed-stage" id="stage"><canvas id="page-cv" aria-hidden="true"></canvas><div class="ed-layer" id="fields"></div><div class="ed-layer" id="layer"></div></div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:14px;font-weight:700">
+      <button type="button" class="icon-btn" id="pprev" aria-label="Previous page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+      <span id="pno">Page 1 of 1</span>
+      <button type="button" class="icon-btn" id="pnext" aria-label="Next page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+    </div>
+    <div class="sel-bar" id="selbar" hidden>
+      <span id="sel-name" style="font-weight:700;flex:1 1 100%">Selected</span>
+      <span id="text-ctrls" style="display:contents">
+        <button type="button" class="btn btn-light btn-small" id="t-smaller">A−</button>
+        <button type="button" class="btn btn-light btn-small" id="t-bigger">A+</button>
+        <button type="button" class="btn btn-light btn-small" data-color="#111111">Black</button>
+        <button type="button" class="btn btn-light btn-small" data-color="#1A3DA8">Blue</button>
+        <button type="button" class="btn btn-light btn-small" data-color="#C0262D">Red</button>
+      </span>
+      <span id="size-ctrls" style="display:contents">
+        <button type="button" class="btn btn-light btn-small" id="i-smaller">− Smaller</button>
+        <button type="button" class="btn btn-light btn-small" id="i-bigger">+ Bigger</button>
+      </span>
+      <button type="button" class="btn btn-light btn-small" id="del">Remove</button>
+    </div>
+    <label id="flat-wrap" hidden style="display:flex;align-items:center;gap:12px;font-weight:600;cursor:pointer;min-height:44px">
+      <input type="checkbox" id="flatten" style="width:26px;height:26px;accent-color:#3B2D8F"> Lock the answers so they can’t be changed
+    </label>
+    <button type="button" class="btn btn-big" id="go">Save my PDF {{ICON:arrow:26:#FFFFFF}}</button>
+  </section>
+
+  <div class="status" id="status"></div>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your PDF is ready</h2>
+    <img class="preview-img" id="out-img" alt="Preview of your edited page" hidden>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns" id="out-btns">
+      <button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download PDF</button>
+      <button type="button" class="btn btn-light" id="back-edit">Change something</button>
+    </div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to fill in a PDF form</h2><div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your form</b><span>Fillable boxes turn light blue so you can see them.</span></div>
+  <div class="step"><span class="num">2</span><b>Type your answers</b><span>Tap each box and type. On forms without boxes, choose “Text” and tap where to write.</span></div>
+  <div class="step"><span class="num">3</span><b>Save</b><span>Check the preview and download the filled form.</span></div></div></section>

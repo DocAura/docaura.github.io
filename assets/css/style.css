@@ -296,3 +296,30 @@ textarea.input { min-height: 110px; resize: vertical; line-height: 1.5; }
 .sign-item.sel { outline: 3px solid var(--indigo); background: rgba(247,217,227,.25); }
 .sign-item img { width: 100%; height: 100%; display: block; pointer-events: none; user-select: none; }
 .sel-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--pink-soft); border-radius: 22px; padding: 10px 14px; }
+/* PDF to Word sample */
+.word-sample { background: #fff; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; font-family: Calibri, Arial, sans-serif; color: #222; font-size: 16px; max-height: 260px; overflow: auto; box-shadow: inset 0 0 0 1px #E3DEF0; }
+.word-sample:empty { display: none; }
+/* Edit PDF */
+.ed-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 8px; }
+.ed-tools .choice { min-height: 58px; font-size: .9em; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.ed-tools .choice svg { width: 24px; height: 24px; }
+.ed-stage { position: relative; align-self: center; max-width: 100%; box-shadow: 0 10px 30px rgba(34,26,92,.18); border-radius: 6px; overflow: hidden; background: #fff; touch-action: manipulation; }
+.ed-stage canvas { display: block; }
+.ed-layer { position: absolute; inset: 0; }
+.ed-item { position: absolute; touch-action: none; }
+.ed-item.sel { outline: 2px solid var(--indigo); outline-offset: 2px; }
+.ed-item .grip { position: absolute; left: -30px; top: -4px; width: 26px; height: 26px; border-radius: 50%; background: var(--indigo); color: #fff; display: none; place-items: center; cursor: move; touch-action: none; }
+.ed-item.sel .grip { display: grid; }
+.ed-item .rs { position: absolute; right: -12px; bottom: -12px; width: 24px; height: 24px; border-radius: 50%; background: var(--indigo); border: 3px solid #fff; display: none; cursor: nwse-resize; touch-action: none; }
+.ed-item.sel .rs { display: block; }
+.ed-text { font-family: Helvetica, Arial, sans-serif; line-height: 1.2; white-space: pre; outline: none; min-width: 1ch; padding: 0; cursor: text; }
+.ed-item.text:not(.sel) .ed-text:empty::before { content: 'Type here'; color: #999; }
+.ed-white { background: #fff; width: 100%; height: 100%; box-shadow: inset 0 0 0 1px #ddd; }
+.ed-hl { background: rgba(255, 230, 0, .45); width: 100%; height: 100%; mix-blend-mode: multiply; }
+.ed-item img { width: 100%; height: 100%; display: block; pointer-events: none; user-select: none; }
+.ed-field { position: absolute; background: rgba(214, 228, 255, .75); border: 1px solid #7C9BE0; border-radius: 3px; font-family: Helvetica, Arial, sans-serif; color: #111; padding: 0 3px; box-sizing: border-box; }
+.ed-field:focus { outline: 3px solid var(--indigo); background: #fff; }
+textarea.ed-field { resize: none; line-height: 1.15; }
+input[type=checkbox].ed-field, input[type=radio].ed-field { margin: 0; accent-color: #3B2D8F; padding: 0; }
+.ed-layer { pointer-events: none; }
+.ed-layer > * { pointer-events: auto; }

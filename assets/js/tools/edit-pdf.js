@@ -167,7 +167,11 @@
   }
   stage.addEventListener('pointerdown', function (e) {
     if (e.target.closest('.ed-item') || e.target.closest('.ed-field')) return;
-    if (selected >= 0) { selected = -1; renderItems(); return; }
+    if (selected >= 0) {
+      var ae = document.activeElement;
+      if (ae && layer.contains(ae)) ae.blur();
+      selected = -1; renderItems(); return;
+    }
     var r = stage.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
     var t = getTool();
     if (t === 'img') { if (pendingImg) addItem('img', fx, fy, pendingImg); else $('img-in').click(); return; }
@@ -234,7 +238,14 @@
   });
 
   function heightFrac(it) { return it.h !== undefined ? it.h : it.w * it.aspect * vp.width / vp.height; }
+  // Put the caret at the end of a text box
+  function caretEnd(t) {
+    try { var r = document.createRange(), s = window.getSelection(); r.selectNodeContents(t); r.collapse(false); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+  }
   function renderItems() {
+    // If the person is typing in a text box, keep that box focused after the redraw
+    // (rebuilding the boxes would otherwise drop focus and close the phone keyboard).
+    var ae = document.activeElement, typingIn = ae && layer.contains(ae) && ae._it ? ae._it : null;
     layer.innerHTML = '';
     var W = vp.width, H = vp.height;
     items.forEach(function (it, i) {
@@ -244,13 +255,20 @@
       el.style.left = it.x * W + 'px'; el.style.top = it.y * H + 'px';
       if (it.kind === 'text') {
         var t = document.createElement('div'); t.className = 'ed-text'; t.contentEditable = 'true'; t.spellcheck = true;
-        t.setAttribute('aria-label', 'Text box'); t.textContent = it.text;
+        t.setAttribute('aria-label', 'Text box'); t.textContent = it.text; t._it = it;
         t.style.fontSize = it.size * scale + 'px'; t.style.color = it.color;
         t.addEventListener('input', function () { it.text = t.innerText.replace(/\n$/, ''); });
         t.addEventListener('focus', function () { if (selected !== i) { selected = i; markSel(); } });
         t.addEventListener('pointerdown', function (e) { e.stopPropagation(); if (selected !== i) { selected = i; markSel(); } });
-        t.addEventListener('blur', function () { if (!it.text.trim()) { setTimeout(function () { var idx = items.indexOf(it); if (idx >= 0 && !it.text.trim() && document.activeElement !== t) { items.splice(idx, 1); if (selected === idx) selected = -1; renderItems(); } }, 150); } });
+        t.addEventListener('blur', function () { if (!it.text.trim()) { setTimeout(function () { var idx = items.indexOf(it), a = document.activeElement; if (idx >= 0 && !it.text.trim() && !(a && a._it === it)) { items.splice(idx, 1); if (selected === idx) selected = -1; renderItems(); } }, 150); } });
         el.appendChild(t);
+        // Finger-sized tap area around the (often tiny) text box: tapping near it starts typing in it
+        el.addEventListener('pointerdown', function (e) {
+          if (e.target !== el) return;
+          e.preventDefault();
+          if (selected !== i) { selected = i; markSel(); }
+          t.focus(); caretEnd(t);
+        });
         var g = document.createElement('span'); g.className = 'grip'; g.setAttribute('aria-hidden', 'true');
         g.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg>';
         dragMove(g, it, el, i); el.appendChild(g);
@@ -265,8 +283,14 @@
       }
       layer.appendChild(el);
     });
+    if (typingIn) {
+      var nt = Array.prototype.find.call(layer.querySelectorAll('.ed-text'), function (n) { return n._it === typingIn; });
+      if (nt) { nt.focus(); caretEnd(nt); }
+    }
     updateBar();
   }
+  // Toolbar buttons (bigger/smaller/colour) must not steal focus from the text box, or the keyboard closes
+  $('selbar').addEventListener('pointerdown', function (e) { if (!e.target.closest('input, select, textarea')) e.preventDefault(); });
   function markSel() { layer.querySelectorAll('.ed-item').forEach(function (n) { n.classList.remove('sel'); }); var n = layer.querySelectorAll('.ed-item')[items.filter(function (x, k) { return x.page === pageNo && k < selected; }).length]; if (n) n.classList.add('sel'); updateBar(); }
   function dragMove(handle, it, el, i) {
     handle.addEventListener('pointerdown', function (e) {

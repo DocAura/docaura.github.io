@@ -155,7 +155,7 @@
     rendering = false;
     if (again) { again = false; preview(); }
   }
-  var rz; window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(preview, 200); });
+  SK.onWidthChange(preview);
 
   $('dl').addEventListener('click', async function () {
     var all = ['p1', 'p2', 'p3', 'p4'].map(function (k) { return letter[k] || ''; }).join(' ');

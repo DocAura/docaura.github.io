@@ -61,7 +61,7 @@
   });
   ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { pad.addEventListener(t, function () { drawing = false; }); });
   $('pad-clear').addEventListener('click', function () { pctx.clearRect(0, 0, pad.width, pad.height); hasInk = false; });
-  window.addEventListener('resize', function () { if (!$('pane-draw').hidden && !$('make').hidden) sizePad(); });
+  SK.onWidthChange(function () { if (!$('pane-draw').hidden && !$('make').hidden) sizePad(); }, 0);
 
   // ---------- Type ----------
   var FONTS = [['Dancing Script', 'Flowing'], ['Great Vibes', 'Elegant'], ['Caveat', 'Handwritten'], ['Homemade Apple', 'Pen']];
@@ -191,7 +191,7 @@
   }
   $('pprev').addEventListener('click', function () { if (pageNo > 1) { pageNo--; selected = -1; drawPage(); } });
   $('pnext').addEventListener('click', function () { if (pageNo < pdf.numPages) { pageNo++; selected = -1; drawPage(); } });
-  var rz; window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { if (!$('place').hidden) drawPage(); }, 200); });
+  SK.onWidthChange(function () { if (!$('place').hidden) drawPage(); });
 
   function renderItems() {
     layer.innerHTML = '';

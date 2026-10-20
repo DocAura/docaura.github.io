@@ -254,7 +254,7 @@
   function safeDraw() { drawPage().catch(function () {}); }
   $('prev-p').addEventListener('click', function () { if (pageNo > 1) { pageNo--; safeDraw(); } });
   $('next-p').addEventListener('click', function () { if (pdfDoc && pageNo < pdfDoc.numPages) { pageNo++; safeDraw(); } });
-  var rz; window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { if (pdfDoc) safeDraw(); }, 200); });
+  SK.onWidthChange(function () { if (pdfDoc) safeDraw(); });
 
   $('dl').addEventListener('click', async function () {
     try {

@@ -102,7 +102,16 @@
   }
   $('pprev').addEventListener('click', function () { if (pageNo > 1) { pageNo--; selected = -1; drawPage(); } });
   $('pnext').addEventListener('click', function () { if (pageNo < pdf.numPages) { pageNo++; selected = -1; drawPage(); } });
-  var rz; window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { if (!$('work').hidden) drawPage(); }, 200); });
+  // Redraw on rotation / window width change, but never while typing on the page (it would close the keyboard)
+  var redrawLater = false;
+  SK.onWidthChange(function () {
+    if ($('work').hidden) return;
+    if (stage.contains(document.activeElement)) { redrawLater = true; return; }
+    drawPage();
+  });
+  stage.addEventListener('focusout', function () {
+    setTimeout(function () { if (redrawLater && !stage.contains(document.activeElement)) { redrawLater = false; drawPage(); } }, 300);
+  });
 
   function renderFields() {
     fieldLayer.innerHTML = '';

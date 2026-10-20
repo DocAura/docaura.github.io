@@ -131,6 +131,16 @@
   };
 
   // Choice buttons (aria-pressed group). Returns getter.
+  // Run fn after the screen WIDTH changes. Phone keyboards only change the height, and redrawing
+  // then would remove the box being typed in and close the keyboard.
+  SK.onWidthChange = function (fn, delay) {
+    var w = window.innerWidth, t;
+    window.addEventListener('resize', function () {
+      if (Math.abs(window.innerWidth - w) < 2) return;
+      w = window.innerWidth; clearTimeout(t); t = setTimeout(fn, delay || 200);
+    });
+  };
+
   SK.choices = function (container, onChange) {
     var btns = container.querySelectorAll('.choice');
     btns.forEach(function (b) {

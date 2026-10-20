@@ -250,6 +250,12 @@ def tool_shell(meta, body, r):
                   sizes=size_links(r, meta), howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq')), related=related(r, rel_slugs))
 
 ADS_ON = bool(CONFIG.get('adsense_client'))
+CF_TOKEN = re.sub(r'[^0-9a-fA-F]', '', CONFIG.get('cf_analytics_token', ''))  # Cloudflare Web Analytics (cookie-free visit counts)
+
+ANALYTICS_NOTE = ('<p>We count visits with <a href="https://www.cloudflare.com/web-analytics/" rel="noopener noreferrer">Cloudflare Web Analytics</a>, a privacy-first service. '
+    'It uses no cookies and does not collect your personal data. It only tells us things like how many people visited, which pages they opened and roughly which country they came from. '
+    'It never sees your files &mdash; they stay inside your browser.</p>') if CF_TOKEN else (
+    '<p>We do not currently use any analytics or tracking. If we add privacy-friendly visit counting in the future, it will never include the content of your files, and we will update this page.</p>')
 
 def csp():
     """Content-Security-Policy: only our own scripts run, and pages cannot send data to other websites.
@@ -258,6 +264,8 @@ def csp():
     ads_frame = 'https://*.doubleclick.net https://*.googlesyndication.com https://*.google.com https://*.adtrafficquality.google' if ADS_ON else "'none'"
     ads_conn = ' https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net https://*.adtrafficquality.google https://*.googleadservices.com' if ADS_ON else ''
     ads_img = ' https:' if ADS_ON else ''
+    if CF_TOKEN:
+        ads_script += ' https://static.cloudflareinsights.com'; ads_conn += ' https://cloudflareinsights.com'
     return ("default-src 'self'; "
             "script-src 'self' 'wasm-unsafe-eval'%s; " % ads_script +
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
@@ -292,7 +300,7 @@ def page(meta, body):
         body = article_shell(meta, body, r)
     body = re.sub(r'\{\{TOPIC_GUIDES:(\w+)\}\}', lambda m: '<div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('topic') == m.group(1)) + '</div>', body)
     body = body.replace('{{GUIDE_CARDS}}', guide_cards(r, 6)).replace('{{ALL_GUIDES}}', guide_cards(r))
-    body = body.replace('{{EMAIL}}', email_html()).replace('{{R}}', r).replace('{{TOOL_GRID}}', tool_grid(r)).replace('{{BRAND}}', BRAND['name']).replace('{{EMAIL}}', email_html()).replace('{{UPDATED}}', CONFIG.get('policy_updated', '19 October 2026'))
+    body = body.replace('{{EMAIL}}', email_html()).replace('{{R}}', r).replace('{{TOOL_GRID}}', tool_grid(r)).replace('{{BRAND}}', BRAND['name']).replace('{{EMAIL}}', email_html()).replace('{{ANALYTICS_NOTE}}', ANALYTICS_NOTE).replace('{{UPDATED}}', CONFIG.get('policy_updated', '19 October 2026'))
     body = re.sub(r'\{\{ICON:(\w+):(\d+):([#\w]+)\}\}', lambda m: icon(m.group(1), int(m.group(2)), m.group(3)), body)
     title = meta['title'] + ('' if BRAND['name'] in meta['title'] else ' | ' + BRAND['name'])
     canonical = '<link rel="canonical" href="%s">' % url if SITE_URL and slug != '404' else ''
@@ -327,12 +335,13 @@ def page(meta, body):
 %(header)s
 %(body)s
 %(footer)s
-%(scripts)s
+%(scripts)s%(analytics)s
 </body>
 </html>
 ''' % dict(csp=csp(), title=html.escape(title), desc=html.escape(meta['desc']), canonical=canonical, og=og, robots=robots, r=r,
            schema=faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url) + crumb_schema(meta), header=header(r, meta.get('active')),
-           body=body, footer=footer(r), scripts=scripts)
+           body=body, footer=footer(r), scripts=scripts,
+           analytics=('<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{"token": "%s"}\'></script>' % CF_TOKEN) if CF_TOKEN and slug != '404' else '')
 
 def parse(path):
     src = open(path, encoding='utf-8').read()

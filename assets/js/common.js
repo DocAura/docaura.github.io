@@ -95,11 +95,11 @@
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { toStats('pageview'); });
     else toStats('pageview');
   }
-  SK.track = function (name, data) {
+  SK.track = function (name, data, statsOnly) {
     var d = { tool: PAGE };
     for (var k in (data || {})) if (Object.prototype.hasOwnProperty.call(data, k)) d[k] = String(data[k]).slice(0, 60);
     toStats(name, d);
-    if (!CFG.umamiId) return;
+    if (!CFG.umamiId || statsOnly) return;
     trackQueue.push([name, d]);
     if (!sendTracks()) {   // tracker still loading: try again shortly
       var tries = 0, iv = setInterval(function () { if (sendTracks() || ++tries > 40) clearInterval(iv); }, 250);
@@ -117,6 +117,30 @@
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') leave(); });
   window.addEventListener('pagehide', leave);
   function ext(name) { var m = /\.([A-Za-z0-9]{1,5})$/.exec(name || ''); return m ? m[1].toLowerCase() : 'other'; }
+  // Every tap on a link or tool card: which one, and where it goes (own recorder only, never typed text)
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || a.closest('[data-track]') || a.hasAttribute('data-track')) return;
+    var label = (a.querySelector('.t') || a).textContent.replace(/\s+/g, ' ').trim().slice(0, 40) || a.getAttribute('aria-label') || 'link';
+    var href = a.getAttribute('href') || '', to;
+    try { var u = new URL(href, location.href); to = u.origin === location.origin ? u.pathname : u.hostname; } catch (er) { to = 'other'; }
+    var area = a.closest('header') ? 'top menu' : a.closest('footer') ? 'footer' : a.closest('#tool-grid') ? 'tool list' : a.closest('.related, .show-grid, .guide-grid') ? 'suggestions' : 'page';
+    SK.track('click', { label: label, to: to, area: area }, true);
+  }, true);
+  // How far down people scroll and how long they stay, sent once when they leave the page
+  var maxScroll = 0, sentPageLeave = false;
+  window.addEventListener('scroll', function () {
+    var h = document.documentElement.scrollHeight - innerHeight;
+    var pct = h > 0 ? Math.round(scrollY / h * 100) : 100; if (pct > maxScroll) maxScroll = pct;
+  }, { passive: true });
+  function pageLeave() {
+    if (sentPageLeave) return; sentPageLeave = true;
+    var n = secs(), sc = maxScroll >= 90 ? '100% (bottom)' : maxScroll >= 50 ? '50-90%' : maxScroll >= 25 ? '25-50%' : 'top only';
+    SK.track('page-leave', { time: bucket(n), seconds: n, scroll: sc }, true);
+  }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') pageLeave(); });
+  window.addEventListener('pagehide', pageLeave);
+
   // Main action buttons ("Make my PDF smaller", "Use this example"...)
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('.btn-big, [data-track]');

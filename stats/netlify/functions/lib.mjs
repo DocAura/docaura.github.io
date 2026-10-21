@@ -3,7 +3,7 @@
 // dashboard only needs to LIST keys - no read-modify-write counters, no race conditions.
 export const SITE_ORIGIN = 'https://docaura.github.io';
 export const EVENTS = new Set(['pageview', 'file-chosen', 'option', 'action', 'download', 'error', 'time-on-tool',
-  'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click']);
+  'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click', 'click', 'page-leave']);
 const SEP = '~';
 const clean = (v, n = 40, slash = false) => String(v ?? '').replace(slash ? /[~\\\n\r\t]/g : /[~\/\\\n\r\t]/g, ' ').replace(slash ? /[^\p{L}\p{N} .,:_()+#%\/-]/gu : /[^\p{L}\p{N} .,:_()+#%-]/gu, '').trim().slice(0, n) || '-';
 const b64 = (s) => Buffer.from(s, 'utf8').toString('base64url');
@@ -24,16 +24,16 @@ export async function visitorId(ip, ua, day, salt) {
 // India-time day, since the site's owner reads the dashboard in IST
 export function istDay(ts) { return new Date(ts + 5.5 * 3600e3).toISOString().slice(0, 10); }
 
-export function buildKey({ ts, vid, ev, page, country, dev, ref, props }) {
+export function buildKey({ ts, vid, ev, page, country, dev, ref, props, city = '', region = '' }) {
   const p = {}; let n = 0;
   for (const [k, v] of Object.entries(props || {})) { if (k === 'tool') continue; if (n++ >= 6) break; p[clean(k, 20)] = clean(v, 40); }
-  const key = [istDay(ts) + '/' + ts, vid, clean(ev, 20), clean(page, 60, true), clean(country, 2), dev, clean(ref, 40), b64(JSON.stringify(p))].join(SEP);
+  const key = [istDay(ts) + '/' + ts, vid, clean(ev, 20), clean(page, 60, true), clean(country, 2), dev, clean(ref, 40), b64(JSON.stringify(p)), clean(city, 30), clean(region, 30)].join(SEP);
   return key.slice(0, 590);
 }
 export function parseKey(key) {
-  const [dayTs, vid, ev, page, country, dev, ref, props] = key.split(SEP);
+  const [dayTs, vid, ev, page, country, dev, ref, props, city, region] = key.split(SEP);
   const ts = Number(dayTs.split('/')[1]);
-  return { ts, vid, ev, page, country, dev, ref, props: unb64(props || '') };
+  return { ts, vid, ev, page, country, dev, ref, props: unb64(props || ''), city: city && city !== '-' ? city : '', region: region && region !== '-' ? region : '' };
 }
 export function validate(body, origin) {
   if (origin !== SITE_ORIGIN) return 'origin';
@@ -48,7 +48,7 @@ export function refHost(r) {
 // Turn a list of parsed events into everything the dashboard shows
 export function summarise(events, todayStr) {
   const S = { days: {}, hours: Array(24).fill(0).map(() => ({ views: 0, visitors: new Set() })), pages: {}, events: {}, props: {},
-    countries: {}, devices: {}, refs: {}, support: {}, timeOnTool: {}, recent: [] };
+    countries: {}, cities: {}, devices: {}, refs: {}, support: {}, timeOnTool: {}, taps: {}, scroll: {}, stay: {}, recent: [] };
   const dayVisitors = {}, todayVisitors = new Set();
   for (const e of events) {
     if (e.dev === 'bot') continue;
@@ -59,14 +59,17 @@ export function summarise(events, todayStr) {
       d.views++; S.pages[e.page] = (S.pages[e.page] || 0) + 1;
       if (e.ref && e.ref !== '-') S.refs[e.ref] = (S.refs[e.ref] || 0) + 1;
       S.countries[e.country] = (S.countries[e.country] || 0) + 1;
+      if (e.city) { const c = e.city + (e.region ? ', ' + e.region : ''); S.cities[c] = (S.cities[c] || 0) + 1; }
       S.devices[e.dev] = (S.devices[e.dev] || 0) + 1;
     } else {
       d.events++;
       S.events[e.ev] = (S.events[e.ev] || 0) + 1;
       if (e.ev === 'download') d.downloads++;
       if (e.ev === 'support-click') { d.supportClicks++; const k = (e.props.button || '?') + ' · ' + (e.props.where || '?'); S.support[k] = (S.support[k] || 0) + 1; }
+      if (e.ev === 'click') { const k = (e.props.label || e.props.to || '?') + (e.props.to && e.props.label ? ' → ' + e.props.to : ''); S.taps[k] = (S.taps[k] || 0) + 1; }
+      if (e.ev === 'page-leave') { const sc = e.props.scroll || '?'; S.scroll[sc] = (S.scroll[sc] || 0) + 1; const st = e.props.time || '?'; S.stay[st] = (S.stay[st] || 0) + 1; }
       if (e.ev === 'time-on-tool') { const k = e.props.time || '?'; S.timeOnTool[k] = (S.timeOnTool[k] || 0) + 1; }
-      for (const [k, v] of Object.entries(e.props)) { if (k === 'seconds') continue; const pk = e.ev + ' → ' + k; ((S.props[pk] ||= {})[v] = (S.props[pk][v] || 0) + 1); }
+      if (e.ev !== 'click' && e.ev !== 'page-leave') for (const [k, v] of Object.entries(e.props)) { if (k === 'seconds') continue; const pk = e.ev + ' → ' + k; ((S.props[pk] ||= {})[v] = (S.props[pk][v] || 0) + 1); }
     }
     if (day === todayStr) {
       todayVisitors.add(e.vid);
@@ -79,6 +82,6 @@ export function summarise(events, todayStr) {
   S.hours = S.hours.map((h) => ({ views: h.views, visitors: h.visitors.size }));
   S.today = { day: todayStr, visitors: todayVisitors.size, ...(S.days[todayStr] || { views: 0, events: 0, downloads: 0, supportClicks: 0 }) };
   S.recent = events.filter((e) => e.dev !== 'bot').sort((a, b) => b.ts - a.ts).slice(0, 60)
-    .map((e) => ({ ts: e.ts, visitor: e.vid.slice(0, 6), ev: e.ev, page: e.page, country: e.country, dev: e.dev, props: e.props }));
+    .map((e) => ({ ts: e.ts, visitor: e.vid.slice(0, 6), ev: e.ev, page: e.page, country: e.country, city: e.city, region: e.region, dev: e.dev, ref: e.ref, props: e.props }));
   return S;
 }

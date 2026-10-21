@@ -15,6 +15,8 @@ export default async (req: Request, context: Context) => {
   const key = buildKey({
     ts, vid, ev: body.n, page: body.p || "/", country: context.geo?.country?.code || "--",
     dev: device(ua), ref: body.n === "pageview" ? refHost(body.r || "") : "", props: body.d || {},
+    // Approximate area only (city / state from Netlify's network data), never an exact address
+    city: context.geo?.city || "", region: context.geo?.subdivision?.code || context.geo?.subdivision?.name || "",
   });
   // One log line per event: lets the site owner's assistant read today's activity from Netlify logs
   console.log("EV " + key);

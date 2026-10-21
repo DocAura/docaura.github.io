@@ -12,7 +12,7 @@
   var LABEL = { 'pageview': 'Opened a page', 'file-chosen': 'Chose a file', 'option': 'Picked an option', 'action': 'Pressed a main button',
     'download': 'Downloaded a file', 'error': 'Saw an error', 'time-on-tool': 'Time spent recorded', 'resume-design': 'Picked a resume design',
     'resume-example': 'Opened a resume example', 'resume-download': 'Downloaded a resume', 'job-match': 'Ran job match',
-    'support-shown': 'Saw the chai card', 'support-click': 'Tapped Buy me a chai' };
+    'support-shown': 'Saw the chai card', 'support-click': 'Tapped Buy me a chai', 'click': 'Tapped', 'page-leave': 'Left the page' };
   var region = null; try { region = new Intl.DisplayNames(['en'], { type: 'region' }); } catch (e) {}
   function country(c) { if (!c || c === '--' || c === '-') return 'Unknown'; try { return region ? region.of(c) : c; } catch (e) { return c; } }
   function pageName(p) { return p === '/' ? 'Homepage' : p.replace(/^\/|\/$/g, ''); }
@@ -66,6 +66,11 @@
     rank($('tot'), s.timeOnTool);
     rank($('support'), s.support);
     rank($('refs'), s.refs, null, 10);
+    rank($('taps'), s.taps, null, 12);
+    rank($('cities'), s.cities, null, 12);
+    var ORDER = ['0-10s', '10-30s', '30-60s', '1-3 min', '3-10 min', '10+ min'];
+    rank($('stay'), s.stay, null, 8);
+    rank($('scroll'), s.scroll, null, 6);
     rank($('countries'), s.countries, country, 10);
     rank($('devices'), s.devices, function (d) { return { phone: '📱 Phone', computer: '💻 Computer', tablet: 'Tablet' }[d] || d; });
     var box = $('options'); box.innerHTML = '';
@@ -90,9 +95,10 @@
       li.appendChild(tm);
       var w = el('div', 'what'); var tg = el('span', 'tag ' + e.ev, LABEL[e.ev] || e.ev); w.appendChild(tg);
       w.appendChild(el('b', null, pageName(e.page)));
-      var extra = Object.keys(e.props || {}).filter(function (k) { return k !== 'seconds'; }).map(function (k) { return e.props[k]; }).join(' · ');
+      var extra = Object.keys(e.props || {}).filter(function (k) { return k !== 'seconds' && k !== 'tool'; }).map(function (k) { return e.props[k]; }).join(' · ');
       if (extra) w.appendChild(document.createTextNode(' — ' + extra));
-      w.appendChild(el('div', 'meta', 'Visitor ' + e.visitor + ' · ' + country(e.country) + ' · ' + e.dev));
+      var place = (e.city ? e.city + (e.region ? ', ' + e.region : '') + ' · ' : '') + country(e.country);
+      w.appendChild(el('div', 'meta', 'Visitor ' + e.visitor + ' · ' + place + ' · ' + e.dev + (e.ref && e.ref !== '-' ? ' · from ' + e.ref : '')));
       li.appendChild(w); feed.appendChild(li);
     });
     $('foot').textContent = 'Updated ' + new Date(s.generatedAt).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' IST · ' + (s.totalEvents || 0) + ' events in range · no cookies, no IP addresses stored';

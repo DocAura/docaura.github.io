@@ -93,9 +93,9 @@ def footer(r):
     year = datetime.date.today().year
     return '''<footer class="site-footer"><div class="wrap"><div class="card">
   <span style="font-size:21px">%(b1)s<strong>%(b2)s</strong> · %(tag)s</span>
-  <nav aria-label="Footer"><a href="%(r)sresume-examples/">Resume examples</a><a href="%(r)sresume-templates/">Resume templates</a><a href="%(r)sguides/">Guides</a><a href="%(r)sabout/">About</a><a href="%(r)sprivacy/">Privacy</a><a href="%(r)scontact/">Contact</a><a href="%(r)sterms/">Terms</a></nav>
+  <nav aria-label="Footer"><a href="%(r)sresume-examples/">Resume examples</a><a href="%(r)sresume-templates/">Resume templates</a><a href="%(r)sguides/">Guides</a><a href="%(r)sabout/">About</a><a href="%(r)sprivacy/">Privacy</a><a href="%(r)scontact/">Contact</a><a href="%(r)sterms/">Terms</a>%(sup)s</nav>
   <small>© %(y)s %(brand)s. Your files are processed on your own device and are never uploaded.</small>
-</div></div></footer>''' % dict(r=r, b1=BRAND['name_light'], b2=BRAND['name_bold'], brand=BRAND['name'], y=year, tag=html.escape(BRAND.get('tagline', 'free tools for everyone')))
+</div></div></footer>''' % dict(r=r, b1=BRAND['name_light'], b2=BRAND['name_bold'], brand=BRAND['name'], y=year, sup=('<a href="%ssupport/">☕ Support us</a>' % r) if SUPPORT_ON else '', tag=html.escape(BRAND.get('tagline', 'free tools for everyone')))
 
 def tool_card(t, r):
     cls = 'ic dark' if t.get('dark') else 'ic'
@@ -240,6 +240,7 @@ def tool_shell(meta, body, r):
   <p class="promise"><span>%(chk)s No daily limit</span><span>%(chk)s No watermark</span><span>%(chk)s No sign-up</span><span>%(chk)s Files never uploaded</span></p>
   %(ps)s
   %(body)s
+  %(support)s
   %(sizes)s
   <div class="ad-slot"></div>
   %(howto)s
@@ -247,7 +248,7 @@ def tool_shell(meta, body, r):
   %(guide)s
   <section class="section"><h2>Other free tools</h2>%(related)s</section>
 </main>''' % dict(r=r, back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body, chk=icon('check', 18, '#1D6B45', 3), guide=(('<section class="section"><h2>Learn more</h2><div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('cta') == gslug) + '</div></section>') if any(g.get('cta') == gslug for g in GUIDES) else ''),
-                  sizes=size_links(r, meta), howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq')), related=related(r, rel_slugs))
+                  support=support_html(r, 'after'), sizes=size_links(r, meta), howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq')), related=related(r, rel_slugs))
 
 ADS_ON = bool(CONFIG.get('adsense_client'))
 UMAMI_ID = CONFIG.get('umami_website_id', '').strip().lower()
@@ -261,6 +262,46 @@ ANALYTICS_NOTE = ('<p>We count visits and which tools are used with <a href="htt
     'It uses no cookies and does not collect your personal data. It only tells us things like how many people visited, which pages they opened and roughly which country they came from. '
     'It never sees your files &mdash; they stay inside your browser.</p>') if CF_TOKEN else (
     '<p>We do not currently use any analytics or tracking. If we add privacy-friendly visit counting in the future, it will never include the content of your files, and we will update this page.</p>')
+
+# ---------- Optional "Buy me a chai" support (only shown when a UPI id or Buy Me a Coffee name is set) ----------
+SUP_UPI = CONFIG.get('support_upi', '').strip()
+SUP_BMC = re.sub(r'[^A-Za-z0-9_-]', '', CONFIG.get('support_bmc', ''))
+if SUP_UPI and not re.fullmatch(r'[A-Za-z0-9._-]{2,256}@[A-Za-z][A-Za-z0-9.-]{1,64}', SUP_UPI):
+    raise SystemExit('support_upi must look like name@bank')
+SUPPORT_ON = bool(SUP_UPI or SUP_BMC)
+
+def upi_link(note='Chai for DocAura'):
+    from urllib.parse import quote
+    return 'upi://pay?pa=%s&pn=%s&cu=INR&tn=%s' % (quote(SUP_UPI, safe='@.'), quote(BRAND['name']), quote(note))
+
+def write_upi_qr():
+    """QR code (SVG) that opens any UPI app with our id - amount left to the giver."""
+    if not SUP_UPI: return
+    import qrcode, qrcode.image.svg
+    img = qrcode.make(upi_link(), image_factory=qrcode.image.svg.SvgPathImage, box_size=10, border=2)
+    img.save(os.path.join(ROOT, 'assets', 'img', 'upi-qr.svg'))
+
+def support_html(r, kind):
+    """kind: 'after' (shown after a download), 'full' (support page), 'home' (home page teaser)."""
+    if not SUPPORT_ON: return ''
+    upi_btn = ('<a class="btn sup-upi" href="%s" data-qr="%ssupport/#qr" data-track="support-upi">☕ Buy me a chai</a>' % (html.escape(upi_link()), r)) if SUP_UPI else ''
+    bmc_btn = ('<a class="btn %s" href="https://buymeacoffee.com/%s" target="_blank" rel="noopener noreferrer" data-track="support-bmc">🌍 Coffee%s</a>' % (
+        'btn-light' if SUP_UPI else '', SUP_BMC, ' from abroad' if SUP_UPI else '')) if SUP_BMC else ''
+    if kind == 'after':
+        return ('<aside class="support sup-after" data-support-after hidden aria-label="Support DocAura">'
+                '<div class="sup-cup" aria-hidden="true">☕</div><div class="sup-text"><b>Did DocAura save your day?</b>'
+                '<span>It’s free for everyone, and it stays that way because of kind people like you. If you wish, buy me a chai — any amount, no pressure. 💜</span></div>'
+                '<div class="sup-btns">%s%s<a class="sup-more" href="%ssupport/">More ways</a></div></aside>') % (upi_btn, bmc_btn, r)
+    if kind == 'home':
+        return ('<section class="section"><div class="wrap"><aside class="support sup-home" aria-label="Support DocAura">'
+                '<div class="sup-cup" aria-hidden="true">☕</div><div class="sup-text"><b>Made with love, kept free by kindness</b>'
+                '<span>No login, no watermark, no subscription — ever. If DocAura helped you, you can buy me a chai. Totally your wish. 💜</span></div>'
+                '<div class="sup-btns"><a class="btn" href="%ssupport/" data-track="support-home">☕ Support DocAura</a></div></aside></div></section>') % r
+    qr = ('<figure class="sup-qr" id="qr"><img src="%sassets/img/upi-qr.svg" width="220" height="220" alt="UPI QR code to support DocAura">'
+          '<figcaption>Scan with GPay, PhonePe, Paytm or any UPI app.<br>Type <b>any amount you wish</b>.</figcaption></figure>') % r if SUP_UPI else ''
+    return ('<div class="support sup-full"><div class="sup-cup big" aria-hidden="true">☕</div>'
+            '<div class="sup-btns center">%s%s</div>%s'
+            '<p class="hint" style="text-align:center;margin:0">Payments go straight to my UPI / Buy Me a Coffee account. DocAura never sees your card or bank details.</p></div>') % (upi_btn, bmc_btn, qr)
 
 def csp():
     """Content-Security-Policy: only our own scripts run, and pages cannot send data to other websites.
@@ -307,7 +348,7 @@ def page(meta, body):
         body = article_shell(meta, body, r)
     body = re.sub(r'\{\{TOPIC_GUIDES:(\w+)\}\}', lambda m: '<div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('topic') == m.group(1)) + '</div>', body)
     body = body.replace('{{GUIDE_CARDS}}', guide_cards(r, 6)).replace('{{ALL_GUIDES}}', guide_cards(r))
-    body = body.replace('{{EMAIL}}', email_html()).replace('{{R}}', r).replace('{{TOOL_GRID}}', tool_grid(r)).replace('{{BRAND}}', BRAND['name']).replace('{{EMAIL}}', email_html()).replace('{{ANALYTICS_NOTE}}', ANALYTICS_NOTE).replace('{{UPDATED}}', CONFIG.get('policy_updated', '19 October 2026'))
+    body = body.replace('{{EMAIL}}', email_html()).replace('{{R}}', r).replace('{{TOOL_GRID}}', tool_grid(r)).replace('{{BRAND}}', BRAND['name']).replace('{{EMAIL}}', email_html()).replace('{{ANALYTICS_NOTE}}', ANALYTICS_NOTE).replace('{{SUPPORT_AFTER}}', support_html(r, 'after')).replace('{{SUPPORT_HOME}}', support_html(r, 'home')).replace('{{SUPPORT_FULL}}', support_html(r, 'full')).replace('{{UPDATED}}', CONFIG.get('policy_updated', '19 October 2026'))
     body = re.sub(r'\{\{ICON:(\w+):(\d+):([#\w]+)\}\}', lambda m: icon(m.group(1), int(m.group(2)), m.group(3)), body)
     title = meta['title'] + ('' if BRAND['name'] in meta['title'] else ' | ' + BRAND['name'])
     canonical = '<link rel="canonical" href="%s">' % url if SITE_URL and slug != '404' else ''
@@ -374,6 +415,9 @@ def main():
     parsed += size_variants(parsed)
     parsed += seo_pages.build_pages()
     GUIDES[:] = sorted([m for m, b in parsed if m.get('article')], key=lambda m: m.get('order', 99))
+    write_upi_qr()
+    if not SUPPORT_ON:
+        parsed = [(m, b) for m, b in parsed if m['slug'] != 'support']
     for meta, body in parsed:
         slug = meta['slug']
         out = os.path.join(ROOT, '404.html') if slug == '404' else os.path.join(ROOT, slug, 'index.html') if slug else os.path.join(ROOT, 'index.html')

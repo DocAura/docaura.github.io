@@ -47,6 +47,11 @@
     var b = document.querySelector('[data-big-text]');
     if (b) b.setAttribute('aria-pressed', document.documentElement.classList.contains('big-text') ? 'true' : 'false');
     initAds();
+    // UPI links only open an app on phones; on computers send people to the QR code instead
+    var phone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (!phone) document.querySelectorAll('a.sup-upi[data-qr]').forEach(function (a) {
+      if (location.pathname.replace(/\/+$/, '').slice(-8) === '/support') { a.href = '#qr'; } else { a.href = a.getAttribute('data-qr'); }
+    });
   });
 
   // ---- Ads: only load when a publisher id is set ----
@@ -124,6 +129,10 @@
   SK.download = function (blob, filename) {
     filename = SK.safeName(filename);
     var n = secs(); SK.track('download', { type: ext(filename), time: bucket(n), seconds: n });
+    // After a successful download, gently show the optional "buy me a chai" card
+    setTimeout(function () {
+      document.querySelectorAll('[data-support-after][hidden]').forEach(function (el) { el.hidden = false; SK.track('support-shown'); });
+    }, 900);
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url; a.download = filename;

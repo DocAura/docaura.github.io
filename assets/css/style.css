@@ -418,3 +418,27 @@ a.show-use { text-decoration: none; }
 .article .lead + .promise { margin-top: 14px; }
 .btn-ghost-light { color: #fff; background: transparent; box-shadow: inset 0 0 0 3px rgba(255,255,255,.75); }
 .btn-ghost-light:hover { color: #fff; background: rgba(255,255,255,.12); }
+/* Support / buy me a chai */
+.support { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 18px; background: linear-gradient(135deg, #FDEFF4, #F7D9E3); border-radius: 30px; padding: 20px 22px; box-shadow: var(--clay); }
+.support[hidden] { display: none; }
+.sup-after { margin: 20px 0 6px; animation: supIn .5s ease-out both; }
+@keyframes supIn { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+.sup-cup { font-size: 40px; width: 68px; height: 68px; flex: 0 0 auto; display: grid; place-items: center; background: #fff; border-radius: 22px; box-shadow: 0 8px 18px -10px rgba(59,45,143,.5); animation: supSteam 2.6s ease-in-out infinite; }
+.sup-cup.big { font-size: 64px; width: 110px; height: 110px; border-radius: 34px; margin: 0 auto; }
+@keyframes supSteam { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg) translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) { .sup-cup, .sup-after { animation: none; } }
+.sup-text { flex: 999 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.sup-text b { font-size: 1.12em; color: var(--indigo); }
+.sup-text span { color: var(--ink); font-size: .95em; }
+.sup-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; flex: 1 1 auto; }
+.sup-btns.center { justify-content: center; }
+.sup-btns .btn small { font-weight: 600; opacity: .8; font-size: .8em; }
+.sup-more { font-weight: 600; font-size: .95em; }
+.sup-full { flex-direction: column; text-align: center; padding: 28px 22px; margin: 18px 0; }
+.sup-qr { margin: 6px 0 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.sup-qr img { width: 220px; height: 220px; background: #fff; border-radius: 22px; padding: 12px; box-shadow: var(--clay); }
+.sup-qr figcaption { font-size: .92em; color: var(--muted); }
+.sup-lead { font-size: 1.12em; }
+.sup-btns .btn { flex: 1 1 auto; justify-content: center; }
+@media (min-width: 700px) { .sup-btns .btn { flex: 0 1 auto; } }
+.sup-btns .btn { white-space: nowrap; }

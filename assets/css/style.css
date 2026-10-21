@@ -457,3 +457,48 @@ a.show-use { text-decoration: none; }
 .tool.sup-tool .t { color: var(--indigo); }
 .tool.sup-tool .d { color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { .tool.sup-tool .sup-ic { animation: none; } }
+/* ---------- Animated cutting-chai (homepage card, after-download card, support page) ---------- */
+:root { --chai: #C8702A; --saffron: #F4A340; --chai-pink: #F08DAE; --steam: #C9BEEA; }
+.chai { width: 74%; height: 74%; overflow: visible; }
+.chai .glass { fill: rgba(255,255,255,.7); stroke: #D9B58C; stroke-width: 1.6; }
+.chai .foam { fill: #F6DDB8; }
+.chai .ridges { stroke: rgba(255,255,255,.35); stroke-width: 1.4; fill: none; stroke-linecap: round; }
+.chai .shine { stroke: rgba(255,255,255,.85); stroke-width: 2; fill: none; stroke-linecap: round; }
+.chai .steam path { stroke: var(--steam); opacity: 0; transform-box: fill-box; transform-origin: center bottom; animation: chaiSteam 2.8s ease-in-out infinite; }
+.chai .steam .s2 { animation-delay: .9s; } .chai .steam .s3 { animation-delay: 1.8s; }
+@keyframes chaiSteam { 0% { opacity: 0; transform: translateY(6px) scaleY(.7); } 35% { opacity: .95; } 100% { opacity: 0; transform: translateY(-9px) scaleY(1.15); } }
+.chai .tea, .chai .foam { transform-box: fill-box; transform-origin: center; animation: chaiSway 3.4s ease-in-out infinite; }
+@keyframes chaiSway { 0%,100% { transform: skewX(0) } 50% { transform: skewX(-2.5deg) } }
+/* the emoji-era wobble is no longer wanted on the cup tiles */
+.sup-cup, .tool.sup-tool .sup-ic { animation: none; font-size: 0; }
+.sup-cup { background: #fff; box-shadow: 0 10px 22px -12px rgba(200,112,42,.65), inset 0 -4px 0 rgba(244,163,64,.18); }
+
+/* Warm saffron-to-pink cards that slowly shimmer */
+.tool.sup-tool, .support {
+  background: linear-gradient(120deg, #FFF1DC 0%, #FDE2C8 22%, #FBD3DF 50%, #F7D9E3 72%, #FFE9D2 100%);
+  background-size: 240% 240%; animation: chaiGlow 9s ease-in-out infinite;
+}
+@keyframes chaiGlow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.tool.sup-tool { box-shadow: var(--clay), inset 0 0 0 2px rgba(244,163,64,.45); position: relative; overflow: hidden; }
+.tool.sup-tool .t { color: #9A4A12; }
+.tool.sup-tool::after { content: ''; position: absolute; inset: -40% auto -40% -60%; width: 40%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent); transform: rotate(18deg); animation: chaiShine 5.5s ease-in-out infinite; pointer-events: none; }
+@keyframes chaiShine { 0%, 70% { left: -60%; } 100% { left: 130%; } }
+.tool.sup-tool:hover .sup-ic, .tool.sup-tool:focus-visible .sup-ic { transform: rotate(-8deg) scale(1.06); }
+.tool.sup-tool .sup-ic { transition: transform .25s; }
+.sup-text b { color: #9A4A12; }
+.sup-upi { background: linear-gradient(135deg, #C8702A, #E0844A 45%, #D9607F); box-shadow: 0 14px 26px -14px rgba(200,112,42,.9), inset 0 -5px 0 rgba(0,0,0,.14); }
+.sup-upi:hover { filter: brightness(1.06); }
+.sup-upi::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #FFE3B3; margin-right: 10px; box-shadow: 0 0 0 0 rgba(255,227,179,.8); animation: chaiPulse 2s ease-out infinite; }
+@keyframes chaiPulse { 0% { box-shadow: 0 0 0 0 rgba(255,227,179,.85); } 100% { box-shadow: 0 0 0 10px rgba(255,227,179,0); } }
+@media (prefers-reduced-motion: reduce) {
+  .chai .steam path, .chai .tea, .chai .foam, .tool.sup-tool, .support, .tool.sup-tool::after, .sup-upi::before { animation: none; }
+  .chai .steam path { opacity: .7; }
+}
+/* bigger, clearer chai glass and steam */
+.chai { width: 96%; height: 96%; }
+:root { --steam: #A996DF; }
+.chai .steam path { stroke-width: 3.6; }
+.chai .glass { stroke: #CFA06E; stroke-width: 2; }
+.tool.sup-tool .sup-ic .chai { width: 60px; height: 60px; }
+.sup-cup .chai { width: 58px; height: 58px; }
+.sup-cup.big .chai { width: 96px; height: 96px; }

@@ -108,7 +108,7 @@ def tool_grid(r, exclude=None):
     cards = [tool_card(t, r) for t in TOOLS if t['slug'] != exclude]
     if SUPPORT_ON:  # friendly "buy me a chai" card placed among the PDF tools
         cards.insert(6, ('<a class="tool sup-tool" href="%ssupport/" data-keys="support chai coffee donate tip buy me thank" data-track="support-grid">'
-                         '<span class="ic sup-ic" aria-hidden="true">☕</span><span class="t">Buy me a chai</span>'
+                         '<span class="ic sup-ic">' + CHAI_SVG + '</span><span class="t">Buy me a chai</span>'
                          '<span class="d">Loving DocAura? Keep it free with any amount you wish. 💜</span></a>') % r)
     return '<div class="tools" id="tool-grid">' + ''.join(cards) + '</div>'
 
@@ -275,6 +275,18 @@ if SUP_UPI and not re.fullmatch(r'[A-Za-z0-9._-]{2,256}@[A-Za-z][A-Za-z0-9.-]{1,
     raise SystemExit('support_upi must look like name@bank')
 SUPPORT_ON = bool(SUP_UPI or SUP_BMC)
 
+# Animated "cutting chai" glass: amber tea, foam, rising steam (animated in style.css)
+CHAI_SVG = ('<svg class="chai" viewBox="0 0 64 64" aria-hidden="true">'
+  '<defs><linearGradient id="chaiTea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9A25A"/><stop offset="1" stop-color="#B8611F"/></linearGradient></defs>'
+  '<g class="steam" fill="none" stroke-linecap="round" stroke-width="3">'
+  '<path class="s1" d="M25 23c-4-4 4-7 0-12"/><path class="s2" d="M32 21c-4-4 4-8 0-14"/><path class="s3" d="M39 23c-4-4 4-7 0-12"/></g>'
+  '<path class="glass" d="M17 26h30l-3.6 29.2a3 3 0 0 1-3 2.8H23.6a3 3 0 0 1-3-2.8z"/>'
+  '<path class="tea" d="M18.4 33h27.2l-2.6 21.6a2.4 2.4 0 0 1-2.4 2.1H23.4a2.4 2.4 0 0 1-2.4-2.1z" fill="url(#chaiTea)"/>'
+  '<ellipse class="foam" cx="32" cy="33" rx="13.6" ry="2.4"/>'
+  '<path class="ridges" d="M24 36l1 18M32 36v19M40 36l-1 18"/>'
+  '<path class="shine" d="M21.5 29l2.4 22"/>'
+  '</svg>')
+
 def upi_link(note='Chai for DocAura'):
     from urllib.parse import quote
     return 'upi://pay?pa=%s&pn=%s&cu=INR&tn=%s' % (quote(SUP_UPI, safe='@.'), quote(BRAND['name']), quote(note))
@@ -289,22 +301,22 @@ def write_upi_qr():
 def support_html(r, kind):
     """kind: 'after' (shown after a download), 'full' (support page), 'home' (home page teaser)."""
     if not SUPPORT_ON: return ''
-    upi_btn = ('<a class="btn sup-upi" href="%s" data-qr="%ssupport/#qr" data-track="support-upi">☕ Buy me a chai</a>' % (html.escape(upi_link()), r)) if SUP_UPI else ''
+    upi_btn = ('<a class="btn sup-upi" href="%s" data-qr="%ssupport/#qr" data-track="support-upi">Buy me a chai</a>' % (html.escape(upi_link()), r)) if SUP_UPI else ''
     bmc_btn = ('<a class="btn %s" href="https://buymeacoffee.com/%s" target="_blank" rel="noopener noreferrer" data-track="support-bmc">🌍 Coffee%s</a>' % (
         'btn-light' if SUP_UPI else '', SUP_BMC, ' from abroad' if SUP_UPI else '')) if SUP_BMC else ''
     if kind == 'after':
         return ('<aside class="support sup-after" data-support-after hidden aria-label="Support DocAura">'
-                '<div class="sup-cup" aria-hidden="true">☕</div><div class="sup-text"><b>Did DocAura save your day?</b>'
+                '<div class="sup-cup">' + CHAI_SVG + '</div><div class="sup-text"><b>Did DocAura save your day?</b>'
                 '<span>It’s free for everyone, and it stays that way because of kind people like you. If you wish, buy me a chai — any amount, no pressure. 💜</span></div>'
                 '<div class="sup-btns">%s%s<a class="sup-more" href="%ssupport/">More ways</a></div></aside>') % (upi_btn, bmc_btn, r)
     if kind == 'home':
         return ('<section class="section"><div class="wrap"><aside class="support sup-home" aria-label="Support DocAura">'
-                '<div class="sup-cup" aria-hidden="true">☕</div><div class="sup-text"><b>Made with love, kept free by kindness</b>'
+                '<div class="sup-cup">' + CHAI_SVG + '</div><div class="sup-text"><b>Made with love, kept free by kindness</b>'
                 '<span>No login, no watermark, no subscription — ever. If DocAura helped you, you can buy me a chai. Totally your wish. 💜</span></div>'
-                '<div class="sup-btns"><a class="btn" href="%ssupport/" data-track="support-home">☕ Support DocAura</a></div></aside></div></section>') % r
+                '<div class="sup-btns"><a class="btn" href="%ssupport/" data-track="support-home">Support DocAura</a></div></aside></div></section>') % r
     qr = ('<figure class="sup-qr" id="qr"><img src="%sassets/img/upi-qr.svg" width="220" height="220" alt="UPI QR code to support DocAura">'
           '<figcaption>Scan with GPay, PhonePe, Paytm or any UPI app.<br>Type <b>any amount you wish</b>.</figcaption></figure>') % r if SUP_UPI else ''
-    return ('<div class="support sup-full"><div class="sup-cup big" aria-hidden="true">☕</div>'
+    return ('<div class="support sup-full"><div class="sup-cup big">' + CHAI_SVG + '</div>'
             '<div class="sup-btns center">%s%s</div>%s'
             '<p class="hint" style="text-align:center;margin:0">Payments go straight to my %s. DocAura never sees your card or bank details.</p></div>') % (upi_btn, bmc_btn, qr,
             ' / Buy Me a Coffee account'.join(['UPI', '']) if (SUP_UPI and SUP_BMC) else ('UPI account' if SUP_UPI else 'Buy Me a Coffee account'))

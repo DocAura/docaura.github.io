@@ -69,6 +69,43 @@
     });
   }
 
+  // ---- Hindi pages: translate the messages tools show while they work ----
+  if (document.documentElement.lang === 'hi') {
+    var HI = [
+      [/^Opening your photo…$/, 'आपकी फ़ोटो खुल रही है…'], [/^Opening your PDF…$/, 'आपकी PDF खुल रही है…'],
+      [/^Working on it…$/, 'काम चल रहा है…'],
+      [/^Make it (\d+)KB\s*$/, '$1KB बनाएं '],
+      [/^Trying setting (\d+) of (\d+) — page (\d+) of (\d+)$/, 'सेटिंग $1/$2 आज़मा रहे हैं — पेज $3/$4'],
+      [/^Working — page (\d+) of (\d+)$/, 'काम चल रहा है — पेज $1/$2'],
+      [/^New size: (.+?) \(was (.+?)\)(.*)$/, function (m, a, b, rest) {
+        return 'नया साइज़: ' + a + ' (पहले ' + b + ')' + rest.replace(/ — (\d+)% smaller/, ' — $1% छोटा').replace(/ · (\d+) pages?/, ' · $1 पेज'); }],
+      [/^Please choose a PDF file\.$/, 'कृपया एक PDF फ़ाइल चुनें।'],
+      [/^Please choose a photo \(JPG, PNG, WEBP or HEIC\)\.$/, 'कृपया एक फ़ोटो चुनें (JPG, PNG, WEBP या HEIC)।'],
+      [/^Could not get this photo under (\d+)KB\. Try a bigger size\.$/, 'यह फ़ोटो $1KB से कम नहीं हो पाई। थोड़ा बड़ा साइज़ चुनें।'],
+      [/^This pixel size cannot get under (\d+)KB\. Try smaller pixels or a bigger KB size\.$/, 'इस पिक्सेल साइज़ में फ़ोटो $1KB से कम नहीं हो सकती। छोटे पिक्सेल या बड़ा KB साइज़ चुनें।'],
+      [/^Please type a width and height between 10 and 8000 pixels\.$/, 'कृपया 10 से 8000 पिक्सेल के बीच चौड़ाई और ऊंचाई लिखें।'],
+      [/^We could only get it down to (.+?)\. Try a bigger size, or split the PDF into fewer pages first\.$/, 'हम इसे सिर्फ़ $1 तक छोटा कर पाए। बड़ा साइज़ चुनें, या पहले PDF के पेज कम करें।'],
+      [/^This PDF is already very small — we could not make it smaller without losing quality\.$/, 'यह PDF पहले से बहुत छोटी है — क्वालिटी खराब किए बिना इसे और छोटा नहीं किया जा सकता।'],
+      [/^File name$/, 'फ़ाइल का नाम'],
+      [/^Tip: use your name and the assignment, e\.g\. Priya_Maths_Homework3\. Spaces and symbols are removed so upload sites accept it\.$/,
+        'टिप: अपना नाम और विषय लिखें, जैसे Priya_Maths_Homework3। स्पेस और चिह्न हटा दिए जाते हैं ताकि वेबसाइट फ़ाइल स्वीकार करे।']
+    ];
+    var trNode = function (n) {
+      var v = n.nodeValue, t = v.trim(); if (!t || /[\u0900-\u097F]/.test(t)) return;
+      for (var i = 0; i < HI.length; i++) if (HI[i][0].test(t)) { var out = v.replace(t, t.replace(HI[i][0], HI[i][1])); if (out !== v) n.nodeValue = out; return; }
+    };
+    var walk = function (root) {
+      if (root.nodeType === 3) return trNode(root);
+      var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), n; while ((n = w.nextNode())) trNode(n);
+    };
+    document.addEventListener('DOMContentLoaded', function () {
+      var main = document.getElementById('main') || document.body; walk(main);
+      new MutationObserver(function (list) {
+        list.forEach(function (m) { if (m.type === 'characterData') trNode(m.target); else m.addedNodes.forEach(walk); });
+      }).observe(main, { subtree: true, childList: true, characterData: true });
+    });
+  }
+
   // ---- Helpers used by every tool ----
   var SK = {};
   SK.root = ROOT;

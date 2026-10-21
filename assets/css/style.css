@@ -537,3 +537,6 @@ a.show-use { text-decoration: none; }
 }
 @keyframes csPourSoft { 0%, 10% { transform: rotate(-8deg); } 25%, 68% { transform: rotate(4deg); } 82%, 100% { transform: rotate(-8deg); } }
 @media (max-width: 640px) { .sup-after .sup-scene { width: 220px; margin: 0 auto; } }
+/* Language switch (हिंदी / English) in the top menu */
+.nav .lang-switch { font-weight: 700; color: var(--indigo); background: var(--white); border-radius: 999px; padding: 8px 14px; box-shadow: var(--clay); text-decoration: none; white-space: nowrap; }
+.nav .lang-switch:hover { color: var(--indigo); }

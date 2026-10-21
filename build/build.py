@@ -7,7 +7,7 @@ Output goes to the repo root (index.html, compress-pdf/index.html, ...), ready f
 """
 import json, os, re, html, datetime, copy, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import seo_sizes, seo_pages
+import seo_sizes, seo_pages, seo_hindi as HI
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -74,7 +74,21 @@ TOOL_BY_SLUG = {t['slug']: t for t in TOOLS}
 def rel(depth):
     return '../' * depth if depth else './'
 
-def header(r, active):
+def header(r, active, lang='en', alt=None):
+    if lang == 'hi':
+        sw = ('<a href="%s%s" class="lang-switch" lang="en" hreflang="en">%s</a>' % (r, alt, HI.UI['switch'])) if alt is not None else ''
+        return '''<a class="skip" href="#main">%(skip)s</a>
+<header class="site-header"><div class="wrap">
+  <a class="logo" href="%(r)shi/" aria-label="%(brand)s"><span class="logo-mark">%(logo)s</span><span>%(b1)s<strong>%(b2)s</strong></span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="%(r)shi/resume-builder/" class="hide-sm">%(n1)s</a><a href="%(r)shi/#tools" class="hide-sm">%(n2)s</a>%(sw)s
+    <button type="button" class="text-btn" data-big-text aria-pressed="false"><span class="a1">A</span><span class="a2">A</span> %(big)s</button>
+  </nav>
+</div></header>''' % dict(r=r, brand=BRAND['name'], logo=icon('logo', 28, '#FFFFFF'), b1=BRAND['name_light'], b2=BRAND['name_bold'],
+                          n1=HI.UI['nav_resume'], n2=HI.UI['nav_tools'], big=HI.UI['nav_bigger'], skip=HI.UI['skip'], sw=sw)
+    return header_en(r, active, alt)
+
+def header_en(r, active, alt=None):
     def nav(href, label, key, cls=''):
         cur = ' aria-current="page"' if active == key else ''
         return '<a href="%s%s" class="%s"%s>%s</a>' % (r, href, cls, cur, label)
@@ -87,9 +101,21 @@ def header(r, active):
   </nav>
 </div></header>''' % dict(r=r, brand=BRAND['name'], logo=icon('logo', 28, '#FFFFFF'), b1=BRAND['name_light'], b2=BRAND['name_bold'],
       n1=nav('resume-builder/', 'Resume', 'resume', 'hide-sm'), n2=nav('#tools', 'All tools', 'tools', 'hide-sm'),
-      n3=nav('guides/', 'Guides', 'guides', 'hide-sm'))
+      n3=nav('guides/', 'Guides', 'guides', 'hide-sm') + (('<a href="%s%s" class="lang-switch" lang="hi" hreflang="hi">हिंदी</a>' % (r, alt)) if alt is not None else ''))
 
-def footer(r):
+def footer(r, lang='en'):
+    if lang == 'hi':
+        links = ''.join('<a href="%s%s">%s</a>' % (r, u, t) for u, t in HI.UI['footer_links'])
+        sup = ('<a href="%ssupport/">%s</a>' % (r, HI.UI['support_footer'])) if SUPPORT_ON else ''
+        return '''<footer class="site-footer"><div class="wrap"><div class="card">
+  <span style="font-size:21px">%(b1)s<strong>%(b2)s</strong> · %(tag)s</span>
+  <nav aria-label="Footer">%(links)s%(sup)s<a href="%(r)s" lang="en">English</a></nav>
+  <small>© %(y)s %(brand)s. %(small)s</small>
+</div></div></footer>''' % dict(r=r, b1=BRAND['name_light'], b2=BRAND['name_bold'], brand=BRAND['name'], y=datetime.date.today().year,
+                                tag=HI.UI['footer_tag'], links=links, sup=sup, small=HI.UI['footer_small'])
+    return footer_en(r)
+
+def footer_en(r):
     year = datetime.date.today().year
     return '''<footer class="site-footer"><div class="wrap"><div class="card">
   <span style="font-size:21px">%(b1)s<strong>%(b2)s</strong> · %(tag)s</span>
@@ -116,8 +142,11 @@ def related(r, slugs):
     return '<nav class="related" aria-label="Related tools">' + ''.join(
         '<a href="%s%s/">%s</a>' % (r, s, TOOL_BY_SLUG[s]['name']) for s in slugs) + '</nav>'
 
-def faq_html(faqs):
+def faq_html(faqs, lang='en'):
     if not faqs: return ''
+    if lang == 'hi':
+        items = ''.join('<details><summary>%s</summary><p>%s</p></details>' % (html.escape(q), a) for q, a in faqs)
+        return '<section class="section"><h2>%s</h2><div class="faq">%s</div></section>' % (HI.UI['faq_h'], items)
     items = ''.join('<details><summary>%s</summary><p>%s</p></details>' % (html.escape(q), a) for q, a in faqs)
     return '<section class="section"><h2>Questions people ask</h2><div class="faq">%s</div></section>' % items
 
@@ -185,6 +214,12 @@ def tool_schema(meta, url):
 def size_links(r, meta):
     fam = meta.get('family') or (meta['slug'] if meta['slug'] in seo_sizes.FAMILIES else None)
     if not fam: return ''
+    if meta.get('lang') == 'hi':
+        items = HI.SIZES[fam]
+        links = ''.join('<a href="%shi/%s/"%s>%s %s</a>' % (r, v['slug'], ' aria-current="page"' if 'hi/' + v['slug'] == meta['slug'] else '',
+                        'PDF' if fam == 'compress-pdf' else 'फ़ोटो', v['label']) for v in items)
+        return '<section class="section"><h2>%s</h2><nav class="related" aria-label="Popular sizes">%s</nav></section>' % (
+            HI.UI['sizes_pdf' if fam == 'compress-pdf' else 'sizes_photo'], links)
     items = seo_sizes.FAMILIES[fam]
     word = 'PDF' if fam == 'compress-pdf' else 'photo'
     links = ''.join('<a href="%s%s/"%s>%s to %s</a>' % (r, v['slug'], ' aria-current="page"' if v['slug'] == meta['slug'] else '',
@@ -230,9 +265,124 @@ def size_variants(parsed):
             out.append((m, apply_preset(bb, v['kb'], fam)))
     return out
 
+# ---------- Hindi pages ----------
+HI_ALT = {}   # english slug -> hindi slug (for hreflang + language switch)
+
+def hindi_pages(parsed):
+    out = []
+    bases = {m['slug']: (m, b) for m, b in parsed}
+    chk = lambda: icon('check', 18, '#1D6B45', 3)
+    # tool size pages
+    for fam, items in HI.SIZES.items():
+        bm, bb = bases[fam]
+        for v in items:
+            body = apply_preset(bb, v['kb'], fam)
+            for pair in HI.BODY[fam]:
+                en, hi_txt = pair[0], pair[1]
+                if en in body: body = body.replace(en, hi_txt)
+                elif len(pair) < 3: raise SystemExit('Hindi text not found in %s: %s' % (fam, en))
+            if fam == 'resize-image':
+                body = re.sub(r'Make it \d+KB', '%dKB बनाएं' % v['kb'], body)
+            uses = ''.join('<li>%s</li>' % u for u in v['uses'])
+            what = 'PDF' if fam == 'compress-pdf' else 'फ़ोटो'
+            ht, steps = HI.HOWTO[fam]
+            how = ('<section class="section"><h2>कहाँ चाहिए %s %s से कम?</h2><div class="panel prose"><ul>%s</ul>%s</div></section>' % (what, v['label'], uses, v['tips'])
+                   + '<section class="section"><h2>%s</h2><div class="steps">%s</div></section>' % (ht, ''.join(
+                       '<div class="step"><span class="num">%d</span><b>%s</b><span>%s</span></div>' % (i + 1, a, b) for i, (a, b) in enumerate(steps))))
+            others = [x for x in HI.SIZES['compress-pdf' if fam == 'resize-image' else 'resize-image']]
+            rel = '<nav class="related" aria-label="Related tools">' + ''.join(
+                '<a href="{{R}}hi/%s/">%s %s</a>' % (x['slug'], 'PDF' if fam == 'resize-image' else 'फ़ोटो', x['label']) for x in others) + \
+                '<a href="{{R}}hi/resume-builder/">फ़्री रिज़्यूमे बिल्डर</a><a href="{{R}}#tools" lang="en">All tools (English)</a></nav>'
+            m = copy.deepcopy(bm)
+            m.update(slug='hi/' + v['slug'], lang='hi', alt_en=v['slug'], family=fam, priority='0.7', title=v['title'], desc=v['desc'],
+                     h1=v['h1'], sub=v['sub'], steps=HI.STEPS[fam], faq=v['faq'] + [HI.PRIVACY_FAQ[fam]], howto_html=how, related_html=rel)
+            HI_ALT[v['slug']] = 'hi/' + v['slug']
+            out.append((m, body))
+    # resume page
+    R = HI.RESUME
+    body = """<main id="main" class="wrap narrow">
+  <div class="tool-head"><a class="back" href="{{R}}hi/" aria-label="%(back)s">{{ICON:back:26:#3B2D8F}}</a><h1>%(h1)s</h1></div>
+  <p class="tool-sub">25 फ़्री डिज़ाइन में से चुनें, आसान बॉक्स भरें और साफ़ PDF डाउनलोड करें। <b>कोई लॉगिन नहीं, कोई वॉटरमार्क नहीं, कोई सब्सक्रिप्शन नहीं।</b></p>
+  <p class="promise">%(promise)s</p>
+  <div class="panel" style="display:flex;flex-direction:column;gap:18px">
+    <a class="btn btn-big" href="{{R}}resume-builder/">रिज़्यूमे बनाना शुरू करें {{ICON:arrow:26:#FFFFFF}}</a>
+    <a class="btn btn-light" href="{{R}}resume-builder/?example=fresher&amp;design=fresher">फ़्रेशर का तैयार उदाहरण खोलें</a>
+    <p class="hint" style="margin:0">रिज़्यूमे अंग्रेज़ी में बनता है, क्योंकि ज़्यादातर कंपनियां और जॉब पोर्टल अंग्रेज़ी रिज़्यूमे ही मांगते हैं। बॉक्स बहुत आसान अंग्रेज़ी में हैं।</p>
+  </div>
+  <div class="ad-slot"></div>
+  <section class="section"><h2>3 आसान स्टेप में रिज़्यूमे</h2><div class="steps">
+    <div class="step"><span class="num">1</span><b>डिज़ाइन चुनें</b><span>25 फ़्री डिज़ाइन — फ़्रेशर, Harvard, मॉडर्न, फ़ोटो वाले भी।</span></div>
+    <div class="step"><span class="num">2</span><b>अपनी जानकारी भरें</b><span>नाम, पढ़ाई, अनुभव और स्किल्स। रिज़्यूमे लाइव बदलता दिखता है।</span></div>
+    <div class="step"><span class="num">3</span><b>PDF डाउनलोड करें</b><span>साफ़ PDF, जो जॉब पोर्टल (ATS) भी पढ़ सकें। कोई वॉटरमार्क नहीं।</span></div>
+  </div></section>
+  <section class="section"><h2>फ़्रेशर रिज़्यूमे के लिए टिप्स</h2><div class="panel prose"><ul>
+    <li><b>पढ़ाई सबसे ऊपर रखें</b> — डिग्री, कॉलेज, साल और CGPA / प्रतिशत।</li>
+    <li><b>प्रोजेक्ट और इंटर्नशिप</b> को नौकरी की तरह लिखें, नंबर के साथ — जैसे “4 लोगों की टीम के साथ ऐप बनाया”।</li>
+    <li><b>जॉब विज्ञापन वाले शब्द</b> इस्तेमाल करें। बिल्डर का “Job match checker” बताता है कौन सी स्किल्स छूट रही हैं।</li>
+    <li><b>एक पेज</b> काफ़ी है।</li>
+  </ul></div></section>
+  %(faq)s
+  <section class="section"><h2>%(other)s</h2><nav class="related"><a href="{{R}}hi/resize-image-to-20kb/">फ़ोटो 20KB</a><a href="{{R}}hi/resize-image-to-50kb/">फ़ोटो 50KB</a><a href="{{R}}hi/compress-pdf-to-200kb/">PDF 200KB</a><a href="{{R}}resume-examples/" lang="en">Resume examples (English)</a></nav></section>
+</main>""" % dict(back=HI.UI['back'], h1=R['h1'], promise=''.join('<span>{{ICON:check:18:#1D6B45}} %s</span>' % t for t in ['फ़्री', 'कोई वॉटरमार्क नहीं', 'कोई लॉगिन नहीं', 'PDF डाउनलोड']),
+                  faq=faq_html(R['faq'], 'hi'), other=HI.UI['other_h'])
+    out.append((dict(slug=R['slug'], lang='hi', alt_en='resume-builder', title=R['title'], desc=R['desc'], priority='0.7', faq=R['faq']), body))
+    HI_ALT['resume-builder'] = R['slug']
+    # Hindi homepage
+    cards = []
+    for fam, items in (('resize-image', HI.SIZES['resize-image']), ('compress-pdf', HI.SIZES['compress-pdf'])):
+        t = TOOL_BY_SLUG[fam]
+        for v in items:
+            name = ('फ़ोटो को %s करें' if fam == 'resize-image' else 'PDF को %s करें') % v['label']
+            cards.append('<a class="tool" href="{{R}}hi/%s/" data-keys="%s"><span class="ic%s">%s</span><span class="t">%s</span><span class="d">%s</span></a>' % (
+                v['slug'], html.escape(name + ' ' + v['slug'].replace('-', ' ') + ' ' + t['keys']), ' dark' if t.get('dark') else '',
+                icon(t['icon'], 36, '#FFFFFF' if t.get('dark') else '#3B2D8F', 2), name, html.escape(v['sub'])))
+    cards.insert(4, '<a class="tool" href="{{R}}hi/resume-builder/" data-keys="resume cv रिज़्यूमे बायोडाटा builder"><span class="ic">%s</span><span class="t">फ़्री रिज़्यूमे बिल्डर</span><span class="d">25 फ़्री डिज़ाइन, साफ़ PDF — बिना वॉटरमार्क।</span></a>' % icon('resume', 36, '#3B2D8F', 2))
+    if SUPPORT_ON:
+        cards.insert(6, '<a class="tool sup-tool" href="{{R}}support/" data-keys="support chai चाय सपोर्ट" data-track="support-grid"><span class="ic sup-ic">' + CHAI_SVG + '</span><span class="t">मुझे चाय पिलाएं</span><span class="d">DocAura पसंद आया? अपनी मर्ज़ी से कुछ भी दें। 💜</span></a>')
+    home = """<main id="main">
+<section class="hero"><div class="wrap"><div class="card-pink">
+  <span class="chip">{{ICON:shield:22:#3B2D8F}} आपकी फ़ाइलें आपके फ़ोन या कंप्यूटर से बाहर नहीं जातीं</span>
+  <h1>आज आप क्या करना चाहते हैं?</h1>
+  <p><b>फ़ोटो, PDF और रिज़्यूमे के फ़्री टूल्स।</b> कोई साइन-अप नहीं। कोई वॉटरमार्क नहीं। बस टूल चुनें और बड़ा बटन दबाएं।</p>
+  <form class="search" role="search" id="find-form">
+    <label for="find" class="sr-only">टूल खोजें</label>
+    <input id="find" type="search" autocomplete="off" placeholder="जैसे: फ़ोटो 20KB">
+    <button class="btn" type="submit">{{ICON:search:24:#FFFFFF}} खोजें</button>
+  </form>
+</div></div></section>
+<section class="section" id="tools" aria-labelledby="tools-h"><div class="wrap">
+  <h2 id="tools-h">सबसे ज़्यादा इस्तेमाल होने वाले टूल्स</h2>
+  <p class="lead">किसी भी कार्ड पर टैप करें। सब कुछ फ़्री है।</p>
+  <div class="tools" id="tool-grid">%(cards)s</div>
+  <p class="no-match" id="no-match" hidden>ऐसा कोई टूल नहीं मिला। “फ़ोटो”, “PDF” या “रिज़्यूमे” लिखकर देखें।</p>
+  <p class="lead" style="margin-top:22px">और टूल्स — PDF जोड़ें, साइन करें, पासपोर्ट फ़ोटो, PDF to Word — <a href="{{R}}#tools" lang="en">सभी टूल्स देखें (English)</a></p>
+</div></section>
+<div class="ad-slot"></div>
+<section class="section"><div class="wrap">
+  <h2>1, 2, 3 जितना आसान</h2>
+  <div class="steps">
+    <div class="step"><span class="num">1</span><b>फ़ाइल चुनें</b><span>बड़े बॉक्स पर टैप करें और फ़ोन से फ़ोटो या PDF चुनें।</span></div>
+    <div class="step"><span class="num">2</span><b>बटन दबाएं</b><span>एक बड़ा बटन कुछ सेकंड में काम कर देता है।</span></div>
+    <div class="step"><span class="num">3</span><b>डाउनलोड करें</b><span>नई फ़ाइल सीधे आपके फ़ोन में सेव हो जाती है।</span></div>
+  </div>
+</div></section>
+<section class="section"><div class="wrap">
+  <h2>लोग DocAura पर भरोसा क्यों करते हैं</h2>
+  <div class="steps">
+    <div class="step">{{ICON:shield:40:#3B2D8F}}<b>पूरी तरह प्राइवेट</b><span>फ़ाइलें आपके अपने ब्राउज़र में प्रोसेस होती हैं। हम उन्हें कभी नहीं देखते, कुछ भी अपलोड नहीं होता।</span></div>
+    <div class="step">{{ICON:check:40:#3B2D8F}}<b>सच में फ़्री</b><span>कोई साइन-अप नहीं, कोई वॉटरमार्क नहीं, आख़िर में “पैसे दो” वाली चाल नहीं।</span></div>
+    <div class="step">{{ICON:resize:40:#3B2D8F}}<b>इस्तेमाल में आसान</b><span>बड़े बटन, आसान शब्द और ऊपर “बड़ा टेक्स्ट” बटन।</span></div>
+  </div>
+</div></section>
+</main>""" % dict(cards=''.join(cards))
+    out.append((dict(slug='hi', lang='hi', alt_en='', title=HI.HOME['title'], desc=HI.HOME['desc'], priority='0.9', scripts=['assets/js/home.js']), home))
+    HI_ALT[''] = 'hi'
+    return out
+
 def tool_shell(meta, body, r):
     """Standard tool page: back button, title, steps, panel, ad, how-to, faq, related."""
     slug = meta['slug']
+    hi = meta.get('lang') == 'hi'
     steps = meta.get('steps', ['Choose file', 'Pick options', 'Download'])
     ps = '<div class="progress-steps" aria-hidden="true">' + '<span class="bar"></span>'.join(
         '<span class="ps%s" data-step="%d"><span class="dot">%d</span><span class="lbl">%s</span></span>' % (' on cur' if i == 0 else '', i + 1, i + 1, s)
@@ -240,9 +390,9 @@ def tool_shell(meta, body, r):
     gslug = meta.get('family', slug)
     rel_slugs = meta.get('related') or [t['slug'] for t in TOOLS if t['slug'] != slug][:4]
     return '''<main id="main" class="wrap narrow">
-  <div class="tool-head"><a class="back" href="%(r)s" aria-label="Back to all tools">%(back)s</a><h1>%(h1)s</h1></div>
+  <div class="tool-head"><a class="back" href="%(home)s" aria-label="%(backl)s">%(back)s</a><h1>%(h1)s</h1></div>
   <p class="tool-sub">%(sub)s</p>
-  <p class="promise"><span>%(chk)s No daily limit</span><span>%(chk)s No watermark</span><span>%(chk)s No sign-up</span><span>%(chk)s Files never uploaded</span></p>
+  <p class="promise">%(promise)s</p>
   %(ps)s
   %(body)s
   %(support)s
@@ -251,9 +401,12 @@ def tool_shell(meta, body, r):
   %(howto)s
   %(faq)s
   %(guide)s
-  <section class="section"><h2>Other free tools</h2>%(related)s</section>
-</main>''' % dict(r=r, back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body, chk=icon('check', 18, '#1D6B45', 3), guide=(('<section class="section"><h2>Learn more</h2><div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('cta') == gslug) + '</div></section>') if any(g.get('cta') == gslug for g in GUIDES) else ''),
-                  support=support_html(r, 'after'), sizes=size_links(r, meta), howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq')), related=related(r, rel_slugs))
+  <section class="section"><h2>%(otherh)s</h2>%(related)s</section>
+</main>''' % dict(r=r, home=(r + 'hi/') if hi else r, backl=HI.UI['back'] if hi else 'Back to all tools',
+                  promise=''.join('<span>%s %s</span>' % (icon('check', 18, '#1D6B45', 3), t) for t in (HI.UI['promise'] if hi else ['No daily limit', 'No watermark', 'No sign-up', 'Files never uploaded'])),
+                  otherh=HI.UI['other_h'] if hi else 'Other free tools', back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body, chk=icon('check', 18, '#1D6B45', 3), guide='' if hi else (('<section class="section"><h2>Learn more</h2><div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('cta') == gslug) + '</div></section>') if any(g.get('cta') == gslug for g in GUIDES) else ''),
+                  support=support_html(r, 'after', meta.get('lang', 'en')), sizes=size_links(r, meta), howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq'), meta.get('lang', 'en')),
+                  related=meta['related_html'] if hi and meta.get('related_html') else related(r, rel_slugs))
 
 ADS_ON = bool(CONFIG.get('adsense_client'))
 UMAMI_ID = CONFIG.get('umami_website_id', '').strip().lower()
@@ -345,9 +498,15 @@ def write_upi_qr():
     img = qrcode.make(upi_link(), image_factory=qrcode.image.svg.SvgPathImage, box_size=10, border=2)
     img.save(os.path.join(ROOT, 'assets', 'img', 'upi-qr.svg'))
 
-def support_html(r, kind):
+def support_html(r, kind, lang='en'):
     """kind: 'after' (shown after a download), 'full' (support page), 'home' (home page teaser)."""
     if not SUPPORT_ON: return ''
+    if lang == 'hi' and kind == 'after':
+        btn = ('<a class="btn sup-upi" href="%s" data-qr="%ssupport/#qr" data-track="support-upi">मुझे चाय पिलाएं</a>' % (html.escape(upi_link()), r)) if SUP_UPI else ''
+        return ('<aside class="support sup-after" data-support-after hidden aria-label="DocAura को सपोर्ट करें">'
+                '<div class="sup-scene">' + CHAI_SCENE + '</div><div class="sup-text"><b>क्या DocAura ने आपका काम आसान किया?</b>'
+                '<span>यह सबके लिए फ़्री है, और आप जैसे अच्छे लोगों की वजह से फ़्री रहता है। चाहें तो मुझे एक चाय पिलाएं — जितनी आपकी मर्ज़ी, कोई दबाव नहीं। 💜</span></div>'
+                '<div class="sup-btns">%s<a class="sup-more" href="%ssupport/">और तरीके</a></div></aside>') % (btn, r)
     upi_btn = ('<a class="btn sup-upi" href="%s" data-qr="%ssupport/#qr" data-track="support-upi">Buy me a chai</a>' % (html.escape(upi_link()), r)) if SUP_UPI else ''
     bmc_btn = ('<a class="btn %s" href="https://buymeacoffee.com/%s" target="_blank" rel="noopener noreferrer" data-track="support-bmc">🌍 Coffee%s</a>' % (
         'btn-light' if SUP_UPI else '', SUP_BMC, ' from abroad' if SUP_UPI else '')) if SUP_BMC else ''
@@ -430,9 +589,21 @@ def page(meta, body):
               '<meta property="og:url" content="%s"><meta property="og:type" content="website">'
               '<meta property="og:image" content="%s/assets/img/share.png">') % (html.escape(title), html.escape(meta['desc']), url, SITE_URL)
     scripts = ''.join('<script src="%s%s?v=%s" defer></script>' % (r, s, ver(s)) for s in meta.get('scripts', []))
+    lang = meta.get('lang', 'en')
+    # Language versions: tell Google which page is the Hindi / English twin, and offer a switch
+    if lang == 'hi':
+        alt_slug = meta.get('alt_en', ''); en_slug, hi_slug = alt_slug, slug
+    else:
+        alt_slug = HI_ALT.get(slug); en_slug, hi_slug = slug, alt_slug
+    alt_link = None if alt_slug is None else (alt_slug + '/' if alt_slug else '')
+    hreflang = ''
+    if alt_slug is not None and SITE_URL:
+        u = lambda sl: SITE_URL + '/' + (sl + '/' if sl else '')
+        hreflang = ('<link rel="alternate" hreflang="en" href="%s"><link rel="alternate" hreflang="hi" href="%s">'
+                    '<link rel="alternate" hreflang="x-default" href="%s">') % (u(en_slug), u(hi_slug), u(en_slug))
     robots = '<meta name="robots" content="noindex">' if slug == '404' else ''
     return '''<!doctype html>
-<html lang="en">
+<html lang="%(lang)s">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="%(csp)s">
@@ -440,7 +611,7 @@ def page(meta, body):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>%(title)s</title>
 <meta name="description" content="%(desc)s">
-%(canonical)s%(og)s%(robots)s
+%(canonical)s%(hreflang)s%(og)s%(robots)s
 <meta name="theme-color" content="#3B2D8F">
 <link rel="icon" href="%(r)sassets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -459,8 +630,8 @@ def page(meta, body):
 </body>
 </html>
 ''' % dict(csp=csp(), title=html.escape(title), desc=html.escape(meta['desc']), canonical=canonical, og=og, robots=robots, r=r,
-           schema=faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url) + crumb_schema(meta), header=header(r, meta.get('active')),
-           body=body, footer=footer(r), scripts=scripts, vcss=ver('assets/css/style.css'), vjs=ver('assets/js/common.js'), vcfg=ver('assets/js/site-config.js'),
+           schema=faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url) + crumb_schema(meta), header=header(r, meta.get('active'), lang, alt_link),
+           body=body, footer=footer(r, lang), scripts=scripts, lang=lang, hreflang=hreflang, vcss=ver('assets/css/style.css'), vjs=ver('assets/js/common.js'), vcfg=ver('assets/js/site-config.js'),
            umami=('\n<script defer src="https://cloud.umami.is/script.js" data-website-id="%s" data-domains="%s"></script>' % (UMAMI_ID, re.sub(r'^https?://', '', SITE_URL).split('/')[0])) if UMAMI_ID and slug != '404' else '',
            analytics=('<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{"token": "%s"}\'></script>' % CF_TOKEN) if CF_TOKEN and slug != '404' else '')
 
@@ -486,6 +657,7 @@ def main():
     parsed = [parse(f) for f in sorted(files)]
     parsed += size_variants(parsed)
     parsed += seo_pages.build_pages()
+    parsed += hindi_pages(parsed)
     GUIDES[:] = sorted([m for m, b in parsed if m.get('article')], key=lambda m: m.get('order', 99))
     write_upi_qr()
     if not SUPPORT_ON:

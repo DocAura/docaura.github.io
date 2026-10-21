@@ -502,3 +502,33 @@ a.show-use { text-decoration: none; }
 .tool.sup-tool .sup-ic .chai { width: 60px; height: 60px; }
 .sup-cup .chai { width: 58px; height: 58px; }
 .sup-cup.big .chai { width: 96px; height: 96px; }
+/* ---------- Chai scene: mascot pours chai, puppy wags ---------- */
+.sup-scene { flex: 0 0 auto; width: 170px; max-width: 100%; }
+.sup-scene.big { width: 300px; margin: 0 auto; }
+.chai-scene { width: 100%; height: auto; display: block; overflow: visible; }
+.chai-scene .cs-kettle { transform-box: view-box; transform-origin: 98px 84px; animation: csPour 5s ease-in-out infinite; }
+@keyframes csPour { 0%, 8% { transform: rotate(-16deg); } 22%, 68% { transform: rotate(4deg); } 82%, 100% { transform: rotate(-16deg); } }
+.chai-scene .cs-stream { stroke-dasharray: 46; stroke-dashoffset: 46; opacity: 0; animation: csStream 5s ease-in-out infinite; }
+@keyframes csStream { 0%, 20% { opacity: 0; stroke-dashoffset: 46; } 26% { opacity: 1; stroke-dashoffset: 0; } 66% { opacity: 1; stroke-dashoffset: 0; } 72%, 100% { opacity: 0; stroke-dashoffset: -46; } }
+.chai-scene .cs-fill { transform-box: view-box; transform-origin: 135px 149px; animation: csFill 5s ease-in-out infinite; }
+@keyframes csFill { 0%, 22% { transform: scaleY(.04); } 70% { transform: scaleY(.88); } 96% { transform: scaleY(.88); } 100% { transform: scaleY(.04); } }
+.chai-scene .cs-steam1 path, .chai-scene .cs-steam2 path { opacity: 0; transform-box: fill-box; transform-origin: center bottom; animation: csSteam 2.4s ease-in-out infinite; }
+.chai-scene .cs-steam1 path { animation-name: csSteam1; animation-duration: 5s; }
+.chai-scene .cs-steam1 path:nth-child(2), .chai-scene .cs-steam2 path:nth-child(2) { animation-delay: .8s; }
+@keyframes csSteam { 0% { opacity: 0; transform: translateY(4px); } 40% { opacity: .9; } 100% { opacity: 0; transform: translateY(-8px); } }
+@keyframes csSteam1 { 0%, 70% { opacity: 0; transform: translateY(4px); } 82% { opacity: .9; } 96%, 100% { opacity: 0; transform: translateY(-8px); } }
+.chai-scene .cs-blink { transform-box: fill-box; transform-origin: center; animation: csBlink 4.2s infinite; }
+@keyframes csBlink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+.chai-scene .cs-doc { transform-box: view-box; transform-origin: 49px 142px; animation: csBob 2.5s ease-in-out infinite; }
+@keyframes csBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+.chai-scene .cs-tail { transform-box: view-box; transform-origin: 206px 128px; animation: csWag .5s ease-in-out infinite alternate; }
+@keyframes csWag { from { transform: rotate(-14deg); } to { transform: rotate(16deg); } }
+.chai-scene .cs-head { transform-box: view-box; transform-origin: 196px 124px; animation: csTilt 5s ease-in-out infinite; }
+@keyframes csTilt { 0%, 30%, 100% { transform: rotate(0); } 45%, 70% { transform: rotate(-8deg); } }
+.chai-scene .cs-tongue { transform-box: fill-box; transform-origin: top; animation: csPant .5s ease-in-out infinite alternate; }
+@keyframes csPant { from { transform: scaleY(.6); } to { transform: scaleY(1.1); } }
+@media (prefers-reduced-motion: reduce) {
+  .chai-scene * { animation: none !important; }
+  .chai-scene .cs-fill { transform: scaleY(.88); } .chai-scene .cs-stream { opacity: 0; }
+}
+@media (max-width: 640px) { .sup-after .sup-scene { width: 220px; margin: 0 auto; } }

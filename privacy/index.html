@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' blob: data:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' blob: data: https://cloud.umami.is https://api-gateway.umami.dev; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy &amp; Security | DocAura</title>
@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="../assets/css/style.css">
 <script src="../assets/js/site-config.js"></script>
 <script src="../assets/js/common.js" data-root="../"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="81420a94-b2f4-4b47-b861-67197601c20c" data-domains="docaura.github.io"></script>
 
 </head>
 <body>
@@ -31,7 +32,7 @@
 <main id="main" class="wrap narrow">
   <div class="tool-head"><a class="back" href="../" aria-label="Back to all tools"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3B2D8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><h1>Privacy &amp; security</h1></div>
   <div class="panel prose">
-    <p><em>Last updated: 20 October 2026</em></p>
+    <p><em>Last updated: 21 October 2026</em></p>
     <h2>The short version</h2>
     <p>Your files never leave your device. Every tool on DocAura works inside your own web browser. We do not upload, store or see your photos, PDFs, resume or signature.</p>
 
@@ -59,7 +60,7 @@
     <p>To keep the tools free, we plan to show advertisements from Google AdSense. When ads are switched on, Google and its partners may use cookies to show ads based on your previous visits to this and other websites. You can turn off personalised advertising at <a href="https://adssettings.google.com" rel="noopener noreferrer">Google Ads Settings</a>, and learn more at <a href="https://policies.google.com/technologies/ads" rel="noopener noreferrer">How Google uses information from sites that use its services</a>. Where the law requires it, you will be asked for consent first. Ads never get access to your files — they are processed separately inside your browser.</p>
 
     <h2>Analytics</h2>
-    <p>We do not currently use any analytics or tracking. If we add privacy-friendly visit counting in the future, it will never include the content of your files, and we will update this page.</p>
+    <p>We count visits and which tools are used with <a href="https://umami.is/" rel="noopener noreferrer">Umami</a>, a privacy-first service. It uses no cookies and does not collect your personal data. It records things like which page was opened, which tool or option was chosen (for example “200KB”), whether a download happened, and roughly which country the visit came from. It never receives your files, their names or anything you type &mdash; your files stay inside your browser.</p>
 
     <h2>Fonts and hosting</h2>
     <p>Our pages load the Poppins font from Google Fonts and are hosted on GitHub Pages. Like any website, these services receive your IP address as part of normal web requests.</p>

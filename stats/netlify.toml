@@ -1,0 +1,13 @@
+# DocAura stats: a tiny private recorder + dashboard, deployed from the stats/ folder.
+[build]
+  publish = "public"
+  # Only rebuild when something inside stats/ changed (pushes to the main site skip this)
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "no-referrer"
+    X-Robots-Tag = "noindex, nofollow"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"

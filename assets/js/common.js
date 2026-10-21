@@ -82,10 +82,24 @@
     while (trackQueue.length) { var q = trackQueue.shift(); try { window.umami.track(q[0], q[1]); } catch (e) {} }
     return true;
   }
+  // Our own private recorder (DocAura Stats on Netlify): same anonymous data, sent as a tiny beacon
+  function toStats(name, d) {
+    if (!CFG.statsUrl) return;
+    var body = JSON.stringify({ n: name, p: location.pathname, d: d || {}, r: name === 'pageview' ? (document.referrer || '') : '' }).slice(0, 2000);
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(CFG.statsUrl + '/api/e', body)) return;
+    } catch (e) {}
+    try { fetch(CFG.statsUrl + '/api/e', { method: 'POST', body: body, mode: 'no-cors', keepalive: true, headers: { 'content-type': 'text/plain' } }); } catch (e) {}
+  }
+  if (CFG.statsUrl && !/^\/404/.test(location.pathname) && !document.querySelector('meta[name="robots"][content*="noindex"]')) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { toStats('pageview'); });
+    else toStats('pageview');
+  }
   SK.track = function (name, data) {
-    if (!CFG.umamiId) return;
     var d = { tool: PAGE };
     for (var k in (data || {})) if (Object.prototype.hasOwnProperty.call(data, k)) d[k] = String(data[k]).slice(0, 60);
+    toStats(name, d);
+    if (!CFG.umamiId) return;
     trackQueue.push([name, d]);
     if (!sendTracks()) {   // tracker still loading: try again shortly
       var tries = 0, iv = setInterval(function () { if (sendTracks() || ++tries > 40) clearInterval(iv); }, 250);

@@ -13,5 +13,6 @@
   "cf_analytics_token": "",
   "umami_website_id": "81420a94-b2f4-4b47-b861-67197601c20c",
   "support_upi": "anandpraveen1111@okhdfcbank",
-  "support_bmc": ""
+  "support_bmc": "",
+  "stats_url": "https://docaura-stats.netlify.app"
 }

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>DocAura Stats</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%233B2D8F'/%3E%3Cpath d='M18 46V30M30 46V18M42 46V26' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark" aria-hidden="true">▮▮▮</span><span>Doc<b>Aura</b> Stats</span></div>
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Date range">
+      <button type="button" data-days="1" aria-pressed="true">Today</button>
+      <button type="button" data-days="7" aria-pressed="false">7 days</button>
+      <button type="button" data-days="30" aria-pressed="false">30 days</button>
+    </div>
+    <span class="live" id="live" title="Refreshes every 30 seconds">● Live</span>
+  </div>
+</header>
+
+<section class="gate" id="gate" hidden>
+  <h1>Your private dashboard</h1>
+  <p>Paste your dashboard key to see what's happening on DocAura.</p>
+  <form id="gate-form"><label for="key" class="sr">Dashboard key</label><input id="key" autocomplete="off" placeholder="Dashboard key"><button type="submit">Open dashboard</button></form>
+  <p class="err" id="gate-err" hidden>That key didn't work. Check it and try again.</p>
+</section>
+
+<main id="app" hidden>
+  <section class="kpis" aria-label="Today at a glance">
+    <div class="kpi"><span class="lbl" id="k1l">Visitors today</span><b id="k1">–</b><span class="sub" id="k1s"></span></div>
+    <div class="kpi"><span class="lbl">Page views</span><b id="k2">–</b><span class="sub" id="k2s"></span></div>
+    <div class="kpi"><span class="lbl">Downloads</span><b id="k3">–</b><span class="sub" id="k3s"></span></div>
+    <div class="kpi chai"><span class="lbl">☕ Chai taps</span><b id="k4">–</b><span class="sub" id="k4s"></span></div>
+  </section>
+
+  <section class="card wide"><h2>Visitors by hour <small>today, India time</small></h2><div class="bars hours" id="hours"></div></section>
+  <section class="card wide" id="daysCard"><h2>Visitors by day</h2><div class="bars days" id="days"></div></section>
+
+  <div class="grid">
+    <section class="card"><h2>Most visited pages</h2><ol class="rank" id="pages"></ol></section>
+    <section class="card"><h2>What people did</h2><ol class="rank" id="events"></ol></section>
+    <section class="card"><h2>Options picked</h2><div id="options"></div></section>
+    <section class="card"><h2>Time spent on a tool</h2><ol class="rank" id="tot"></ol></section>
+    <section class="card"><h2>☕ Buy me a chai</h2><ol class="rank" id="support"></ol></section>
+    <section class="card"><h2>Where visitors came from</h2><ol class="rank" id="refs"></ol></section>
+    <section class="card"><h2>Countries</h2><ol class="rank" id="countries"></ol></section>
+    <section class="card"><h2>Phone or computer</h2><ol class="rank" id="devices"></ol></section>
+  </div>
+
+  <section class="card wide"><h2>Live activity <small>latest first</small></h2><ul class="feed" id="feed"></ul></section>
+  <p class="foot" id="foot"></p>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

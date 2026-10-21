@@ -86,10 +86,22 @@
       var tries = 0, iv = setInterval(function () { if (sendTracks() || ++tries > 40) clearInterval(iv); }, 250);
     }
   };
+  // Time spent: seconds since the page opened, rounded into simple buckets for the dashboard
+  var T0 = Date.now(), usedTool = false, sentLeave = false;
+  function secs() { return Math.round((Date.now() - T0) / 1000); }
+  function bucket(n) { return n < 10 ? '0-10s' : n < 30 ? '10-30s' : n < 60 ? '30-60s' : n < 180 ? '1-3 min' : n < 600 ? '3-10 min' : '10+ min'; }
+  // When someone who actually used a tool leaves the page, record how long they stayed
+  function leave() {
+    if (!usedTool || sentLeave) return; sentLeave = true;
+    var n = secs(); SK.track('time-on-tool', { time: bucket(n), seconds: n });
+  }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') leave(); });
+  window.addEventListener('pagehide', leave);
   function ext(name) { var m = /\.([A-Za-z0-9]{1,5})$/.exec(name || ''); return m ? m[1].toLowerCase() : 'other'; }
   // Main action buttons ("Make my PDF smaller", "Use this example"...)
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('.btn-big, [data-track]');
+    if (b) usedTool = true;
     if (b) SK.track('action', { button: b.getAttribute('data-track') || (b.textContent || '').replace(/\s+/g, ' ').trim() });
   }, true);
 
@@ -111,7 +123,7 @@
 
   SK.download = function (blob, filename) {
     filename = SK.safeName(filename);
-    SK.track('download', { type: ext(filename) });
+    var n = secs(); SK.track('download', { type: ext(filename), time: bucket(n), seconds: n });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url; a.download = filename;
@@ -125,7 +137,7 @@
     function guard(files) {
       var big = files.filter(function (f) { return f.size > 300 * 1024 * 1024; });
       if (big.length && !window.confirm('“' + big[0].name + '” is very large (' + SK.bytes(big[0].size) + '). It may be slow or fail on a phone. Continue?')) return;
-      SK.track('file-chosen', { files: files.length, type: ext(files[0] && files[0].name) });
+      usedTool = true; SK.track('file-chosen', { files: files.length, type: ext(files[0] && files[0].name) });
       onFiles(files);
     }
     input.addEventListener('change', function () {

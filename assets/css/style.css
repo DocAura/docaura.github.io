@@ -451,3 +451,9 @@ a.show-use { text-decoration: none; }
   .sup-full .sup-qr { grid-area: qr; margin: 0; }
   .sup-full > .hint { grid-area: note; text-align: center; }
 }
+/* "Buy me a chai" card inside the homepage tool grid */
+.tool.sup-tool { background: linear-gradient(140deg, #FDEFF4, #F7D9E3 55%, #F3C5D6); box-shadow: var(--clay), inset 0 0 0 2px rgba(240,141,174,.45); }
+.tool.sup-tool .sup-ic { background: #fff; font-size: 38px; animation: supSteam 2.6s ease-in-out infinite; }
+.tool.sup-tool .t { color: var(--indigo); }
+.tool.sup-tool .d { color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .tool.sup-tool .sup-ic { animation: none; } }

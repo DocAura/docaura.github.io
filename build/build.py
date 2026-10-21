@@ -105,7 +105,12 @@ def tool_card(t, r):
         r, t['slug'], html.escape(t['name'].lower() + ' ' + t['keys']), cls, icon(t['icon'], 36, col, 2), t['name'], t['desc'])
 
 def tool_grid(r, exclude=None):
-    return '<div class="tools" id="tool-grid">' + ''.join(tool_card(t, r) for t in TOOLS if t['slug'] != exclude) + '</div>'
+    cards = [tool_card(t, r) for t in TOOLS if t['slug'] != exclude]
+    if SUPPORT_ON:  # friendly "buy me a chai" card placed among the PDF tools
+        cards.insert(6, ('<a class="tool sup-tool" href="%ssupport/" data-keys="support chai coffee donate tip buy me thank" data-track="support-grid">'
+                         '<span class="ic sup-ic" aria-hidden="true">☕</span><span class="t">Buy me a chai</span>'
+                         '<span class="d">Loving DocAura? Keep it free with any amount you wish. 💜</span></a>') % r)
+    return '<div class="tools" id="tool-grid">' + ''.join(cards) + '</div>'
 
 def related(r, slugs):
     return '<nav class="related" aria-label="Related tools">' + ''.join(

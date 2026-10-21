@@ -397,6 +397,11 @@ def write_site_config():
         'adsenseClient': CONFIG.get('adsense_client', ''), 'umamiId': UMAMI_ID, 'brand': BRAND['name']})
     open(os.path.join(ROOT, 'assets', 'js', 'site-config.js'), 'w').write(js)
 
+import hashlib
+def ver(rel_path):
+    try: return hashlib.md5(open(os.path.join(ROOT, rel_path), 'rb').read()).hexdigest()[:8]
+    except OSError: return '0'
+
 def page(meta, body):
     slug = meta['slug']
     depth = 0 if slug in ('', '404') else slug.count('/') + 1
@@ -420,7 +425,7 @@ def page(meta, body):
         og = ('<meta property="og:title" content="%s"><meta property="og:description" content="%s">'
               '<meta property="og:url" content="%s"><meta property="og:type" content="website">'
               '<meta property="og:image" content="%s/assets/img/share.png">') % (html.escape(title), html.escape(meta['desc']), url, SITE_URL)
-    scripts = ''.join('<script src="%s%s" defer></script>' % (r, s) for s in meta.get('scripts', []))
+    scripts = ''.join('<script src="%s%s?v=%s" defer></script>' % (r, s, ver(s)) for s in meta.get('scripts', []))
     robots = '<meta name="robots" content="noindex">' if slug == '404' else ''
     return '''<!doctype html>
 <html lang="en">
@@ -437,9 +442,9 @@ def page(meta, body):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="%(r)sassets/css/style.css">
-<script src="%(r)sassets/js/site-config.js"></script>
-<script src="%(r)sassets/js/common.js" data-root="%(r)s"></script>%(umami)s
+<link rel="stylesheet" href="%(r)sassets/css/style.css?v=%(vcss)s">
+<script src="%(r)sassets/js/site-config.js?v=%(vcfg)s"></script>
+<script src="%(r)sassets/js/common.js?v=%(vjs)s" data-root="%(r)s"></script>%(umami)s
 %(schema)s
 </head>
 <body>
@@ -451,7 +456,7 @@ def page(meta, body):
 </html>
 ''' % dict(csp=csp(), title=html.escape(title), desc=html.escape(meta['desc']), canonical=canonical, og=og, robots=robots, r=r,
            schema=faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url) + crumb_schema(meta), header=header(r, meta.get('active')),
-           body=body, footer=footer(r), scripts=scripts,
+           body=body, footer=footer(r), scripts=scripts, vcss=ver('assets/css/style.css'), vjs=ver('assets/js/common.js'), vcfg=ver('assets/js/site-config.js'),
            umami=('\n<script defer src="https://cloud.umami.is/script.js" data-website-id="%s" data-domains="%s"></script>' % (UMAMI_ID, re.sub(r'^https?://', '', SITE_URL).split('/')[0])) if UMAMI_ID and slug != '404' else '',
            analytics=('<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{"token": "%s"}\'></script>' % CF_TOKEN) if CF_TOKEN and slug != '404' else '')
 

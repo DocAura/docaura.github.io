@@ -491,8 +491,9 @@ a.show-use { text-decoration: none; }
 .sup-upi::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #FFE3B3; margin-right: 10px; box-shadow: 0 0 0 0 rgba(255,227,179,.8); animation: chaiPulse 2s ease-out infinite; }
 @keyframes chaiPulse { 0% { box-shadow: 0 0 0 0 rgba(255,227,179,.85); } 100% { box-shadow: 0 0 0 10px rgba(255,227,179,0); } }
 @media (prefers-reduced-motion: reduce) {
-  .chai .steam path, .chai .tea, .chai .foam, .tool.sup-tool, .support, .tool.sup-tool::after, .sup-upi::before { animation: none; }
-  .chai .steam path { opacity: .7; }
+  /* big background effects off; the small steam keeps rising, slowly */
+  .tool.sup-tool, .support, .tool.sup-tool::after, .sup-upi::before, .chai .tea, .chai .foam { animation: none; }
+  .chai .steam path { animation-duration: 4.2s; }
 }
 /* bigger, clearer chai glass and steam */
 .chai { width: 96%; height: 96%; }
@@ -527,8 +528,12 @@ a.show-use { text-decoration: none; }
 @keyframes csTilt { 0%, 30%, 100% { transform: rotate(0); } 45%, 70% { transform: rotate(-8deg); } }
 .chai-scene .cs-tongue { transform-box: fill-box; transform-origin: top; animation: csPant .5s ease-in-out infinite alternate; }
 @keyframes csPant { from { transform: scaleY(.6); } to { transform: scaleY(1.1); } }
+/* With "reduce motion" on (often switched on by battery saver), keep the chai scene moving but slower and smaller */
 @media (prefers-reduced-motion: reduce) {
-  .chai-scene * { animation: none !important; }
-  .chai-scene .cs-fill { transform: scaleY(.88); } .chai-scene .cs-stream { opacity: 0; }
+  .chai-scene .cs-kettle { animation: csPourSoft 6s ease-in-out infinite !important; }
+  .chai-scene .cs-stream, .chai-scene .cs-fill, .chai-scene .cs-steam1 path { animation-duration: 6s !important; }
+  .chai-scene .cs-tail { animation: csWag 1s ease-in-out infinite alternate !important; }
+  .chai-scene .cs-doc, .chai-scene .cs-head { animation: none !important; }
 }
+@keyframes csPourSoft { 0%, 10% { transform: rotate(-8deg); } 25%, 68% { transform: rotate(4deg); } 82%, 100% { transform: rotate(-8deg); } }
 @media (max-width: 640px) { .sup-after .sup-scene { width: 220px; margin: 0 auto; } }

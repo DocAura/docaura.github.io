@@ -106,6 +106,13 @@
   // Main action buttons ("Make my PDF smaller", "Use this example"...)
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('.btn-big, [data-track]');
+    var tr = b && b.getAttribute('data-track');
+    if (tr && tr.indexOf('support') === 0) {   // "Buy me a chai" taps get their own clear event
+      var where = { 'support-grid': 'homepage card', 'support-home': 'homepage card', 'support-upi': 'chai button (UPI)', 'support-bmc': 'coffee button' }[tr] || tr;
+      var spot = b.closest('[data-support-after]') ? 'after download' : (/\/support\/?$/.test(location.pathname) ? 'support page' : 'page');
+      SK.track('support-click', { button: where, where: tr === 'support-grid' ? 'homepage' : spot });
+      return;
+    }
     if (b) usedTool = true;
     if (b) SK.track('action', { button: b.getAttribute('data-track') || (b.textContent || '').replace(/\s+/g, ' ').trim() });
   }, true);

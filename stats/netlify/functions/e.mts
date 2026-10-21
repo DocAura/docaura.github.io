@@ -11,7 +11,7 @@ export default async (req: Request, context: Context) => {
   if (bad) return new Response(null, { status: 204 }); // ignore quietly; nothing to tell a bot
   const ts = Date.now();
   const ua = req.headers.get("user-agent") || "";
-  const vid = await visitorId(context.ip || "", ua, istDay(ts), Netlify.env.get("DASH_KEY") || "docaura");
+  const vid = await visitorId(context.ip || "", ua, istDay(ts), Netlify.env.get("DASH_KEY") || context.site?.id || "docaura");
   const key = buildKey({
     ts, vid, ev: body.n, page: body.p || "/", country: context.geo?.country?.code || "--",
     dev: device(ua), ref: body.n === "pageview" ? refHost(body.r || "") : "", props: body.d || {},

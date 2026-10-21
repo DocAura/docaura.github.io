@@ -3,10 +3,18 @@ import type { Config, Context } from "@netlify/functions";
 import { getStore } from "@netlify/blobs";
 import { istDay, parseKey, summarise } from "./lib.mjs";
 
+const KEY_SHA256 = "14354350ea41427f88f1965688917e1891187973c5836e1adbd52a0c687a1445";
+async function sha256(t: string) {
+  const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
+  return Buffer.from(d).toString("hex");
+}
+
 export default async (req: Request, context: Context) => {
-  const want = Netlify.env.get("DASH_KEY");
+  // Only a SHA-256 fingerprint of the dashboard key lives in this (public) code; the key itself does not.
   const got = req.headers.get("x-dash-key") || "";
-  if (!want || got !== want) return Response.json({ error: "Wrong or missing key" }, { status: 401 });
+  const envKey = Netlify.env.get("DASH_KEY");
+  const ok = (envKey && got === envKey) || (got.length >= 16 && (await sha256(got)) === KEY_SHA256);
+  if (!ok) return Response.json({ error: "Wrong or missing key" }, { status: 401 });
   const url = new URL(req.url);
   const days = Math.min(31, Math.max(1, Number(url.searchParams.get("days")) || 7));
   const store = getStore("events");

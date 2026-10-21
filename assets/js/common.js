@@ -68,6 +68,31 @@
   var SK = {};
   SK.root = ROOT;
 
+  // ---- Usage counting (only when an Umami website id is set in build/config.json) ----
+  // Counts what people use: tool, option picked, download, error. Never file names or file contents.
+  var PAGE = location.pathname.replace(/^\/+|\/+$/g, '').replace(/\/index\.html$/, '') || 'home';
+  var trackQueue = [];
+  function sendTracks() {
+    if (!(window.umami && window.umami.track)) return false;
+    while (trackQueue.length) { var q = trackQueue.shift(); try { window.umami.track(q[0], q[1]); } catch (e) {} }
+    return true;
+  }
+  SK.track = function (name, data) {
+    if (!CFG.umamiId) return;
+    var d = { tool: PAGE };
+    for (var k in (data || {})) if (Object.prototype.hasOwnProperty.call(data, k)) d[k] = String(data[k]).slice(0, 60);
+    trackQueue.push([name, d]);
+    if (!sendTracks()) {   // tracker still loading: try again shortly
+      var tries = 0, iv = setInterval(function () { if (sendTracks() || ++tries > 40) clearInterval(iv); }, 250);
+    }
+  };
+  function ext(name) { var m = /\.([A-Za-z0-9]{1,5})$/.exec(name || ''); return m ? m[1].toLowerCase() : 'other'; }
+  // Main action buttons ("Make my PDF smaller", "Use this example"...)
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.btn-big, [data-track]');
+    if (b) SK.track('action', { button: b.getAttribute('data-track') || (b.textContent || '').replace(/\s+/g, ' ').trim() });
+  }, true);
+
   SK.bytes = function (n) {
     if (n < 1024) return n + ' bytes';
     if (n < 1024 * 1024) return (n / 1024).toFixed(n < 10240 ? 1 : 0) + ' KB';
@@ -86,6 +111,7 @@
 
   SK.download = function (blob, filename) {
     filename = SK.safeName(filename);
+    SK.track('download', { type: ext(filename) });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url; a.download = filename;
@@ -99,6 +125,7 @@
     function guard(files) {
       var big = files.filter(function (f) { return f.size > 300 * 1024 * 1024; });
       if (big.length && !window.confirm('“' + big[0].name + '” is very large (' + SK.bytes(big[0].size) + '). It may be slow or fail on a phone. Continue?')) return;
+      SK.track('file-chosen', { files: files.length, type: ext(files[0] && files[0].name) });
       onFiles(files);
     }
     input.addEventListener('change', function () {
@@ -121,6 +148,7 @@
   SK.status = function (el, kind, text, pct) {
     if (!kind) { el.className = 'status'; el.innerHTML = ''; return; }
     el.className = 'status show ' + kind;
+    if (kind === 'err') SK.track('error', { message: String(text || '').replace(/“[^”]*”|"[^"]*"/g, '…') });
     el.setAttribute('role', kind === 'err' ? 'alert' : 'status');
     el.textContent = text;
     if (typeof pct === 'number') {
@@ -147,6 +175,7 @@
       b.addEventListener('click', function () {
         btns.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
         b.setAttribute('aria-pressed', 'true');
+        SK.track('option', { group: container.id || 'choice', value: b.getAttribute('data-value') });
         if (onChange) onChange(b.getAttribute('data-value'));
       });
     });

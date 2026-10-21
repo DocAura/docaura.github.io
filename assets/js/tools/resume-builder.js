@@ -138,7 +138,7 @@
     b.insertBefore(bf, b.querySelector('.tpl-tag'));
     b.setAttribute('data-best', (t.best || []).join('|') + '|' + (t.tag === 'ats' ? 'ATS' : 'Stylish') + (t.photo ? '|Photo' : ''));
     b.addEventListener('click', function () {
-      data.tpl = t.id; showTheme(); changed(true); closeDesigns();
+      data.tpl = t.id; showTheme(); changed(true); closeDesigns(); SK.track('resume-design', { design: t.id, from: 'all-designs' });
     });
     grid.appendChild(b);
   });
@@ -169,7 +169,7 @@
     b.addEventListener('click', function () {
       var id = b.getAttribute('data-design');
       if (!R.byId[id]) return;
-      data.tpl = id; showTheme(); changed(true);
+      data.tpl = id; showTheme(); changed(true); SK.track('resume-design', { design: id, from: 'showcase' });
       SK.status(status, 'ok', 'Design chosen: ' + R.byId[id].name + '. Now fill in your details.');
       var target = $('fill-h'); if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       setTimeout(function () { $('f-name').focus({ preventScroll: true }); }, 500);
@@ -202,6 +202,7 @@
     if (hasContent() && !confirm('Replace what you typed with the example?')) return;
     var keep = { tpl: data.tpl, color: data.color, photo: data.photo, font: data.font, paper: data.paper };
     data = JSON.parse(JSON.stringify(SAMPLES[$('sample-kind').value] || SAMPLE)); Object.assign(data, keep); refreshAll();
+    SK.track('resume-example', { example: $('sample-kind').value, from: 'menu' });
   });
   $('clear').addEventListener('click', function () {
     if (hasContent() && !confirm('Clear everything and start empty?')) return;
@@ -261,6 +262,7 @@
       var jsPDF = await SK.jsPDF();
       var name = (R.clean(data.name) || 'my').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-');
       var blob = buildPdf(jsPDF).output('blob');
+      SK.track('resume-download', { design: data.tpl, font: data.font || 'theme', paper: data.paper || 'a4' });
       SK.download(blob, name + '-resume.pdf');
       SK.status(status, 'ok', 'Your resume has been downloaded (' + SK.bytes(blob.size) + '). Good luck!');
     } catch (e) { SK.status(status, 'err', SK.errText(e)); }
@@ -276,6 +278,7 @@
     var jd = $('jd').value, m = jd.match(new RegExp('(^|[^A-Za-z0-9])(' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')(?![A-Za-z0-9])', 'i'));
     if (m) return m[2]; return k.length <= 4 && !/\./.test(k) ? k.toUpperCase() : k.replace(/\b([a-z])/g, function (m) { return m.toUpperCase(); }); }
   function runMatch() {
+    SK.track('job-match');
     var jd = $('jd').value.trim(), box = $('match-out');
     if (jd.split(/\s+/).length < 25) { box.hidden = false; box.innerHTML = '<p class="status show err" role="alert">Please paste the full job advert (at least a few lines).</p>'; return; }
     var r = SKCheck.analyze(data, jd);
@@ -342,6 +345,7 @@
         var keep = { tpl: data.tpl, color: data.color, photo: data.photo, font: data.font, paper: data.paper };
         data = JSON.parse(JSON.stringify(SAMPLES[ex])); Object.assign(data, keep);
         if ($('sample-kind')) $('sample-kind').value = ex;
+        SK.track('resume-example', { example: ex, from: 'example-page' });
         note.push('The ' + label + ' example is filled in — change it to your own details.');
       }
     }

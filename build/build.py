@@ -301,7 +301,8 @@ def support_html(r, kind):
           '<figcaption>Scan with GPay, PhonePe, Paytm or any UPI app.<br>Type <b>any amount you wish</b>.</figcaption></figure>') % r if SUP_UPI else ''
     return ('<div class="support sup-full"><div class="sup-cup big" aria-hidden="true">☕</div>'
             '<div class="sup-btns center">%s%s</div>%s'
-            '<p class="hint" style="text-align:center;margin:0">Payments go straight to my UPI / Buy Me a Coffee account. DocAura never sees your card or bank details.</p></div>') % (upi_btn, bmc_btn, qr)
+            '<p class="hint" style="text-align:center;margin:0">Payments go straight to my %s. DocAura never sees your card or bank details.</p></div>') % (upi_btn, bmc_btn, qr,
+            ' / Buy Me a Coffee account'.join(['UPI', '']) if (SUP_UPI and SUP_BMC) else ('UPI account' if SUP_UPI else 'Buy Me a Coffee account'))
 
 def csp():
     """Content-Security-Policy: only our own scripts run, and pages cannot send data to other websites.

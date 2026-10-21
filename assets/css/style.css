@@ -442,3 +442,12 @@ a.show-use { text-decoration: none; }
 .sup-btns .btn { flex: 1 1 auto; justify-content: center; }
 @media (min-width: 700px) { .sup-btns .btn { flex: 0 1 auto; } }
 .sup-btns .btn { white-space: nowrap; }
+/* Support page: QR + button first, side by side on computers */
+.sup-full { margin: 10px 0 24px; }
+@media (min-width: 760px) {
+  .sup-full { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "cup qr" "btns qr" "note note"; align-items: center; text-align: left; gap: 14px 40px; padding: 30px 40px; }
+  .sup-full .sup-cup { grid-area: cup; margin: 0; }
+  .sup-full .sup-btns { grid-area: btns; justify-content: flex-start; }
+  .sup-full .sup-qr { grid-area: qr; margin: 0; }
+  .sup-full > .hint { grid-area: note; text-align: center; }
+}

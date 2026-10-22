@@ -5,7 +5,7 @@ export const SITE_ORIGIN = 'https://docaura.github.io';
 export const EVENTS = new Set(['pageview', 'file-chosen', 'option', 'action', 'download', 'error', 'time-on-tool',
   'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click', 'click', 'page-leave']);
 const SEP = '~';
-const clean = (v, n = 40, slash = false) => String(v ?? '').replace(slash ? /[~\\\n\r\t]/g : /[~\/\\\n\r\t]/g, ' ').replace(slash ? /[^\p{L}\p{N} .,:_()+#%\/-]/gu : /[^\p{L}\p{N} .,:_()+#%-]/gu, '').trim().slice(0, n) || '-';
+const clean = (v, n = 40, slash = false) => String(v ?? '').replace(slash ? /[~\\\n\r\t]/g : /[~\/\\\n\r\t]/g, ' ').replace(slash ? /[^\p{L}\p{M}\p{N} .,:_()+#%\/-]/gu : /[^\p{L}\p{M}\p{N} .,:_()+#%-]/gu, '').trim().slice(0, n) || '-';
 const b64 = (s) => Buffer.from(s, 'utf8').toString('base64url');
 const unb64 = (s) => { try { return JSON.parse(Buffer.from(s, 'base64url').toString('utf8')); } catch { return {}; } };
 

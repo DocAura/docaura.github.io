@@ -30,3 +30,18 @@
     if (best) location.href = best.href;
   });
 })();
+
+// "Came from YouTube?" strip: shown only to visitors arriving from YouTube (or a link tagged utm_source=youtube)
+(function () {
+  var strip = document.getElementById('yt-strip'); if (!strip) return;
+  var KEY = 'docaura-yt';
+  function store(v) { try { if (v === undefined) return sessionStorage.getItem(KEY); sessionStorage.setItem(KEY, v); } catch (e) { return null; } }
+  var ref = document.referrer || '', fromYT = false;
+  try { fromYT = /(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(new URL(ref).hostname); } catch (e) {}
+  if (/com\.google\.android\.youtube/.test(ref) || /[?&]utm_source=youtube/i.test(location.search)) fromYT = true;
+  if (fromYT) store('1');
+  if (store() !== '1') return;           // remembered for this visit, so it's still there if they come back to the homepage
+  strip.hidden = false;
+  if (window.SK && SK.track) SK.track('yt-strip-shown', {}, true);
+  document.getElementById('yt-close').addEventListener('click', function () { strip.hidden = true; store('0'); });
+})();

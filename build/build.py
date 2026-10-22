@@ -340,6 +340,15 @@ def hindi_pages(parsed):
     if SUPPORT_ON:
         cards.insert(6, '<a class="tool sup-tool" href="{{R}}support/" data-keys="support chai चाय सपोर्ट" data-track="support-grid"><span class="ic sup-ic">' + CHAI_SVG + '</span><span class="t">मुझे चाय पिलाएं</span><span class="d">DocAura पसंद आया? अपनी मर्ज़ी से कुछ भी दें। 💜</span></a>')
     home = """<main id="main">
+<section class="yt-strip" id="yt-strip" hidden aria-labelledby="yt-h"><div class="wrap"><div class="yt-card">
+  <button type="button" class="yt-close" id="yt-close" aria-label="बंद करें">×</button>
+  <p class="yt-hi" id="yt-h">👋 YouTube वीडियो से आए हैं? <b>यहाँ से शुरू करें:</b></p>
+  <div class="yt-btns">
+    <a class="yt-btn" href="{{R}}hi/resize-image-to-20kb/" data-yt="photo-20kb"><span class="yt-ic">📸</span><span><b>फ़ोटो को 20KB करें</b><small>परीक्षा और नौकरी के फ़ॉर्म</small></span></a>
+    <a class="yt-btn" href="{{R}}hi/compress-pdf-to-200kb/" data-yt="pdf-200kb"><span class="yt-ic">📄</span><span><b>PDF को 200KB करें</b><small>फ़्री PDF एडिटर</small></span></a>
+    <a class="yt-btn" href="{{R}}hi/resume-builder/" data-yt="resume"><span class="yt-ic">📝</span><span><b>फ़्री रिज़्यूमे</b><small>बिना लॉगिन, बिना वॉटरमार्क</small></span></a>
+  </div>
+</div></div></section>
 <section class="hero"><div class="wrap"><div class="card-pink">
   <span class="chip">{{ICON:shield:22:#3B2D8F}} आपकी फ़ाइलें आपके फ़ोन या कंप्यूटर से बाहर नहीं जातीं</span>
   <h1>आज आप क्या करना चाहते हैं?</h1>

@@ -158,10 +158,10 @@
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href]');
     if (!a || a.closest('[data-track]') || a.hasAttribute('data-track')) return;
-    var label = (a.querySelector('.t') || a).textContent.replace(/\s+/g, ' ').trim().slice(0, 40) || a.getAttribute('aria-label') || 'link';
+    var label = a.getAttribute('data-yt') || (a.querySelector('.t, b') || a).textContent.replace(/\s+/g, ' ').trim().slice(0, 40) || a.getAttribute('aria-label') || 'link';
     var href = a.getAttribute('href') || '', to;
     try { var u = new URL(href, location.href); to = u.origin === location.origin ? u.pathname : u.hostname; } catch (er) { to = 'other'; }
-    var area = a.closest('header') ? 'top menu' : a.closest('footer') ? 'footer' : a.closest('#tool-grid') ? 'tool list' : a.closest('.related, .show-grid, .guide-grid') ? 'suggestions' : 'page';
+    var area = a.closest('.yt-strip') ? 'youtube strip' : a.closest('header') ? 'top menu' : a.closest('footer') ? 'footer' : a.closest('#tool-grid') ? 'tool list' : a.closest('.related, .show-grid, .guide-grid') ? 'suggestions' : 'page';
     SK.track('click', { label: label, to: to, area: area }, true);
   }, true);
   // How far down people scroll and how long they stay, sent once when they leave the page

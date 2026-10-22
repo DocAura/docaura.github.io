@@ -3,7 +3,7 @@
 // dashboard only needs to LIST keys - no read-modify-write counters, no race conditions.
 export const SITE_ORIGIN = 'https://docaura.github.io';
 export const EVENTS = new Set(['pageview', 'file-chosen', 'option', 'action', 'download', 'error', 'time-on-tool',
-  'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click', 'click', 'page-leave']);
+  'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click', 'click', 'page-leave', 'yt-strip-shown']);
 const SEP = '~';
 const clean = (v, n = 40, slash = false) => String(v ?? '').replace(slash ? /[~\\\n\r\t]/g : /[~\/\\\n\r\t]/g, ' ').replace(slash ? /[^\p{L}\p{M}\p{N} .,:_()+#%\/-]/gu : /[^\p{L}\p{M}\p{N} .,:_()+#%-]/gu, '').trim().slice(0, n) || '-';
 const b64 = (s) => Buffer.from(s, 'utf8').toString('base64url');

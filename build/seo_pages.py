@@ -169,7 +169,7 @@ def hubs(TH):
     tp = '''<main id="main" class="wrap">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="{{R}}">Home</a> › Resume templates</nav>
   <article class="article"><h1>Free resume templates</h1>
-    <p class="lead" style="max-width:820px">25 free resume templates — ATS-friendly, simple, Harvard, modern and creative with photo. Fill them in online and download a clean PDF. No sign-up, no watermark, no payment at the end.</p>
+    <p class="lead" style="max-width:820px">25 free resume templates — ATS-friendly, simple, Harvard, modern and creative with photo. Fill them in online and download a clean PDF. No sign-up, no watermark — your first download is free.</p>
     %(promise)s</article>
   <section class="section"><h2>Browse by style</h2>%(tc)s</section>
   <section class="section"><h2>All 25 templates</h2><div class="show-grid">%(all)s</div></section>

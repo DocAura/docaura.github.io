@@ -12,7 +12,8 @@
   var LABEL = { 'pageview': 'Opened a page', 'file-chosen': 'Chose a file', 'option': 'Picked an option', 'action': 'Pressed a main button',
     'download': 'Downloaded a file', 'error': 'Saw an error', 'time-on-tool': 'Time spent recorded', 'resume-design': 'Picked a resume design',
     'resume-example': 'Opened a resume example', 'resume-download': 'Downloaded a resume', 'job-match': 'Ran job match',
-    'support-shown': 'Saw the chai card', 'support-click': 'Tapped Buy me a chai', 'click': 'Tapped', 'page-leave': 'Left the page' };
+    'support-shown': 'Saw the chai card', 'support-click': 'Tapped Buy me a chai', 'click': 'Tapped', 'page-leave': 'Left the page',
+    'pay-shown': 'Saw the resume payment box', 'pay-open': 'Opened UPI app to pay', 'pay-free': 'Used the free resume download', 'pay-claim': 'Said they paid (UTR typed)' };
   var region = null; try { region = new Intl.DisplayNames(['en'], { type: 'region' }); } catch (e) {}
   function country(c) { if (!c || c === '--' || c === '-') return 'Unknown'; try { return region ? region.of(c) : c; } catch (e) { return c; } }
   function pageName(p) { return p === '/' ? 'Homepage' : p.replace(/^\/|\/$/g, ''); }
@@ -65,6 +66,16 @@
     rank($('events'), s.events, function (k) { return LABEL[k] || k; });
     rank($('tot'), s.timeOnTool);
     rank($('support'), s.support);
+    var P = s.pay || { claims: [] }, rows = $('payRows'); rows.innerHTML = '';
+    $('paySum').textContent = 'Claimed: ₹' + (P.total || 0) + ' from ' + P.claims.length + ' payment' + (P.claims.length === 1 ? '' : 's') +
+      ' · free downloads used: ' + (P.free || 0) + ' · saw payment box: ' + (P.shown || 0) + ' · opened UPI app: ' + (P.opened || 0);
+    if (!P.claims.length) { var tr0 = el('tr'); var td0 = el('td', null, 'No payments yet'); td0.colSpan = 5; tr0.appendChild(td0); rows.appendChild(tr0); }
+    P.claims.forEach(function (c) {
+      var tr = el('tr');
+      [new Date(c.ts).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }), '₹' + c.amount, c.downloads, '…' + c.utr, (c.city || '') + (c.region ? ', ' + c.region : '')]
+        .forEach(function (v) { tr.appendChild(el('td', null, String(v))); });
+      rows.appendChild(tr);
+    });
     rank($('refs'), s.refs, null, 10);
     rank($('taps'), s.taps, null, 12);
     rank($('cities'), s.cities, null, 12);

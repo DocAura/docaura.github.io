@@ -594,3 +594,14 @@ a.show-use { text-decoration: none; }
 
 /* ---- Transparent preview ---- */
 canvas.checker { background: repeating-conic-gradient(#e9e6f2 0% 25%, #fff 0% 50%) 0 0 / 22px 22px; }
+
+/* ---- Resume download packs (UPI) ---- */
+.pay-back { position: fixed; inset: 0; background: rgba(27,19,64,.55); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
+.pay-box { background: var(--white); border-radius: var(--r-md); padding: clamp(20px, 4vw, 32px); width: min(480px, 100%); display: flex; flex-direction: column; gap: 14px; box-shadow: var(--clay); max-height: calc(100vh - 32px); overflow-y: auto; }
+.pay-box h2 { margin: 0; }
+.pay-box .hint { margin: 0; }
+.pay-area { display: flex; flex-direction: column; align-items: center; gap: 8px; background: var(--ground); border-radius: 18px; padding: 16px; text-align: center; }
+.pay-area .btn-big { width: 100%; }
+.pay-qr { width: 200px; height: 200px; border-radius: 12px; }
+.pay-upi { margin: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; word-break: break-all; }
+.pay-after { margin: 0; font-weight: 700; }

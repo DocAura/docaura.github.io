@@ -3,7 +3,7 @@
 // dashboard only needs to LIST keys - no read-modify-write counters, no race conditions.
 export const SITE_ORIGIN = 'https://docaura.github.io';
 export const EVENTS = new Set(['pageview', 'file-chosen', 'option', 'action', 'download', 'error', 'time-on-tool',
-  'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click', 'click', 'page-leave', 'yt-strip-shown']);
+  'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click', 'click', 'page-leave', 'yt-strip-shown', 'pay-shown', 'pay-open', 'pay-free', 'pay-claim']);
 const SEP = '~';
 const clean = (v, n = 40, slash = false) => String(v ?? '').replace(slash ? /[~\\\n\r\t]/g : /[~\/\\\n\r\t]/g, ' ').replace(slash ? /[^\p{L}\p{M}\p{N} .,:_()+#%\/-]/gu : /[^\p{L}\p{M}\p{N} .,:_()+#%-]/gu, '').trim().slice(0, n) || '-';
 const b64 = (s) => Buffer.from(s, 'utf8').toString('base64url');
@@ -48,7 +48,7 @@ export function refHost(r) {
 // Turn a list of parsed events into everything the dashboard shows
 export function summarise(events, todayStr) {
   const S = { days: {}, hours: Array(24).fill(0).map(() => ({ views: 0, visitors: new Set() })), pages: {}, events: {}, props: {},
-    countries: {}, cities: {}, devices: {}, refs: {}, support: {}, timeOnTool: {}, taps: {}, scroll: {}, stay: {}, recent: [] };
+    countries: {}, cities: {}, devices: {}, refs: {}, support: {}, timeOnTool: {}, taps: {}, scroll: {}, stay: {}, recent: [], pay: { free: 0, shown: 0, opened: 0, claims: [] } };
   const dayVisitors = {}, todayVisitors = new Set();
   for (const e of events) {
     if (e.dev === 'bot') continue;
@@ -68,8 +68,12 @@ export function summarise(events, todayStr) {
       if (e.ev === 'support-click') { d.supportClicks++; const k = (e.props.button || '?') + ' · ' + (e.props.where || '?'); S.support[k] = (S.support[k] || 0) + 1; }
       if (e.ev === 'click') { const k = (e.props.label || e.props.to || '?') + (e.props.to && e.props.label ? ' → ' + e.props.to : ''); S.taps[k] = (S.taps[k] || 0) + 1; }
       if (e.ev === 'page-leave') { const sc = e.props.scroll || '?'; S.scroll[sc] = (S.scroll[sc] || 0) + 1; const st = e.props.time || '?'; S.stay[st] = (S.stay[st] || 0) + 1; }
+      if (e.ev === 'pay-free') S.pay.free++;
+      if (e.ev === 'pay-shown') S.pay.shown++;
+      if (e.ev === 'pay-open') S.pay.opened++;
+      if (e.ev === 'pay-claim') S.pay.claims.push({ ts: e.ts, amount: Number(e.props.amount) || 0, downloads: Number(e.props.downloads) || 0, utr: String(e.props.utr || '').replace(/\D/g, '').slice(-6), city: e.city, region: e.region, visitor: e.vid.slice(0, 6) });
       if (e.ev === 'time-on-tool') { const k = e.props.time || '?'; S.timeOnTool[k] = (S.timeOnTool[k] || 0) + 1; }
-      if (e.ev !== 'click' && e.ev !== 'page-leave') for (const [k, v] of Object.entries(e.props)) { if (k === 'seconds') continue; const pk = e.ev + ' → ' + k; ((S.props[pk] ||= {})[v] = (S.props[pk][v] || 0) + 1); }
+      if (e.ev !== 'click' && e.ev !== 'page-leave' && e.ev !== 'pay-claim') for (const [k, v] of Object.entries(e.props)) { if (k === 'seconds') continue; const pk = e.ev + ' → ' + k; ((S.props[pk] ||= {})[v] = (S.props[pk][v] || 0) + 1); }
     }
     if (day === todayStr) {
       todayVisitors.add(e.vid);
@@ -78,6 +82,8 @@ export function summarise(events, todayStr) {
       S.hours[hr].visitors.add(e.vid);
     }
   }
+  S.pay.claims.sort((a, b) => b.ts - a.ts);
+  S.pay.total = S.pay.claims.reduce((t, c) => t + c.amount, 0);
   for (const [day, set] of Object.entries(dayVisitors)) S.days[day].visitors = set.size;
   S.hours = S.hours.map((h) => ({ views: h.views, visitors: h.visitors.size }));
   S.today = { day: todayStr, visitors: todayVisitors.size, ...(S.days[todayStr] || { views: 0, events: 0, downloads: 0, supportClicks: 0 }) };

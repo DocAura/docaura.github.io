@@ -257,7 +257,7 @@
   $('next-p').addEventListener('click', function () { if (pdfDoc && pageNo < pdfDoc.numPages) { pageNo++; safeDraw(); } });
   SK.onWidthChange(function () { if (pdfDoc) safeDraw(); });
 
-  $('dl').addEventListener('click', async function () {
+  async function downloadResume() {
     try {
       var jsPDF = await SK.jsPDF();
       var name = (R.clean(data.name) || 'my').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-');
@@ -265,7 +265,12 @@
       SK.track('resume-download', { design: data.tpl, font: data.font || 'theme', paper: data.paper || 'a4' });
       SK.download(blob, name + '-resume.pdf');
       SK.status(status, 'ok', 'Your resume has been downloaded (' + SK.bytes(blob.size) + '). Good luck!');
-    } catch (e) { SK.status(status, 'err', SK.errText(e)); }
+      return true;
+    } catch (e) { SK.status(status, 'err', SK.errText(e)); return false; }
+  }
+  // First download free, then small UPI packs (assets/js/pay.js)
+  $('dl').addEventListener('click', function () {
+    if (window.SKPay) window.SKPay.allow(status, downloadResume); else downloadResume();
   });
 
   // ---------- Check my resume ----------

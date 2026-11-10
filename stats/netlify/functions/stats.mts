@@ -27,6 +27,18 @@ export default async (req: Request, context: Context) => {
   }
   const s: any = summarise(events, today);
   s.generatedAt = now; s.rangeDays = days; s.totalEvents = events.length;
+  // Paid users (email for Google sign-in, else only their restore code). No passwords exist anywhere.
+  try {
+    const acc = getStore({ name: "accounts", consistency: "strong" });
+    const { blobs } = await acc.list({ prefix: "a/" });
+    const list: any[] = [];
+    for (const b of blobs.slice(0, 500)) {
+      const a: any = await acc.get(b.key, { type: "json" }); if (!a) continue;
+      list.push({ who: a.email || a.code, google: !!a.email, credits: a.credits, paid: (a.claims || []).reduce((t: number, c: any) => t + (c.amount || 0), 0),
+        utrs: (a.claims || []).filter((c: any) => c.utr !== "device").map((c: any) => c.utr), last: a.last });
+    }
+    s.accounts = list.sort((x, y) => y.last - x.last);
+  } catch { s.accounts = []; }
   return Response.json(s, { headers: { "cache-control": "no-store" } });
 };
 

@@ -613,3 +613,7 @@ canvas.checker { background: repeating-conic-gradient(#e9e6f2 0% 25%, #fff 0% 50
 .share-after .sh-btns { display: flex; flex-wrap: wrap; gap: 10px; }
 .share-after .sh-btns .btn { flex: 1 1 150px; }
 .share-after .sh-wa { background: #1DA851; }
+.acct-bar { margin-top: 10px; font-size: 16px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.pay-code { margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; background: var(--ground); border-radius: 16px; padding: 14px; }
+.pay-code b { font: 800 26px/1.2 ui-monospace, Menlo, Consolas, monospace; letter-spacing: 1px; color: var(--indigo); }
+.pay-g { display: flex; justify-content: center; min-height: 44px; }

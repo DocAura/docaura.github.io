@@ -66,6 +66,15 @@
     rank($('events'), s.events, function (k) { return LABEL[k] || k; });
     rank($('tot'), s.timeOnTool);
     rank($('support'), s.support);
+    var arows = $('accRows'); arows.innerHTML = '';
+    if (!(s.accounts || []).length) { var t0 = el('tr'); var d0 = el('td', null, 'No paid users yet'); d0.colSpan = 5; t0.appendChild(d0); arows.appendChild(t0); }
+    (s.accounts || []).forEach(function (a) {
+      var tr = el('tr');
+      [(a.google ? '📧 ' : '🔑 ') + a.who, '₹' + a.paid, a.credits, (a.utrs || []).map(function (u) { return '…' + u; }).join(', '),
+       new Date(a.last).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })]
+        .forEach(function (v) { tr.appendChild(el('td', null, String(v))); });
+      arows.appendChild(tr);
+    });
     var P = s.pay || { claims: [] }, rows = $('payRows'); rows.innerHTML = '';
     $('paySum').textContent = 'Claimed: ₹' + (P.total || 0) + ' from ' + P.claims.length + ' payment' + (P.claims.length === 1 ? '' : 's') +
       ' · free downloads used: ' + (P.free || 0) + ' · saw payment box: ' + (P.shown || 0) + ' · opened UPI app: ' + (P.opened || 0);

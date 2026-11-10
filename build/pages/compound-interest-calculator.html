@@ -1,0 +1,46 @@
+<!---
+{
+ "title": "Compound Interest Calculator — Daily, Monthly, Yearly with Monthly Additions",
+ "desc": "Free compound interest calculator in any currency: starting amount, interest rate, years, compounding frequency and optional monthly contributions. See final balance and interest earned.",
+ "h1": "Compound interest calculator",
+ "sub": "See how money grows with compound interest — in any currency, with optional monthly additions.",
+ "steps": [
+  "Amount",
+  "Rate & time",
+  "See balance"
+ ],
+ "related": [
+  "sip-calculator",
+  "fd-calculator",
+  "emi-calculator",
+  "percentage-calculator"
+ ],
+ "faq": [
+  [
+   "What is compound interest?",
+   "Interest earned on your interest. Each period, interest is added to the balance, so the next period’s interest is a little bigger."
+  ],
+  [
+   "What is the formula?",
+   "A = P × (1 + r/n)^(n × t), where P is the starting amount, r the yearly rate, n how many times a year interest is added, and t the years. Monthly additions are added at the end of each month."
+  ],
+  [
+   "Does more frequent compounding help?",
+   "A little. Daily compounding gives slightly more than yearly at the same rate — the rate itself and the time matter much more."
+  ]
+ ],
+ "slug": "compound-interest-calculator",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="compound">
+  <div class="row"><div><label class="field-label" for="cur">Currency</label><select class="input" id="cur"><option value="INR">₹ Indian rupee</option><option value="USD">$ US dollar</option><option value="EUR">€ Euro</option><option value="GBP">£ British pound</option><option value="AED">AED UAE dirham</option><option value="CAD">CA$ Canadian dollar</option><option value="AUD">A$ Australian dollar</option><option value="SGD">S$ Singapore dollar</option><option value="SAR">SAR Saudi riyal</option></select></div><div><label class="field-label" for="p">Starting amount</label><input class="input" id="p" type="number" inputmode="decimal" step="100" value="10000"></div><div><label class="field-label" for="add">Monthly addition (optional)</label><input class="input" id="add" type="number" inputmode="decimal" step="10" value="0"></div></div><div class="row"><div><label class="field-label" for="r">Interest rate (% a year)</label><input class="input" id="r" type="number" inputmode="decimal" step="0.05" value="8"></div><div><label class="field-label" for="y">Years</label><input class="input" id="y" type="number" inputmode="decimal" step="1" value="10"></div></div>
+  <div><span class="field-label" id="freq-l">Interest added</span><div class="choices" id="freq" role="group" aria-labelledby="freq-l"><button type="button" class="choice" data-value="12" aria-pressed="true">Monthly</button><button type="button" class="choice" data-value="4" aria-pressed="false">Quarterly</button><button type="button" class="choice" data-value="1" aria-pressed="false">Yearly</button><button type="button" class="choice" data-value="365" aria-pressed="false">Daily</button></div></div>
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to use the compound interest calculator</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Pick currency and amount</b><span>Any currency; add a monthly contribution if you save regularly.</span></div><div class="step"><span class="num">2</span><b>Type rate and years</b><span>And how often interest is added.</span></div><div class="step"><span class="num">3</span><b>See the result</b><span>Final balance, total put in and interest earned.</span></div></div></section>

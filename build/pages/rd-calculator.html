@@ -1,0 +1,46 @@
+<!---
+{
+ "title": "RD Calculator — Recurring Deposit Maturity Amount (Bank & Post Office)",
+ "desc": "Calculate the maturity amount and interest of a recurring deposit with monthly deposits and quarterly compounding, as banks and post offices use. Free RD calculator.",
+ "h1": "RD calculator",
+ "sub": "Find out how much your monthly recurring deposit will become at maturity.",
+ "steps": [
+  "Monthly deposit",
+  "Rate & months",
+  "See maturity"
+ ],
+ "related": [
+  "fd-calculator",
+  "sip-calculator",
+  "ppf-calculator",
+  "emi-calculator"
+ ],
+ "faq": [
+  [
+   "How is RD maturity calculated?",
+   "Each monthly deposit earns interest from the month it is paid, compounded every quarter, as banks and India Post do."
+  ],
+  [
+   "Is RD better than SIP?",
+   "RD gives a fixed, safe return. SIP in mutual funds can give more over the long term but goes up and down with the market."
+  ],
+  [
+   "Is RD interest taxable?",
+   "Yes, RD interest is taxed at your slab rate, and TDS may apply."
+  ]
+ ],
+ "slug": "rd-calculator",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="rd">
+  <div class="row"><div><label class="field-label" for="m">Monthly deposit (₹)</label><input class="input" id="m" type="number" inputmode="decimal" step="100" value="2000"></div><div><label class="field-label" for="r">Interest rate (% a year)</label><input class="input" id="r" type="number" inputmode="decimal" step="0.05" value="6.7"></div><div><label class="field-label" for="n">Months</label><input class="input" id="n" type="number" inputmode="decimal" step="1" value="60"></div></div>
+  
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to use the RD calculator</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Type monthly deposit</b><span>The fixed amount you will pay every month.</span></div><div class="step"><span class="num">2</span><b>Type rate and months</b><span>For example 6.7% for 60 months.</span></div><div class="step"><span class="num">3</span><b>See maturity</b><span>Total deposited, interest and maturity value.</span></div></div></section>

@@ -1,0 +1,50 @@
+<!---
+{
+ "title": "SIP Calculator — Mutual Fund SIP & Lumpsum Returns with Step-up (Free)",
+ "desc": "Calculate the future value of your monthly SIP or one-time lumpsum investment, with yearly step-up. See total invested and estimated gains instantly. Free mutual fund SIP calculator.",
+ "h1": "SIP calculator",
+ "sub": "See how much your monthly SIP or one-time investment could grow to — with an optional yearly step-up.",
+ "steps": [
+  "Amount",
+  "Return & years",
+  "See value"
+ ],
+ "related": [
+  "fd-calculator",
+  "ppf-calculator",
+  "compound-interest-calculator",
+  "emi-calculator"
+ ],
+ "faq": [
+  [
+   "How is SIP return calculated?",
+   "Each monthly instalment grows at the expected monthly rate (yearly return ÷ 12) until the end. This is the same method most fund websites use. Real returns change every year — this is an estimate, not a promise."
+  ],
+  [
+   "What is a step-up SIP?",
+   "You increase your SIP amount every year, for example by 10% when your salary rises. Even a small step-up makes a big difference over 15–20 years."
+  ],
+  [
+   "What return should I assume?",
+   "Many people use 10–12% a year for equity funds over long periods, and 6–7% for debt funds. Past returns do not guarantee future returns."
+  ],
+  [
+   "Is this investment advice?",
+   "No. It is a maths tool to help you plan. Mutual fund investments are subject to market risks — read the scheme documents or talk to a registered adviser."
+  ]
+ ],
+ "slug": "sip-calculator",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="sip">
+  <div><span class="field-label" id="mode-l">Investment type</span><div class="choices" id="mode" role="group" aria-labelledby="mode-l"><button type="button" class="choice" data-value="sip" aria-pressed="true">Monthly SIP</button><button type="button" class="choice" data-value="lump" aria-pressed="false">One-time lumpsum</button></div></div>
+  <div class="row" data-sip="sip"><div><label class="field-label" for="m">Monthly SIP (₹)</label><input class="input" id="m" type="number" inputmode="decimal" step="100" value="5000"></div><div><label class="field-label" for="step">Yearly step-up (%)</label><input class="input" id="step" type="number" inputmode="decimal" step="1" value="0"></div></div><div class="row" data-sip="lump" hidden><div><label class="field-label" for="lp">Lumpsum amount (₹)</label><input class="input" id="lp" type="number" inputmode="decimal" step="1000" value="100000"></div></div><div class="row"><div><label class="field-label" for="r">Expected return (% a year)</label><input class="input" id="r" type="number" inputmode="decimal" step="0.1" value="12"></div><div><label class="field-label" for="y">Years</label><input class="input" id="y" type="number" inputmode="decimal" step="1" value="10"></div></div>
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to use the SIP calculator</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Pick SIP or lumpsum</b><span>Monthly SIP for regular investing, lumpsum for a one-time amount.</span></div><div class="step"><span class="num">2</span><b>Type amount, return and years</b><span>Add a yearly step-up if you plan to increase your SIP.</span></div><div class="step"><span class="num">3</span><b>See the value</b><span>Invested amount, estimated gain and final value update instantly.</span></div></div></section>

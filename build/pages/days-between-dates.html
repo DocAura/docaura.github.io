@@ -1,0 +1,46 @@
+<!---
+{
+ "title": "Days Between Dates Calculator — Count Days, Weeks & Working Days",
+ "desc": "Count the days between two dates, including weekdays and weeks, or add and subtract days from a date. Free date calculator for deadlines, notice periods, visas and pregnancy.",
+ "h1": "Days between dates",
+ "sub": "Count days, weeks and working days between two dates — or find the date after adding days.",
+ "steps": [
+  "Pick dates",
+  "Choose options",
+  "See result"
+ ],
+ "related": [
+  "age-calculator",
+  "percentage-calculator",
+  "time-zone-converter",
+  "emi-calculator"
+ ],
+ "faq": [
+  [
+   "Is the end date included?",
+   "By default no — from 1 to 2 January is 1 day. Tick “Include the end date” to count both days, as many notice periods and leave rules do."
+  ],
+  [
+   "What counts as a working day?",
+   "Monday to Friday. Public holidays are not removed, because they differ by country and state."
+  ],
+  [
+   "How do I find the date 90 days from today?",
+   "Choose “Add / subtract days”, keep today’s date, type 90 and pick Add."
+  ]
+ ],
+ "slug": "days-between-dates",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="days">
+  <div><span class="field-label" id="mode-l">What do you want?</span><div class="choices" id="mode" role="group" aria-labelledby="mode-l"><button type="button" class="choice" data-value="between" aria-pressed="true">Days between two dates</button><button type="button" class="choice" data-value="add" aria-pressed="false">Add / subtract days</button></div></div>
+  <div class="row" data-dm="between"><div><label class="field-label" for="d1">Start date</label><input class="input" id="d1" type="date"></div><div><label class="field-label" for="d2">End date</label><input class="input" id="d2" type="date"></div></div><label data-dm="between" style="display:flex;align-items:center;gap:12px;font-weight:700;cursor:pointer;min-height:44px"><input type="checkbox" id="incl" style="width:26px;height:26px;accent-color:#3B2D8F"> Include the end date</label><div class="row" data-dm="add" hidden><div><label class="field-label" for="d3">Start date</label><input class="input" id="d3" type="date"></div><div><label class="field-label" for="nd">Number of days</label><input class="input" id="nd" type="number" inputmode="decimal" step="1" value="90"></div></div><div data-dm="add" hidden><div><span class="field-label" id="dir-l"></span><div class="choices" id="dir" role="group" aria-labelledby="dir-l"><button type="button" class="choice" data-value="add" aria-pressed="true">Add</button><button type="button" class="choice" data-value="sub" aria-pressed="false">Subtract</button></div></div></div>
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to count days between dates</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Pick the dates</b><span>Start and end, or a start date and number of days.</span></div><div class="step"><span class="num">2</span><b>Choose options</b><span>Include the end date if your rule says so.</span></div><div class="step"><span class="num">3</span><b>See the result</b><span>Days, weeks, working days and hours.</span></div></div></section>

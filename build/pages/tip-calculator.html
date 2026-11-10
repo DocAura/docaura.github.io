@@ -1,0 +1,42 @@
+<!---
+{
+ "title": "Tip Calculator — Split the Bill & Calculate Tip per Person",
+ "desc": "Calculate the tip and split the bill between friends in any currency. Choose tip %, number of people and see what each person pays. Free tip and bill split calculator.",
+ "h1": "Tip & bill split calculator",
+ "sub": "Work out the tip and how much each person pays — in any currency.",
+ "steps": [
+  "Bill",
+  "Tip & people",
+  "Each pays"
+ ],
+ "related": [
+  "percentage-calculator",
+  "unit-converter",
+  "gst-calculator",
+  "time-zone-converter"
+ ],
+ "faq": [
+  [
+   "How much should I tip?",
+   "It depends on the country: about 15–20% in the USA, 10–12.5% in the UK (check for a service charge), and around 5–10% in India where service charge is not added."
+  ],
+  [
+   "Is tip calculated before or after tax?",
+   "Usually on the amount before tax. Type the pre-tax amount if you want to follow that rule."
+  ]
+ ],
+ "slug": "tip-calculator",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="tip">
+  <div class="row"><div><label class="field-label" for="cur">Currency</label><select class="input" id="cur"><option value="INR">₹ Indian rupee</option><option value="USD">$ US dollar</option><option value="EUR">€ Euro</option><option value="GBP">£ British pound</option><option value="AED">AED UAE dirham</option><option value="CAD">CA$ Canadian dollar</option><option value="AUD">A$ Australian dollar</option><option value="SGD">S$ Singapore dollar</option><option value="SAR">SAR Saudi riyal</option></select></div><div><label class="field-label" for="bill">Bill amount</label><input class="input" id="bill" type="number" inputmode="decimal" step="1" value="2400"></div><div><label class="field-label" for="tp">Tip (%)</label><input class="input" id="tp" type="number" inputmode="decimal" step="1" value="10"></div><div><label class="field-label" for="ppl">People</label><input class="input" id="ppl" type="number" inputmode="decimal" step="1" value="4"></div></div>
+  
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to split a bill</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Type the bill</b><span>Pick your currency first.</span></div><div class="step"><span class="num">2</span><b>Choose tip % and people</b><span>Change them any time.</span></div><div class="step"><span class="num">3</span><b>See each share</b><span>Tip, total and what each person pays.</span></div></div></section>

@@ -1,0 +1,50 @@
+<!---
+{
+ "title": "Unit Converter — Length, Weight, Area, Volume, Speed & Temperature",
+ "desc": "Convert units instantly: cm to inches, kg to lb, feet to metres, °C to °F, acres to hectares, litres to gallons, km/h to mph and more. Free, simple unit converter.",
+ "h1": "Unit converter",
+ "sub": "Convert length, weight, area, volume, speed and temperature instantly.",
+ "steps": [
+  "Pick type",
+  "Type value",
+  "See result"
+ ],
+ "related": [
+  "bmi-calculator",
+  "percentage-calculator",
+  "tip-calculator",
+  "time-zone-converter"
+ ],
+ "faq": [
+  [
+   "How many cm in an inch?",
+   "1 inch = 2.54 cm exactly."
+  ],
+  [
+   "How do I convert °C to °F?",
+   "°F = °C × 9/5 + 32. So 37 °C = 98.6 °F."
+  ],
+  [
+   "How many kg is a pound?",
+   "1 lb = 0.45359237 kg, so 1 kg ≈ 2.2046 lb."
+  ],
+  [
+   "Acre to hectare?",
+   "1 acre = 0.404686 hectare; 1 hectare ≈ 2.471 acres."
+  ]
+ ],
+ "slug": "unit-converter",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="units">
+  <div><span class="field-label" id="cat-l">Convert</span><div class="choices" id="cat" role="group" aria-labelledby="cat-l"><button type="button" class="choice" data-value="length" aria-pressed="true">Length</button><button type="button" class="choice" data-value="weight" aria-pressed="false">Weight</button><button type="button" class="choice" data-value="temp" aria-pressed="false">Temperature</button><button type="button" class="choice" data-value="area" aria-pressed="false">Area</button><button type="button" class="choice" data-value="volume" aria-pressed="false">Volume</button><button type="button" class="choice" data-value="speed" aria-pressed="false">Speed</button></div></div>
+  <div class="row"><div><label class="field-label" for="uv">Value</label><input class="input" id="uv" type="number" inputmode="decimal" step="any" value="1"></div><div><label class="field-label" for="uf">From</label><select class="input" id="uf"></select></div><div><label class="field-label" for="ut">To</label><select class="input" id="ut"></select></div></div>
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to convert units</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Pick the type</b><span>Length, weight, temperature, area, volume or speed.</span></div><div class="step"><span class="num">2</span><b>Type the value and units</b><span>Choose what to convert from and to.</span></div><div class="step"><span class="num">3</span><b>See the answer</b><span>Exact conversions, updated as you type.</span></div></div></section>

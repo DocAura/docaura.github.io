@@ -1,6 +1,10 @@
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var inr = function (v) { return '₹' + Math.round(v).toLocaleString('en-IN'); };
+  var inr = function (v) {
+    var c = $('cur') ? $('cur').value : 'INR';
+    try { return new Intl.NumberFormat(c === 'INR' ? 'en-IN' : 'en', { style: 'currency', currency: c, maximumFractionDigits: 0 }).format(v); }
+    catch (e) { return Math.round(v).toLocaleString(); }
+  };
   function row(k, v, big) { return '<div' + (big ? ' class="big"' : '') + '><span>' + k + '</span><b>' + v + '</b></div>'; }
   function calc(user) {
     var P = Number($('p').value), R = Number($('r').value), n = Number($('n').value) * ($('u').value === 'y' ? 12 : 1);
@@ -19,6 +23,6 @@
     $('sched').innerHTML = h + '</tbody></table>';
     if (user) SK.used('calculate');
   }
-  ['p', 'r', 'n', 'u'].forEach(function (id) { $(id).addEventListener('input', function () { calc(true); }); $(id).addEventListener('change', function () { calc(true); }); });
+  ['p', 'r', 'n', 'u', 'cur'].forEach(function (id) { $(id).addEventListener('input', function () { calc(true); }); $(id).addEventListener('change', function () { calc(true); }); });
   calc(false);
 })();

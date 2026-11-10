@@ -3,12 +3,17 @@
   <url><loc>https://docaura.github.io/</loc><lastmod>2026-11-10</lastmod><priority>1.0</priority></url>
   <url><loc>https://docaura.github.io/about/</loc><lastmod>2026-11-10</lastmod><priority>0.4</priority></url>
   <url><loc>https://docaura.github.io/age-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/bmi-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/compound-interest-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/compress-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/contact/</loc><lastmod>2026-11-10</lastmod><priority>0.3</priority></url>
   <url><loc>https://docaura.github.io/cover-letter/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/days-between-dates/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/edit-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/emi-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/fd-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/fill-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/gratuity-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/gst-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/guides/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
   <url><loc>https://docaura.github.io/guides/bank-exam-photo-signature-size/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
@@ -26,6 +31,7 @@
   <url><loc>https://docaura.github.io/heic-to-jpg/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/image-converter/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/image-to-text/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/income-tax-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/jpg-to-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/merge-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/organize-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
@@ -36,18 +42,25 @@
   <url><loc>https://docaura.github.io/pdf-to-word/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/percentage-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/photo-signature-joiner/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/ppf-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/privacy/</loc><lastmod>2026-11-10</lastmod><priority>0.3</priority></url>
   <url><loc>https://docaura.github.io/protect-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/qr-code-generator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/rd-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/remove-background/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/resize-image/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/resume-builder/</loc><lastmod>2026-11-10</lastmod><priority>0.9</priority></url>
+  <url><loc>https://docaura.github.io/salary-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/sign-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/signature-resize/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/sip-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/split-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/support/</loc><lastmod>2026-11-10</lastmod><priority>0.3</priority></url>
   <url><loc>https://docaura.github.io/terms/</loc><lastmod>2026-11-10</lastmod><priority>0.2</priority></url>
+  <url><loc>https://docaura.github.io/time-zone-converter/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/tip-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/typing-test/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
+  <url><loc>https://docaura.github.io/unit-converter/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/unlock-pdf/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/word-counter/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/compress-pdf-to-100kb/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
@@ -80,6 +93,11 @@
   <url><loc>https://docaura.github.io/personal-loan-emi-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
   <url><loc>https://docaura.github.io/reverse-gst-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
   <url><loc>https://docaura.github.io/character-counter/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
+  <url><loc>https://docaura.github.io/mortgage-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
+  <url><loc>https://docaura.github.io/lumpsum-calculator/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
+  <url><loc>https://docaura.github.io/ist-to-est/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
+  <url><loc>https://docaura.github.io/ist-to-pst/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
+  <url><loc>https://docaura.github.io/celsius-to-fahrenheit/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>
   <url><loc>https://docaura.github.io/resume-examples/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/resume-templates/</loc><lastmod>2026-11-10</lastmod><priority>0.8</priority></url>
   <url><loc>https://docaura.github.io/resume-examples/software-engineer/</loc><lastmod>2026-11-10</lastmod><priority>0.7</priority></url>

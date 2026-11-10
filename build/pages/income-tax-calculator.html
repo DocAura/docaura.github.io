@@ -1,0 +1,50 @@
+<!---
+{
+ "title": "Income Tax Calculator FY 2026-27 — New vs Old Regime (India)",
+ "desc": "Calculate your income tax for FY 2026-27 (AY 2027-28) under the new and old regimes in one go. Standard deduction, ₹12 lakh rebate, cess and surcharge included. See which regime saves more.",
+ "h1": "Income tax calculator",
+ "sub": "Compare your tax under the new and old regime for FY 2026-27 and see which one saves you more.",
+ "steps": [
+  "Income",
+  "Deductions",
+  "Compare"
+ ],
+ "related": [
+  "salary-calculator",
+  "ppf-calculator",
+  "gst-calculator",
+  "emi-calculator"
+ ],
+ "faq": [
+  [
+   "What are the new regime slabs for FY 2026-27?",
+   "Up to ₹4 lakh: nil; ₹4–8 lakh: 5%; ₹8–12 lakh: 10%; ₹12–16 lakh: 15%; ₹16–20 lakh: 20%; ₹20–24 lakh: 25%; above ₹24 lakh: 30%. Salaried people get a ₹75,000 standard deduction."
+  ],
+  [
+   "Is income up to ₹12 lakh tax-free?",
+   "Under the new regime, a rebate makes tax zero if taxable income is up to ₹12 lakh — up to ₹12.75 lakh salary after the standard deduction. Just above ₹12 lakh, marginal relief keeps the tax no higher than the extra income."
+  ],
+  [
+   "What deductions work in the old regime?",
+   "80C (PPF, EPF, ELSS, LIC — up to ₹1.5 lakh), 80D health insurance, home-loan interest, HRA and others. Add them all in the deductions box. The new regime allows almost none of these."
+  ],
+  [
+   "Is this exact?",
+   "It is an estimate for individuals using the published slabs, 4% cess and surcharge. Special incomes (capital gains, lottery) have their own rates. For filing, use the Income Tax Department website or a tax professional."
+  ]
+ ],
+ "slug": "income-tax-calculator",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="tax">
+  <div class="row"><div><label class="field-label" for="sal">Yearly salary (₹)</label><input class="input" id="sal" type="number" inputmode="decimal" step="1000" value="1500000"></div><div><label class="field-label" for="oth">Other income (₹, interest, rent…)</label><input class="input" id="oth" type="number" inputmode="decimal" step="1000" value="0"></div><div><label class="field-label" for="ded">Old regime deductions (₹, 80C, 80D, HRA…)</label><input class="input" id="ded" type="number" inputmode="decimal" step="1000" value="150000"></div></div>
+  <div><span class="field-label" id="age-l">Your age (old regime)</span><div class="choices" id="age" role="group" aria-labelledby="age-l"><button type="button" class="choice" data-value="0" aria-pressed="true">Below 60</button><button type="button" class="choice" data-value="60" aria-pressed="false">60 to 79</button><button type="button" class="choice" data-value="80" aria-pressed="false">80 or above</button></div></div>
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to use the income tax calculator</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Type your income</b><span>Yearly salary and any other income.</span></div><div class="step"><span class="num">2</span><b>Add your deductions</b><span>Only needed for the old regime.</span></div><div class="step"><span class="num">3</span><b>Compare</b><span>See tax in both regimes and which saves more.</span></div></div></section>

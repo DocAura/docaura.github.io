@@ -1,0 +1,46 @@
+<!---
+{
+ "title": "FD Calculator — Fixed Deposit Maturity & Interest (Bank FD Calculator)",
+ "desc": "Find the maturity amount and interest on a fixed deposit for any amount, rate and time, with quarterly, monthly or yearly compounding — like SBI, HDFC, ICICI and post office FDs. Free.",
+ "h1": "FD calculator",
+ "sub": "Find your fixed deposit maturity amount and interest — with the same compounding banks use.",
+ "steps": [
+  "Amount",
+  "Rate & time",
+  "See maturity"
+ ],
+ "related": [
+  "rd-calculator",
+  "ppf-calculator",
+  "sip-calculator",
+  "compound-interest-calculator"
+ ],
+ "faq": [
+  [
+   "How do banks calculate FD interest?",
+   "Most Indian banks compound FD interest every quarter. Maturity = P × (1 + r/400)^(4 × years). Choose “Quarterly” for bank FDs."
+  ],
+  [
+   "Is FD interest taxable?",
+   "Yes. FD interest is added to your income and taxed at your slab rate. Banks deduct TDS if interest crosses the yearly limit; submit Form 15G/15H if eligible."
+  ],
+  [
+   "Do senior citizens get more?",
+   "Usually 0.25%–0.50% extra. Type your bank’s senior citizen rate in the rate box."
+  ]
+ ],
+ "slug": "fd-calculator",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="fd">
+  <div class="row"><div><label class="field-label" for="p">Deposit amount (₹)</label><input class="input" id="p" type="number" inputmode="decimal" step="1000" value="100000"></div><div><label class="field-label" for="r">Interest rate (% a year)</label><input class="input" id="r" type="number" inputmode="decimal" step="0.05" value="7"></div></div><div class="row"><div><label class="field-label" for="y">Years</label><input class="input" id="y" type="number" inputmode="decimal" step="1" value="5"></div><div><label class="field-label" for="mo">Extra months</label><input class="input" id="mo" type="number" inputmode="decimal" step="1" value="0"></div></div>
+  <div><span class="field-label" id="freq-l">Compounding</span><div class="choices" id="freq" role="group" aria-labelledby="freq-l"><button type="button" class="choice" data-value="4" aria-pressed="true">Quarterly (banks)</button><button type="button" class="choice" data-value="12" aria-pressed="false">Monthly</button><button type="button" class="choice" data-value="2" aria-pressed="false">Half-yearly</button><button type="button" class="choice" data-value="1" aria-pressed="false">Yearly</button></div></div>
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to use the FD calculator</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Type the deposit</b><span>The amount you will keep in the FD.</span></div><div class="step"><span class="num">2</span><b>Type rate and time</b><span>Use the rate from your bank for that period.</span></div><div class="step"><span class="num">3</span><b>See maturity</b><span>Maturity amount and total interest update instantly.</span></div></div></section>

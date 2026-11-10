@@ -1,0 +1,50 @@
+<!---
+{
+ "title": "CTC to In-Hand Salary Calculator 2026 — Monthly Take-Home (India)",
+ "desc": "Convert your CTC to monthly in-hand salary: PF, gratuity, professional tax and income tax (new regime FY 2026-27) deducted. Free take-home salary calculator for India.",
+ "h1": "CTC to in-hand salary",
+ "sub": "Find your real monthly take-home salary from your CTC — after PF, tax and other deductions.",
+ "steps": [
+  "CTC",
+  "Basic & PF",
+  "See in-hand"
+ ],
+ "related": [
+  "income-tax-calculator",
+  "gratuity-calculator",
+  "emi-calculator",
+  "percentage-calculator"
+ ],
+ "faq": [
+  [
+   "Why is in-hand salary less than CTC ÷ 12?",
+   "CTC includes the employer’s PF and gratuity, which you don’t get monthly. Your own PF, professional tax and income tax are then deducted from your gross salary."
+  ],
+  [
+   "What basic % should I use?",
+   "Check your offer letter. Under the new labour codes many companies keep basic at about 50% of CTC; older offers often use 40%."
+  ],
+  [
+   "Is the tax exact?",
+   "It uses the new regime with the ₹75,000 standard deduction. If you choose the old regime or have other income, use our Income tax calculator."
+  ],
+  [
+   "How much is professional tax?",
+   "It depends on your state — up to ₹2,500 a year in most states, and nil in some (like Delhi and Haryana). Change the box to match."
+  ]
+ ],
+ "slug": "salary-calculator",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="salary">
+  <div class="row"><div><label class="field-label" for="ctc">Yearly CTC (₹)</label><input class="input" id="ctc" type="number" inputmode="decimal" step="1000" value="800000"></div><div><label class="field-label" for="basic">Basic as % of CTC</label><input class="input" id="basic" type="number" inputmode="decimal" step="1" value="50"></div><div><label class="field-label" for="pt">Professional tax per year (₹)</label><input class="input" id="pt" type="number" inputmode="decimal" step="100" value="2500"></div></div>
+  <div><span class="field-label" id="pf-l">PF calculated on</span><div class="choices" id="pf" role="group" aria-labelledby="pf-l"><button type="button" class="choice" data-value="full" aria-pressed="true">Full basic</button><button type="button" class="choice" data-value="cap" aria-pressed="false">Basic up to ₹15,000/month</button></div></div><div><span class="field-label" id="grat-l">Gratuity included in CTC?</span><div class="choices" id="grat" role="group" aria-labelledby="grat-l"><button type="button" class="choice" data-value="yes" aria-pressed="true">Yes</button><button type="button" class="choice" data-value="no" aria-pressed="false">No</button></div></div>
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to use the salary calculator</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Type your CTC</b><span>The yearly cost-to-company from your offer letter.</span></div><div class="step"><span class="num">2</span><b>Set basic and PF</b><span>As written in your salary breakup.</span></div><div class="step"><span class="num">3</span><b>See in-hand</b><span>Monthly take-home and every deduction.</span></div></div></section>

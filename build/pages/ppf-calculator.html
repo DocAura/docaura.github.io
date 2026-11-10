@@ -1,0 +1,50 @@
+<!---
+{
+ "title": "PPF Calculator 2026 — Public Provident Fund Maturity at 7.1%",
+ "desc": "Calculate your PPF maturity amount and tax-free interest for 15 years or longer at the current 7.1% rate. Yearly deposit from ₹500 to ₹1.5 lakh. Free PPF calculator.",
+ "h1": "PPF calculator",
+ "sub": "See how much your Public Provident Fund will grow to — tax-free — over 15 years or more.",
+ "steps": [
+  "Yearly deposit",
+  "Rate & years",
+  "See maturity"
+ ],
+ "related": [
+  "sip-calculator",
+  "fd-calculator",
+  "income-tax-calculator",
+  "rd-calculator"
+ ],
+ "faq": [
+  [
+   "What is the current PPF interest rate?",
+   "7.1% a year for October–December 2026. The government reviews it every quarter."
+  ],
+  [
+   "How is PPF interest calculated?",
+   "Interest is compounded once a year. Deposit before the 5th of April (or each month) to earn interest for the full year — this calculator assumes deposits at the start of each year."
+  ],
+  [
+   "How much can I deposit?",
+   "From ₹500 to ₹1,50,000 per financial year. The account matures after 15 years and can be extended in blocks of 5 years."
+  ],
+  [
+   "Is PPF tax-free?",
+   "Under the old tax regime, deposits get a deduction up to ₹1.5 lakh, and interest and maturity are tax-free (EEE)."
+  ]
+ ],
+ "slug": "ppf-calculator",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="ppf">
+  <div class="row"><div><label class="field-label" for="p">Yearly deposit (₹)</label><input class="input" id="p" type="number" inputmode="decimal" step="500" value="150000"></div><div><label class="field-label" for="r">Interest rate (% a year)</label><input class="input" id="r" type="number" inputmode="decimal" step="0.05" value="7.1"></div><div><label class="field-label" for="y">Years (15 or more)</label><input class="input" id="y" type="number" inputmode="decimal" step="5" value="15"></div></div>
+  <p class="hint" style="margin:0">PPF rate 7.1% for Oct–Dec 2026. Check the latest rate before you invest.</p>
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to use the PPF calculator</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Type your yearly deposit</b><span>Between ₹500 and ₹1.5 lakh a year.</span></div><div class="step"><span class="num">2</span><b>Keep 7.1% and 15 years</b><span>Or change them to plan an extension.</span></div><div class="step"><span class="num">3</span><b>See maturity</b><span>Total deposited, tax-free interest and maturity value.</span></div></div></section>

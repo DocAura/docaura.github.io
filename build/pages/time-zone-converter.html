@@ -1,0 +1,42 @@
+<!---
+{
+ "title": "Time Zone Converter — IST to EST, PST, GMT, Dubai, Singapore & More",
+ "desc": "Convert time between time zones with daylight saving handled automatically: IST to EST, IST to PST, GMT to IST, Dubai, Singapore, Sydney and more. Free time zone converter.",
+ "h1": "Time zone converter",
+ "sub": "Convert a meeting time between countries — daylight saving is handled automatically.",
+ "steps": [
+  "Pick time",
+  "Pick zones",
+  "See time"
+ ],
+ "related": [
+  "days-between-dates",
+  "unit-converter",
+  "age-calculator",
+  "tip-calculator"
+ ],
+ "faq": [
+  [
+   "What is the difference between IST and EST?",
+   "India is 10 hours 30 minutes ahead of New York in winter (EST) and 9 hours 30 minutes ahead in summer (EDT)."
+  ],
+  [
+   "Does it handle daylight saving?",
+   "Yes. It uses your browser’s up-to-date time zone rules, so summer and winter times are correct for the date you pick."
+  ]
+ ],
+ "slug": "time-zone-converter",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="tz">
+  <div class="row"><div><label class="field-label" for="td">Date</label><input class="input" id="td" type="date"></div><div><label class="field-label" for="tt">Time</label><input class="input" id="tt" type="time" value="10:00"></div></div><div class="row"><div><label class="field-label" for="z1">From</label><select class="input" id="z1"><option value="Asia/Kolkata" selected>Asia / Kolkata</option><option value="America/New_York">America / New York</option><option value="America/Chicago">America / Chicago</option><option value="America/Denver">America / Denver</option><option value="America/Los_Angeles">America / Los Angeles</option><option value="America/Toronto">America / Toronto</option><option value="Europe/London">Europe / London</option><option value="Europe/Paris">Europe / Paris</option><option value="Europe/Berlin">Europe / Berlin</option><option value="Asia/Dubai">Asia / Dubai</option><option value="Asia/Riyadh">Asia / Riyadh</option><option value="Asia/Singapore">Asia / Singapore</option><option value="Asia/Tokyo">Asia / Tokyo</option><option value="Asia/Shanghai">Asia / Shanghai</option><option value="Asia/Karachi">Asia / Karachi</option><option value="Asia/Dhaka">Asia / Dhaka</option><option value="Asia/Kathmandu">Asia / Kathmandu</option><option value="Australia/Sydney">Australia / Sydney</option><option value="Pacific/Auckland">Pacific / Auckland</option><option value="Africa/Lagos">Africa / Lagos</option><option value="Africa/Johannesburg">Africa / Johannesburg</option><option value="America/Sao_Paulo">America / Sao Paulo</option><option value="UTC">UTC</option></select></div><div><label class="field-label" for="z2">To</label><select class="input" id="z2"><option value="Asia/Kolkata">Asia / Kolkata</option><option value="America/New_York" selected>America / New York</option><option value="America/Chicago">America / Chicago</option><option value="America/Denver">America / Denver</option><option value="America/Los_Angeles">America / Los Angeles</option><option value="America/Toronto">America / Toronto</option><option value="Europe/London">Europe / London</option><option value="Europe/Paris">Europe / Paris</option><option value="Europe/Berlin">Europe / Berlin</option><option value="Asia/Dubai">Asia / Dubai</option><option value="Asia/Riyadh">Asia / Riyadh</option><option value="Asia/Singapore">Asia / Singapore</option><option value="Asia/Tokyo">Asia / Tokyo</option><option value="Asia/Shanghai">Asia / Shanghai</option><option value="Asia/Karachi">Asia / Karachi</option><option value="Asia/Dhaka">Asia / Dhaka</option><option value="Asia/Kathmandu">Asia / Kathmandu</option><option value="Australia/Sydney">Australia / Sydney</option><option value="Pacific/Auckland">Pacific / Auckland</option><option value="Africa/Lagos">Africa / Lagos</option><option value="Africa/Johannesburg">Africa / Johannesburg</option><option value="America/Sao_Paulo">America / Sao Paulo</option><option value="UTC">UTC</option></select></div></div>
+  
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to convert time zones</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Pick date and time</b><span>The time in your city.</span></div><div class="step"><span class="num">2</span><b>Choose the two zones</b><span>From and to.</span></div><div class="step"><span class="num">3</span><b>See the time</b><span>With the day and exact difference.</span></div></div></section>

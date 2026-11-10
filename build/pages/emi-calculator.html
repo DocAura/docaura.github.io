@@ -11,12 +11,13 @@
   ["How is EMI calculated?", "EMI = P × r × (1 + r)^n ÷ ((1 + r)^n − 1), where P is the loan amount, r is the monthly interest rate (yearly rate ÷ 12 ÷ 100) and n is the number of months. This tool does the maths for you."],
   ["Does a longer loan reduce EMI?", "Yes, the monthly EMI goes down, but you pay much more interest in total. Compare the “Total interest” line for 15 vs 20 years to see the difference."],
   ["Is processing fee included?", "No. Banks may also charge a processing fee, insurance or GST on fees. Ask your bank for the full cost."],
-  ["Does this work for other currencies?", "Yes. The maths is the same everywhere — just read ₹ as your own currency."]
+  ["Does this work for other currencies?", "Yes. Choose your currency at the top — rupee, dollar, euro, pound, dirham and more. The maths is the same everywhere."]
  ]}
 --->
 <div class="panel">
   <div class="row">
-    <div><label class="field-label" for="p">Loan amount (₹)</label><input class="input" id="p" type="number" inputmode="decimal" min="0" value="1000000"></div>
+    <div><label class="field-label" for="cur">Currency</label><select class="input" id="cur"><option value="INR">₹ Indian rupee</option><option value="USD">$ US dollar</option><option value="EUR">€ Euro</option><option value="GBP">£ British pound</option><option value="AED">AED UAE dirham</option><option value="CAD">CA$ Canadian dollar</option><option value="AUD">A$ Australian dollar</option><option value="SGD">S$ Singapore dollar</option><option value="SAR">SAR Saudi riyal</option></select></div>
+    <div><label class="field-label" for="p">Loan amount</label><input class="input" id="p" type="number" inputmode="decimal" min="0" value="1000000"></div>
     <div><label class="field-label" for="r">Interest rate (% per year)</label><input class="input" id="r" type="number" inputmode="decimal" min="0" max="60" step="0.05" value="8.5"></div>
     <div><label class="field-label" for="n">Loan time</label>
       <div style="display:flex;gap:8px"><input class="input" id="n" type="number" inputmode="numeric" min="1" value="20" style="flex:1"><select class="input" id="u" style="flex:1"><option value="y">Years</option><option value="m">Months</option></select></div></div>

@@ -54,6 +54,13 @@ ICONS = {
   'magic': '<path d="m4 20 11-11M13 7l4 4"/><path d="M18 2v3M16.5 3.5h3M6 3v2M5 4h2M20 13v2M19 14h2"/>',
   'percent': '<path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
   'join': '<rect x="5" y="2" width="14" height="12" rx="2"/><circle cx="12" cy="7" r="2.2"/><path d="M5 18c2-2 3 1 5-1s3 1 5-1 2 1 4 0M5 22h14"/>',
+  'chart': '<path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 6-7"/><path d="M16 7h4v4"/>',
+  'bank': '<path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/>',
+  'wallet': '<rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 15h2"/><path d="M6 6V5a2 2 0 0 1 2-2h9"/>',
+  'heart': '<path d="M12 20s-7-4.4-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.6-9 9-9 9z"/>',
+  'clock': '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  'ruler': '<path d="m3 17 14-14 4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/>',
+  'tax': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 17 6-6"/><circle cx="9.5" cy="11.5" r="1"/><circle cx="14.5" cy="16.5" r="1"/>',
   'numbers': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M10 17h1.5v-5L10 13M14 12h2.5l-2.5 5h2.5"/>',
 }
 
@@ -89,11 +96,24 @@ TOOLS = [
   dict(slug='qr-code-generator', name='QR code generator', desc='QR for links, UPI, WiFi and WhatsApp. Never expires.', icon='qr', keys='qr code generator upi qr wifi whatsapp link barcode', group='more'),
   dict(slug='unlock-pdf', name='Remove PDF password', desc='Unlock bank statements, e-Aadhaar and salary slips.', icon='unlock', keys='unlock pdf remove password decrypt bank statement aadhaar', group='pdf'),
   dict(slug='protect-pdf', name='Add password to PDF', desc='Lock a PDF with strong AES-256 encryption.', icon='lock', keys='protect pdf password lock encrypt secure', group='pdf'),
-  dict(slug='emi-calculator', name='EMI calculator', desc='Monthly EMI, total interest and schedule for any loan.', icon='calc', keys='emi calculator loan home car personal interest', group='more'),
-  dict(slug='gst-calculator', name='GST calculator', desc='Add or remove GST with CGST, SGST and IGST split.', icon='percent', keys='gst calculator add remove cgst sgst igst 18% tax', group='more'),
+  dict(slug='emi-calculator', name='EMI calculator', desc='Monthly EMI, total interest and schedule for any loan.', icon='calc', keys='emi calculator loan home car personal interest mortgage', group='money'),
+  dict(slug='gst-calculator', name='GST calculator', desc='Add or remove GST with CGST, SGST and IGST split.', icon='percent', keys='gst calculator add remove cgst sgst igst 18% tax', group='money'),
   dict(slug='percentage-calculator', name='Percentage calculator', desc='Marks %, discounts, % increase or decrease.', icon='percent', keys='percentage calculator marks percent discount increase cgpa', group='more'),
   dict(slug='word-counter', name='Word counter', desc='Count words and characters, change text case.', icon='text', keys='word counter character count letters case converter uppercase', group='more'),
   dict(slug='password-generator', name='Password generator', desc='Strong random passwords and easy passphrases.', icon='key', keys='password generator strong random secure passphrase', group='more'),
+  dict(slug='sip-calculator', name='SIP calculator', desc='Mutual fund SIP and lumpsum returns, with step-up.', icon='chart', keys='sip calculator mutual fund lumpsum returns step up investment', group='money', dark=True),
+  dict(slug='income-tax-calculator', name='Income tax calculator', desc='FY 2026-27: new vs old regime, which saves more.', icon='tax', keys='income tax calculator new regime old regime fy 2026-27 slab', group='money'),
+  dict(slug='salary-calculator', name='CTC to in-hand salary', desc='Monthly take-home after PF, tax and deductions.', icon='wallet', keys='salary calculator ctc in hand take home pf', group='money'),
+  dict(slug='fd-calculator', name='FD calculator', desc='Fixed deposit maturity and interest.', icon='bank', keys='fd calculator fixed deposit maturity interest bank', group='money'),
+  dict(slug='rd-calculator', name='RD calculator', desc='Recurring deposit maturity amount.', icon='bank', keys='rd calculator recurring deposit post office', group='money'),
+  dict(slug='ppf-calculator', name='PPF calculator', desc='Public Provident Fund maturity at 7.1%.', icon='bank', keys='ppf calculator public provident fund 7.1', group='money'),
+  dict(slug='compound-interest-calculator', name='Compound interest', desc='Growth in any currency, with monthly additions.', icon='chart', keys='compound interest calculator savings growth investment', group='money'),
+  dict(slug='gratuity-calculator', name='Gratuity calculator', desc='Gratuity from last salary and years of service.', icon='wallet', keys='gratuity calculator 15/26 retirement', group='money'),
+  dict(slug='bmi-calculator', name='BMI calculator', desc='Body Mass Index and healthy weight range.', icon='heart', keys='bmi calculator body mass index weight height', group='more'),
+  dict(slug='days-between-dates', name='Days between dates', desc='Count days, weeks, working days; add days.', icon='calendar', keys='days between dates calculator date difference count days', group='more'),
+  dict(slug='unit-converter', name='Unit converter', desc='cm↔inch, kg↔lb, °C↔°F, acre↔hectare and more.', icon='ruler', keys='unit converter cm inch kg lb celsius fahrenheit feet meter acre', group='more'),
+  dict(slug='tip-calculator', name='Tip & bill split', desc='Tip and each person’s share, any currency.', icon='percent', keys='tip calculator split bill restaurant', group='more'),
+  dict(slug='time-zone-converter', name='Time zone converter', desc='IST to EST, PST, GMT, Dubai and more.', icon='clock', keys='time zone converter ist est pst gmt utc', group='more'),
 ]
 TOOL_BY_SLUG = {t['slug']: t for t in TOOLS}
 
@@ -156,7 +176,7 @@ def tool_card(t, r):
             '<span class="t">%s</span><span class="d">%s</span></a>') % (
         r, t['slug'], html.escape(t['name'].lower() + ' ' + t['keys']), cls, icon(t['icon'], 36, col, 2), t['name'], t['desc'])
 
-GROUPS = [('resume', 'Resume & job'), ('exam', 'Exam & government forms'), ('pdf', 'PDF tools'), ('image', 'Photo & image tools'), ('more', 'Calculators & everyday tools')]
+GROUPS = [('resume', 'Resume & job'), ('exam', 'Exam & government forms'), ('pdf', 'PDF tools'), ('image', 'Photo & image tools'), ('money', 'Money & tax calculators'), ('more', 'Everyday calculators & tools')]
 
 def tool_grid(r, exclude=None):
     out = []
@@ -292,6 +312,10 @@ def tool_variants(parsed):
         bm, bb = bases[v['base']]
         m = copy.deepcopy(bm); body = bb
         for gid, val in v.get('pick', {}).items(): body = pick_choice(body, gid, val)
+        for sid, val in v.get('select', {}).items():
+            m0 = re.search(r'(<select[^>]*id="%s".*?</select>)' % re.escape(sid), body, re.S)
+            if not m0 or ('value="%s"' % val) not in m0.group(1): raise SystemExit('select %s=%s not found in %s' % (sid, val, v['base']))
+            body = body.replace(m0.group(1), m0.group(1).replace(' selected', '').replace('value="%s"' % val, 'value="%s" selected' % val, 1))
         for iid, val in v.get('values', {}).items():
             body, n = re.subn(r'(id="%s"[^>]*?value=")[^"]*' % re.escape(iid), lambda mm: mm.group(1) + val, body)
             if not n: raise SystemExit('input %s not found in %s' % (iid, v['base']))

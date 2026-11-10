@@ -1,0 +1,50 @@
+<!---
+{
+ "title": "Gratuity Calculator 2026 — How Much Gratuity Will I Get? (India)",
+ "desc": "Calculate your gratuity from last basic salary + DA and years of service using the Payment of Gratuity Act formula (15/26). Free and instant.",
+ "h1": "Gratuity calculator",
+ "sub": "Find how much gratuity you will get from your last salary and years of service.",
+ "steps": [
+  "Last salary",
+  "Years",
+  "See gratuity"
+ ],
+ "related": [
+  "salary-calculator",
+  "income-tax-calculator",
+  "ppf-calculator",
+  "age-calculator"
+ ],
+ "faq": [
+  [
+   "What is the gratuity formula?",
+   "For employers covered by the Gratuity Act: last monthly basic + DA × 15 ÷ 26 × years of service. If not covered: basic + DA × 15 ÷ 30 × full years."
+  ],
+  [
+   "How are years counted?",
+   "Under the Act, more than 6 months in the last year counts as a full year. 5 years 7 months = 6 years."
+  ],
+  [
+   "When am I eligible?",
+   "Usually after 5 years of continuous service. Fixed-term employees under the new labour codes become eligible after 1 year. The 5-year rule does not apply in case of death or disablement."
+  ],
+  [
+   "Is gratuity tax-free?",
+   "For most private employees, gratuity is tax-free up to ₹20 lakh in your lifetime; government employees have a higher limit. Ask your employer or a tax professional for your case."
+  ]
+ ],
+ "slug": "gratuity-calculator",
+ "tool": true,
+ "scripts": [
+  "assets/js/tools/calcs.js"
+ ]
+}
+--->
+<div class="panel" data-calc="gratuity">
+  <div class="row"><div><label class="field-label" for="w">Last monthly basic + DA (₹)</label><input class="input" id="w" type="number" inputmode="decimal" step="100" value="50000"></div><div><label class="field-label" for="yrs">Years of service</label><input class="input" id="yrs" type="number" inputmode="decimal" step="1" value="10"></div><div><label class="field-label" for="mo">Extra months</label><input class="input" id="mo" type="number" inputmode="decimal" step="1" value="0"></div></div>
+  <div><span class="field-label" id="cov-l">Is your employer covered by the Gratuity Act?</span><div class="choices" id="cov" role="group" aria-labelledby="cov-l"><button type="button" class="choice" data-value="yes" aria-pressed="true">Yes (10+ employees)</button><button type="button" class="choice" data-value="no" aria-pressed="false">No</button></div></div>
+  <div class="calc-out" id="out" aria-live="polite"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to use the gratuity calculator</h2>
+<div class="steps"><div class="step"><span class="num">1</span><b>Type last basic + DA</b><span>From your latest payslip.</span></div><div class="step"><span class="num">2</span><b>Type years and months</b><span>Your total continuous service.</span></div><div class="step"><span class="num">3</span><b>See gratuity</b><span>The amount and the formula used.</span></div></div></section>

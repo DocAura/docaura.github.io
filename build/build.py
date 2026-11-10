@@ -761,7 +761,7 @@ def page(meta, body):
 <title>%(title)s</title>
 <meta name="description" content="%(desc)s">
 %(canonical)s%(hreflang)s%(og)s%(robots)s
-<meta name="theme-color" content="#3B2D8F">
+<meta name="theme-color" content="#3B2D8F">%(adsmeta)s
 <link rel="icon" href="%(r)sassets/img/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="%(r)smanifest.webmanifest">
 <link rel="apple-touch-icon" href="%(r)sassets/img/icon-192.png">
@@ -782,7 +782,7 @@ def page(meta, body):
 </html>
 ''' % dict(csp=csp(), title=html.escape(title), desc=html.escape(meta['desc']), canonical=canonical, og=og, robots=robots, r=r,
            schema=faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url) + crumb_schema(meta), header=header(r, meta.get('active'), lang, alt_link),
-           body=body, footer=footer(r, lang), scripts=scripts, lang=lang, hreflang=hreflang, vcss=ver('assets/css/style.css'), vjs=ver('assets/js/common.js'), vcfg=ver('assets/js/site-config.js'),
+           body=body, footer=footer(r, lang), scripts=scripts, lang=lang, hreflang=hreflang, vcss=ver('assets/css/style.css'), adsmeta=('\n<meta name="google-adsense-account" content="%s">' % html.escape(CONFIG['adsense_client'])) if ADS_ON else '', vjs=ver('assets/js/common.js'), vcfg=ver('assets/js/site-config.js'),
            umami=('\n<script defer src="https://cloud.umami.is/script.js" data-website-id="%s" data-domains="%s"></script>' % (UMAMI_ID, re.sub(r'^https?://', '', SITE_URL).split('/')[0])) if UMAMI_ID and slug != '404' else '',
            analytics=('<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{"token": "%s"}\'></script>' % CF_TOKEN) if CF_TOKEN and slug != '404' else '')
 
@@ -812,6 +812,8 @@ def main():
     parsed += hindi_pages(parsed)
     GUIDES[:] = sorted([m for m, b in parsed if m.get('article')], key=lambda m: m.get('order', 99))
     write_upi_qr()
+    if ADS_ON:  # tells ad buyers that only Google may sell ads on this site
+        open(os.path.join(ROOT, 'ads.txt'), 'w').write('google.com, %s, DIRECT, f08c47fec0942fa0\n' % CONFIG['adsense_client'].replace('ca-', ''))
     if not SUPPORT_ON:
         parsed = [(m, b) for m, b in parsed if m['slug'] != 'support']
     for meta, body in parsed:

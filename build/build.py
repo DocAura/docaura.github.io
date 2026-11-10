@@ -7,7 +7,7 @@ Output goes to the repo root (index.html, compress-pdf/index.html, ...), ready f
 """
 import json, os, re, html, datetime, copy, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import seo_sizes, seo_pages, seo_tools, seo_hindi as HI
+import seo_sizes, seo_pages, seo_tools, seo_hindi as HI, seo_hindi_tools as HIT
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -360,6 +360,25 @@ def hindi_pages(parsed):
                      h1=v['h1'], sub=v['sub'], steps=HI.STEPS[fam], faq=v['faq'] + [HI.PRIVACY_FAQ[fam]], howto_html=how, related_html=rel)
             HI_ALT[v['slug']] = 'hi/' + v['slug']
             out.append((m, body))
+    # exam tools in Hindi (same working tool, Hindi text)
+    for slug, v in HIT.TOOLS.items():
+        bm, bb = bases[slug]
+        body = bb
+        for gid, val in v.get('pick', {}).items(): body = pick_choice(body, gid, val)
+        for en, hi_txt in v['body']:
+            if en not in body: raise SystemExit('Hindi text not found in %s: %s' % (slug, en))
+            body = body.replace(en, hi_txt)
+        ht, steps = v['howto']
+        how = '<section class="section"><h2>%s</h2><div class="steps">%s</div></section>' % (ht, ''.join(
+            '<div class="step"><span class="num">%d</span><b>%s</b><span>%s</span></div>' % (i + 1, a, b) for i, (a, b) in enumerate(steps)))
+        rel = '<nav class="related" aria-label="Related tools">' + ''.join('<a href="{{R}}hi/%s/">%s</a>' % (k, HIT.TOOLS[k]['h1']) for k in HIT.TOOLS if k != slug) + \
+              '<a href="{{R}}hi/resize-image-to-20kb/">फ़ोटो 20KB</a><a href="{{R}}hi/">सभी हिंदी टूल्स</a></nav>'
+        m = copy.deepcopy(bm)
+        m.update(slug='hi/' + slug, lang='hi', alt_en=slug, priority='0.7', title=v['title'], desc=v['desc'], h1=v['h1'], sub=v['sub'],
+                 steps=v['steps'], faq=v['faq'], howto_html=how, related_html=rel)
+        m.pop('family', None)
+        HI_ALT[slug] = 'hi/' + slug
+        out.append((m, body))
     # resume page
     R = HI.RESUME
     body = """<main id="main" class="wrap narrow">
@@ -399,6 +418,10 @@ def hindi_pages(parsed):
                 v['slug'], html.escape(name + ' ' + v['slug'].replace('-', ' ') + ' ' + t['keys']), ' dark' if t.get('dark') else '',
                 icon(t['icon'], 36, '#FFFFFF' if t.get('dark') else '#3B2D8F', 2), name, html.escape(v['sub'])))
     cards.insert(4, '<a class="tool" href="{{R}}hi/resume-builder/" data-keys="resume cv रिज़्यूमे बायोडाटा builder"><span class="ic">%s</span><span class="t">फ़्री रिज़्यूमे बिल्डर</span><span class="d">25 फ़्री डिज़ाइन, साफ़ PDF — बिना वॉटरमार्क।</span></a>' % icon('resume', 36, '#3B2D8F', 2))
+    for k, v in HIT.TOOLS.items():
+        t = TOOL_BY_SLUG[k]
+        cards.append('<a class="tool" href="{{R}}hi/%s/" data-keys="%s"><span class="ic">%s</span><span class="t">%s</span><span class="d">%s</span></a>' % (
+            k, html.escape(v['h1'] + ' ' + t['keys']), icon(t['icon'], 36, '#3B2D8F', 2), v['h1'], html.escape(v['sub'][:70].rsplit(' ', 1)[0] + '…')))
     if SUPPORT_ON:
         cards.insert(6, '<a class="tool sup-tool" href="{{R}}support/" data-keys="support chai चाय सपोर्ट" data-track="support-grid"><span class="ic sup-ic">' + CHAI_SVG + '</span><span class="t">मुझे चाय पिलाएं</span><span class="d">DocAura पसंद आया? अपनी मर्ज़ी से कुछ भी दें। 💜</span></a>')
     home = """<main id="main">
@@ -569,8 +592,27 @@ def write_upi_qr():
     img = qrcode.make(upi_link(), image_factory=qrcode.image.svg.SvgPathImage, box_size=10, border=2)
     img.save(os.path.join(ROOT, 'assets', 'img', 'upi-qr.svg'))
 
+def share_html(lang='en'):
+    """Shown after a download: share with a friend (WhatsApp, Telegram, copy) and install as an app."""
+    hi = lang == 'hi'
+    t = (('मदद मिली? किसी दोस्त को भेजें 💜', 'जो फ़ॉर्म भर रहा है या नौकरी ढूंढ रहा है, उसके काम आएगा।', 'WhatsApp पर भेजें', 'Telegram', 'लिंक कॉपी करें', 'शेयर करें', '📲 ऐप की तरह इंस्टॉल करें')
+         if hi else ('Helped you? Share it with a friend 💜', 'Someone you know is filling a form or applying for a job right now.', 'Send on WhatsApp', 'Telegram', 'Copy link', 'Share…', '📲 Install DocAura app'))
+    return ('<aside class="share-after" data-share-after hidden aria-label="%s"><div class="sh-text"><b>%s</b><span>%s</span></div>'
+            '<div class="sh-btns"><a class="btn sh-wa" data-share="whatsapp" href="#" target="_blank" rel="noopener noreferrer">%s</a>'
+            '<a class="btn btn-light sh-tg" data-share="telegram" href="#" target="_blank" rel="noopener noreferrer">%s</a>'
+            '<button type="button" class="btn btn-light" data-share="copy">%s</button>'
+            '<button type="button" class="btn btn-light" data-share="native" hidden>%s</button>'
+            '<button type="button" class="btn btn-light" data-install hidden>%s</button></div></aside>') % ((t[0],) + t)
+
 def support_html(r, kind, lang='en'):
     """kind: 'after' (shown after a download), 'full' (support page), 'home' (home page teaser)."""
+    if kind == 'after': return share_html(lang) + support_after(r, lang)
+    return support_inner(r, kind, lang)
+
+def support_after(r, lang='en'):
+    return support_inner(r, 'after', lang)
+
+def support_inner(r, kind, lang='en'):
     if not SUPPORT_ON: return ''
     if lang == 'hi' and kind == 'after':
         btn = ('<a class="btn sup-upi" href="%s" data-qr="%ssupport/#qr" data-track="support-upi">मुझे चाय पिलाएं</a>' % (html.escape(upi_link()), r)) if SUP_UPI else ''
@@ -597,6 +639,12 @@ def support_html(r, kind, lang='en'):
             '<div class="sup-btns center">%s%s</div>%s'
             '<p class="hint" style="text-align:center;margin:0">Payments go straight to my %s. DocAura never sees your card or bank details.</p></div>') % (upi_btn, bmc_btn, qr,
             ' / Buy Me a Coffee account'.join(['UPI', '']) if (SUP_UPI and SUP_BMC) else ('UPI account' if SUP_UPI else 'Buy Me a Coffee account'))
+
+def og_image(meta):
+    """Per-tool social preview picture (made by build/og_images.py); falls back to the general one."""
+    for k in (meta.get('family'), meta['slug'].replace('hi/', '')):
+        if k and os.path.exists(os.path.join(ROOT, 'assets', 'img', 'og', k + '.png')): return 'og/%s.png' % k
+    return 'share.png'
 
 def csp():
     """Content-Security-Policy: only our own scripts run, and pages cannot send data to other websites.
@@ -658,7 +706,8 @@ def page(meta, body):
     if SITE_URL:
         og = ('<meta property="og:title" content="%s"><meta property="og:description" content="%s">'
               '<meta property="og:url" content="%s"><meta property="og:type" content="website">'
-              '<meta property="og:image" content="%s/assets/img/share.png">') % (html.escape(title), html.escape(meta['desc']), url, SITE_URL)
+              '<meta property="og:image" content="%s/assets/img/%s"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+              '<meta name="twitter:card" content="summary_large_image">') % (html.escape(title), html.escape(meta['desc']), url, SITE_URL, og_image(meta))
     scripts = ''.join('<script src="%s%s?v=%s" defer></script>' % (r, s, ver(s)) for s in meta.get('scripts', []))
     lang = meta.get('lang', 'en')
     # Language versions: tell Google which page is the Hindi / English twin, and offer a switch
@@ -685,6 +734,8 @@ def page(meta, body):
 %(canonical)s%(hreflang)s%(og)s%(robots)s
 <meta name="theme-color" content="#3B2D8F">
 <link rel="icon" href="%(r)sassets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="%(r)smanifest.webmanifest">
+<link rel="apple-touch-icon" href="%(r)sassets/img/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">

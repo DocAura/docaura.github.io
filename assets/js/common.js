@@ -86,6 +86,35 @@
       [/^Please type a width and height between 10 and 8000 pixels\.$/, 'कृपया 10 से 8000 पिक्सेल के बीच चौड़ाई और ऊंचाई लिखें।'],
       [/^We could only get it down to (.+?)\. Try a bigger size, or split the PDF into fewer pages first\.$/, 'हम इसे सिर्फ़ $1 तक छोटा कर पाए। बड़ा साइज़ चुनें, या पहले PDF के पेज कम करें।'],
       [/^This PDF is already very small — we could not make it smaller without losing quality\.$/, 'यह PDF पहले से बहुत छोटी है — क्वालिटी खराब किए बिना इसे और छोटा नहीं किया जा सकता।'],
+      // Age calculator
+      [/^(\d+) years?, (\d+) months?, (\d+) days?$/, '$1 साल, $2 महीने, $3 दिन'],
+      [/^Total: (.+?) days · (.+?) months · Born on a (\w+) · Next birthday in (\d+) days?$/, function (m, d, mo, wd, nb) {
+        var W = { Monday: 'सोमवार', Tuesday: 'मंगलवार', Wednesday: 'बुधवार', Thursday: 'गुरुवार', Friday: 'शुक्रवार', Saturday: 'शनिवार', Sunday: 'रविवार' };
+        return 'कुल: ' + d + ' दिन · ' + mo + ' महीने · जन्म का दिन: ' + (W[wd] || wd) + ' · अगला जन्मदिन ' + nb + ' दिन में'; }],
+      [/^The “as on” date is before the birth date\.$/, '“उम्र इस तारीख़ पर” वाली तारीख़ जन्म की तारीख़ से पहले है।'],
+      [/^✗ Not eligible yet — you are under (\d+) years on this date\.$/, '✗ अभी योग्य नहीं — इस तारीख़ पर आपकी उम्र $1 साल से कम है।'],
+      [/^✗ Over the age limit — you have completed (\d+) years on this date(?: \(limit includes (\d+) years relaxation\))?\.$/, function (m, a, r) {
+        return '✗ उम्र सीमा से ज़्यादा — इस तारीख़ पर आप ' + a + ' साल पूरे कर चुके हैं' + (r ? ' (सीमा में ' + r + ' साल की छूट शामिल है)' : '') + '।'; }],
+      [/^✓ Eligible by age(?: \(limit (\d+) years( with relaxation)?\))?\.$/, function (m, a, r) {
+        return '✓ उम्र के हिसाब से योग्य' + (a ? ' (सीमा ' + a + ' साल' + (r ? ', छूट के साथ' : '') + ')' : '') + '।'; }],
+      // Signature + photo joiner
+      [/^Please choose a photo of your signature\.$/, 'कृपया अपने साइन की फ़ोटो चुनें।'],
+      [/^Cleaning your signature…$/, 'आपका साइन साफ़ हो रहा है…'], [/^Working…$/, 'काम चल रहा है…'], [/^Opening…$/, 'खुल रहा है…'],
+      [/^Making your image…$/, 'आपकी फ़ोटो बन रही है…'], [/^Done! (.+)$/, 'हो गया! $1'],
+      [/^Please choose a picture \(JPG, PNG or HEIC\)\.$/, 'कृपया एक फ़ोटो चुनें (JPG, PNG या HEIC)।'],
+      [/^✓ Photo added — tap to change$/, '✓ फ़ोटो जुड़ गई — बदलने के लिए टैप करें'], [/^✓ Signature added — tap to change$/, '✓ साइन जुड़ गया — बदलने के लिए टैप करें'],
+      [/^Please type your name\.$/, 'कृपया अपना नाम लिखें।'],
+      [/^Could not fit under (\d+)KB\. Please pick a bigger size\.$/, '$1KB से कम नहीं हो पाया। कृपया बड़ा साइज़ चुनें।'],
+      [/^This pixel size cannot fit under (\d+)KB\. Try “Keep shape” or a bigger KB size\.$/, 'इस पिक्सेल साइज़ में $1KB से कम नहीं हो सकता। “शेप वैसा ही रखें” या बड़ा KB साइज़ चुनें।'],
+      [/^Please type a width of 20–3000 and a height of 10–3000 pixels\.$/, 'कृपया चौड़ाई 20–3000 और ऊंचाई 10–3000 पिक्सेल के बीच लिखें।'],
+      // Typing test
+      [/^Net speed$/, 'नेट स्पीड'], [/^Gross speed$/, 'ग्रॉस स्पीड'], [/^Accuracy$/, 'शुद्धता'], [/^Mistakes$/, 'गलतियां'], [/^Words typed$/, 'टाइप किए शब्द'],
+      [/^(\d+) words$/, '$1 शब्द'], [/^(\d+) WPM · (\d+)% accurate$/, '$1 WPM · $2% सही'],
+      [/^[✓✗] SSC CHSL target:.*$/, function (t) {
+        return t.replace(/SSC CHSL target: (\d+) WPM in Hindi\./, 'SSC CHSL लक्ष्य: हिंदी में $1 WPM।').replace(/SSC CHSL target: (\d+) WPM in English\./, 'SSC CHSL लक्ष्य: अंग्रेज़ी में $1 WPM।')
+          .replace('SSC CGL DEST target: 8,000 KDPH.', 'SSC CGL DEST लक्ष्य: 8,000 KDPH।')
+          .replace('Tip: slow down a little — accuracy above 95% matters more than raw speed.', 'टिप: थोड़ा धीरे टाइप करें — 95% से ज़्यादा शुद्धता स्पीड से ज़्यादा ज़रूरी है।')
+          .replace('Great accuracy! Now practise longer tests (5–10 min).', 'बहुत बढ़िया शुद्धता! अब लंबे टेस्ट (5–10 मिनट) का अभ्यास करें।'); }],
       [/^File name$/, 'फ़ाइल का नाम'],
       [/^Tip: use your name and the assignment, e\.g\. Priya_Maths_Homework3\. Spaces and symbols are removed so upload sites accept it\.$/,
         'टिप: अपना नाम और विषय लिखें, जैसे Priya_Maths_Homework3। स्पेस और चिह्न हटा दिए जाते हैं ताकि वेबसाइट फ़ाइल स्वीकार करे।']
@@ -214,6 +243,7 @@
     // After a successful download, gently show the optional "buy me a chai" card
     setTimeout(function () {
       document.querySelectorAll('[data-support-after][hidden]').forEach(function (el) { el.hidden = false; SK.track('support-shown'); });
+      document.querySelectorAll('[data-share-after][hidden]').forEach(function (el) { el.hidden = false; });
     }, 900);
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
@@ -630,6 +660,44 @@
     parts.push(b.subarray(2));
     return new Blob(parts, { type: 'image/jpeg' });
   };
+
+  // ---- Share with a friend + install as an app ----
+  var installEvt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault(); installEvt = e;
+    document.querySelectorAll('[data-install]').forEach(function (b) { b.hidden = false; });
+  });
+  window.addEventListener('appinstalled', function () { SK.track('share', { via: 'installed' }, true); });
+  document.addEventListener('DOMContentLoaded', function () {
+    var hi = document.documentElement.lang === 'hi';
+    var url = location.origin + location.pathname;
+    var h1 = document.querySelector('h1'), what = h1 ? h1.textContent.trim() : 'DocAura';
+    var text = hi ? ('मुझे यह फ़्री टूल बहुत काम का लगा: ' + what + ' — बिना लॉगिन, बिना वॉटरमार्क 👉 ')
+                  : ('Found this free tool really useful: ' + what + ' — no login, no watermark 👉 ');
+    document.querySelectorAll('[data-share]').forEach(function (b) {
+      var via = b.getAttribute('data-share');
+      if (via === 'whatsapp') b.href = 'https://wa.me/?text=' + encodeURIComponent(text + url);
+      if (via === 'telegram') b.href = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(text);
+      if (via === 'native' && navigator.share) b.hidden = false;
+      b.addEventListener('click', function (e) {
+        SK.track('share', { via: via }, true);
+        if (via === 'copy') { e.preventDefault(); SK.copy(url, b); }
+        if (via === 'native') { e.preventDefault(); navigator.share({ title: what, text: text, url: url }).catch(function () {}); }
+      });
+    });
+    document.querySelectorAll('[data-install]').forEach(function (b) {
+      if (installEvt) b.hidden = false;
+      b.addEventListener('click', function () {
+        if (!installEvt) return;
+        installEvt.prompt(); SK.track('share', { via: 'install-prompt' }, true);
+        installEvt.userChoice.finally(function () { installEvt = null; b.hidden = true; });
+      });
+    });
+  });
+  // Offline support + "install as app": tiny service worker (pages always load fresh when online)
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', function () { navigator.serviceWorker.register(ROOT + 'sw.js').catch(function () {}); });
+  }
 
   window.SK = SK;
 })();

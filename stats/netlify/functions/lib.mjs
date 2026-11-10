@@ -5,7 +5,7 @@ export const SITE_ORIGIN = 'https://docaura.github.io';
 // The site moves to its own domain; accept both while the switch happens
 export const SITE_ORIGINS = new Set(['https://docaura.github.io', 'https://docaura.online', 'https://www.docaura.online']);
 export const EVENTS = new Set(['pageview', 'file-chosen', 'option', 'action', 'download', 'error', 'time-on-tool',
-  'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click', 'click', 'page-leave', 'yt-strip-shown', 'pay-shown', 'pay-open', 'pay-free', 'pay-claim']);
+  'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click', 'click', 'page-leave', 'yt-strip-shown', 'pay-shown', 'pay-open', 'pay-free', 'pay-claim', 'share']);
 const SEP = '~';
 const clean = (v, n = 40, slash = false) => String(v ?? '').replace(slash ? /[~\\\n\r\t]/g : /[~\/\\\n\r\t]/g, ' ').replace(slash ? /[^\p{L}\p{M}\p{N} .,:_()+#%\/-]/gu : /[^\p{L}\p{M}\p{N} .,:_()+#%-]/gu, '').trim().slice(0, n) || '-';
 const b64 = (s) => Buffer.from(s, 'utf8').toString('base64url');

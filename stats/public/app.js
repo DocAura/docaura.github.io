@@ -108,7 +108,7 @@
       w.appendChild(c); box.appendChild(w);
     });
     var feed = $('feed'); feed.innerHTML = '';
-    if (!(s.recent || []).length) feed.appendChild(el('li', 'empty', 'No activity yet. Open docaura.github.io to see yourself appear here.'));
+    if (!(s.recent || []).length) feed.appendChild(el('li', 'empty', 'No activity yet. Open docaura.online to see yourself appear here.'));
     (s.recent || []).forEach(function (e) {
       var li = el('li'), tm = el('time'); var d = new Date(e.ts);
       tm.textContent = d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }) + (range > 1 ? ' ' + d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }) : '');

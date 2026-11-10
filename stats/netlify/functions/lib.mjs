@@ -2,6 +2,8 @@
 // Every event is stored as ONE blob whose KEY holds all its (small, anonymous) data, so the
 // dashboard only needs to LIST keys - no read-modify-write counters, no race conditions.
 export const SITE_ORIGIN = 'https://docaura.github.io';
+// The site moves to its own domain; accept both while the switch happens
+export const SITE_ORIGINS = new Set(['https://docaura.github.io', 'https://docaura.online', 'https://www.docaura.online']);
 export const EVENTS = new Set(['pageview', 'file-chosen', 'option', 'action', 'download', 'error', 'time-on-tool',
   'resume-design', 'resume-example', 'resume-download', 'job-match', 'support-shown', 'support-click', 'click', 'page-leave', 'yt-strip-shown', 'pay-shown', 'pay-open', 'pay-free', 'pay-claim']);
 const SEP = '~';
@@ -36,13 +38,13 @@ export function parseKey(key) {
   return { ts, vid, ev, page, country, dev, ref, props: unb64(props || ''), city: city && city !== '-' ? city : '', region: region && region !== '-' ? region : '' };
 }
 export function validate(body, origin) {
-  if (origin !== SITE_ORIGIN) return 'origin';
+  if (!SITE_ORIGINS.has(origin)) return 'origin';
   if (!body || typeof body !== 'object') return 'body';
   if (!EVENTS.has(body.n)) return 'event';
   return null;
 }
 export function refHost(r) {
-  try { const h = new URL(r).hostname.replace(/^www\./, ''); return h === 'docaura.github.io' ? '' : h; } catch { return ''; }
+  try { const h = new URL(r).hostname.replace(/^www\./, ''); return (h === 'docaura.github.io' || h === 'docaura.online') ? '' : h; } catch { return ''; }
 }
 
 // Turn a list of parsed events into everything the dashboard shows

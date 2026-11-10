@@ -2,7 +2,7 @@
 // Google (we keep only their email address and Google's account number) or keep a restore code.
 // Free users never create an account.
 
-export const GOOGLE_CLIENT_ID = ''; // public OAuth web client id; empty = Google sign-in switched off
+export const GOOGLE_CLIENT_ID = '554580418104-mtjrc0kc5fnfp2aqu8uu26bmq50mc4m2.apps.googleusercontent.com'; // public OAuth web client id; empty = Google sign-in switched off
 const ALPHA = '23456789ABCDEFGHJKMNPQRSTUVWXYZ'; // no 0/O/1/I/L to avoid mix-ups
 const SESSION_DAYS = 180;
 

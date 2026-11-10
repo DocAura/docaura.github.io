@@ -255,6 +255,12 @@ def crumb_schema(meta):
         {"@type": "ListItem", "position": i + 1, "name": n, "item": SITE_URL + '/' + u} for i, (n, u) in enumerate(items)]}
     return '<script type="application/ld+json">%s</script>' % json.dumps(data)
 
+def home_schema(meta):
+    if meta['slug'] not in ('', 'hi') or not SITE_URL: return ''
+    data = [{"@context": "https://schema.org", "@type": "WebSite", "name": BRAND['name'], "url": SITE_URL + '/', "inLanguage": ["en", "hi"]},
+            {"@context": "https://schema.org", "@type": "Organization", "name": BRAND['name'], "url": SITE_URL + '/', "logo": SITE_URL + '/assets/img/icon-512.png'}]
+    return '<script type="application/ld+json">%s</script>' % json.dumps(data, ensure_ascii=False)
+
 def tool_schema(meta, url):
     if not meta.get('tool'): return ''
     data = {"@context": "https://schema.org", "@type": "WebApplication", "name": meta['h1'], "url": url,
@@ -729,7 +735,11 @@ def page(meta, body):
     body = body.replace('{{GUIDE_CARDS}}', guide_cards(r, 6)).replace('{{ALL_GUIDES}}', guide_cards(r))
     body = body.replace('{{EMAIL}}', email_html()).replace('{{R}}', r).replace('{{TOOL_GRID}}', tool_grid(r)).replace('{{BRAND}}', BRAND['name']).replace('{{EMAIL}}', email_html()).replace('{{ANALYTICS_NOTE}}', ANALYTICS_NOTE).replace('{{SUPPORT_AFTER}}', support_html(r, 'after')).replace('{{SUPPORT_HOME}}', support_html(r, 'home')).replace('{{SUPPORT_FULL}}', support_html(r, 'full')).replace('{{UPDATED}}', CONFIG.get('policy_updated', '19 October 2026'))
     body = re.sub(r'\{\{ICON:(\w+):(\d+):([#\w]+)\}\}', lambda m: icon(m.group(1), int(m.group(2)), m.group(3)), body)
-    title = meta['title'] + ('' if BRAND['name'] in meta['title'] else ' | ' + BRAND['name'])
+    from seo_titles import TITLES, short_desc
+    base_t = TITLES.get(slug, meta['title'])
+    sfx = ' | ' + BRAND['name']
+    title = base_t if BRAND['name'] in base_t or len(base_t + sfx) > 60 else base_t + sfx
+    meta = dict(meta, desc=short_desc(meta['desc']))
     canonical = '<link rel="canonical" href="%s">' % url if SITE_URL and slug != '404' else ''
     og = ''
     if SITE_URL:
@@ -781,7 +791,7 @@ def page(meta, body):
 </body>
 </html>
 ''' % dict(csp=csp(), title=html.escape(title), desc=html.escape(meta['desc']), canonical=canonical, og=og, robots=robots, r=r,
-           schema=faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url) + crumb_schema(meta), header=header(r, meta.get('active'), lang, alt_link),
+           schema=home_schema(meta) + faq_schema(meta.get('faq')) + tool_schema(meta, url) + article_schema(meta, url) + crumb_schema(meta), header=header(r, meta.get('active'), lang, alt_link),
            body=body, footer=footer(r, lang), scripts=scripts, lang=lang, hreflang=hreflang, vcss=ver('assets/css/style.css'), adsmeta=('\n<meta name="google-adsense-account" content="%s">' % html.escape(CONFIG['adsense_client'])) if ADS_ON else '', vjs=ver('assets/js/common.js'), vcfg=ver('assets/js/site-config.js'),
            umami=('\n<script defer src="https://cloud.umami.is/script.js" data-website-id="%s" data-domains="%s"></script>' % (UMAMI_ID, re.sub(r'^https?://', '', SITE_URL).split('/')[0])) if UMAMI_ID and slug != '404' else '',
            analytics=('<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{"token": "%s"}\'></script>' % CF_TOKEN) if CF_TOKEN and slug != '404' else '')

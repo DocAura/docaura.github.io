@@ -1,0 +1,37 @@
+<!---
+{"slug": "word-counter", "tool": true,
+ "title": "Word Counter — Count Words, Characters, Sentences & Reading Time (Free)",
+ "desc": "Free online word counter and character counter. Count words, characters with and without spaces, sentences, paragraphs and reading time. Change text to UPPERCASE, lowercase or Title Case. Works for Hindi too.",
+ "h1": "Word & character counter",
+ "sub": "Paste or type your text to count words, characters, sentences and reading time — and change its case in one tap.",
+ "steps": ["Paste text", "See counts", "Copy"],
+ "scripts": ["assets/js/tools/word-counter.js"],
+ "related": ["image-to-text", "typing-test", "percentage-calculator", "pdf-to-word"],
+ "faq": [
+  ["Does it count Hindi and other languages?", "Yes. Words are counted by the spaces between them, so Hindi, Telugu, Tamil and other languages work too."],
+  ["How is reading time worked out?", "Reading time assumes about 200 words per minute, and speaking time about 130 words per minute — useful for speeches and presentations."],
+  ["What are the character limits for social media?", "X (Twitter) posts allow 280 characters, Instagram captions 2,200 and meta descriptions about 155–160 characters. The counter shows your character total live."],
+  ["Is my text saved or sent anywhere?", "No. The counting happens in your browser. Nothing you type is sent to us or stored."]
+ ]}
+--->
+<div class="panel">
+  <label class="sr-only" for="txt">Your text</label>
+  <textarea class="input" id="txt" rows="10" placeholder="Type or paste your text here…"></textarea>
+  <div class="wc-grid" id="counts"></div>
+  <div class="btns">
+    <button type="button" class="btn btn-light btn-small" data-case="upper">UPPERCASE</button>
+    <button type="button" class="btn btn-light btn-small" data-case="lower">lowercase</button>
+    <button type="button" class="btn btn-light btn-small" data-case="title">Title Case</button>
+    <button type="button" class="btn btn-light btn-small" data-case="sentence">Sentence case</button>
+    <button type="button" class="btn btn-light btn-small" data-case="space">Remove extra spaces</button>
+    <button type="button" class="btn btn-small" id="copy">Copy text</button>
+    <button type="button" class="btn btn-light btn-small" id="clear">Clear</button>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to count words</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Paste your text</b><span>From an essay, assignment, post or document.</span></div>
+  <div class="step"><span class="num">2</span><b>Read the counts</b><span>Words, characters, sentences, paragraphs and reading time update as you type.</span></div>
+  <div class="step"><span class="num">3</span><b>Fix and copy</b><span>Change the case or remove extra spaces, then copy.</span></div>
+</div></section>

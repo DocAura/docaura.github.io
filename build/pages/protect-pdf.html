@@ -1,0 +1,46 @@
+<!---
+{"slug": "protect-pdf", "tool": true,
+ "title": "Protect PDF with Password — Lock a PDF Free (AES-256)",
+ "desc": "Add a password to any PDF with strong AES-256 encryption before you email or share it. Free, private — your PDF is locked on your own device and never uploaded.",
+ "h1": "Add a password to a PDF",
+ "sub": "Lock your PDF so only people with the password can open it — before you email or share it.",
+ "steps": ["Choose PDF", "Set password", "Download"],
+ "scripts": ["assets/js/tools/pdf-lock.js"],
+ "related": ["unlock-pdf", "sign-pdf", "compress-pdf", "merge-pdf"],
+ "faq": [
+  ["How strong is the protection?", "The PDF is locked with AES-256 encryption, the strongest standard PDF readers support. Use a password of at least 8 characters that is hard to guess."],
+  ["Will it open on phones and in Adobe Reader?", "Yes. Any normal PDF reader — Chrome, Adobe Reader, phone file viewers — asks for the password and then opens it."],
+  ["What if I forget the password?", "Nobody can open the file without it, including us. Keep the original unlocked file or note the password somewhere safe."],
+  ["Is my PDF uploaded?", "No. The PDF is locked inside your browser and never leaves your device."]
+ ]}
+--->
+<div class="panel" data-mode="protect">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:shield:42:#3B2D8F}}</span>
+    <b>Tap here to choose a PDF</b>
+    <span>or drag it here</span>
+    <input type="file" accept="application/pdf,.pdf" aria-label="Choose a PDF">
+  </label>
+  <ul class="file-list" id="file-info" hidden></ul>
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:18px">
+    <div class="row">
+      <div><label class="field-label" for="pw">New password</label><input class="input" id="pw" type="password" autocomplete="new-password" minlength="4"></div>
+      <div><label class="field-label" for="pw2">Type it again</label><input class="input" id="pw2" type="password" autocomplete="new-password"></div>
+    </div>
+    <label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input type="checkbox" id="show" style="width:22px;height:22px"> Show password</label>
+    <button type="button" class="btn btn-big" id="go">Lock PDF {{ICON:arrow:26:#FFFFFF}}</button>
+  </div>
+  <div class="status" id="status"></div>
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your PDF is locked</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns"><button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download PDF</button><button type="button" class="btn btn-light" id="again">Another PDF</button></div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to put a password on a PDF</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose the PDF</b><span>Any PDF from your phone or computer.</span></div>
+  <div class="step"><span class="num">2</span><b>Set a password</b><span>Type it twice so there are no typing mistakes.</span></div>
+  <div class="step"><span class="num">3</span><b>Download</b><span>Share the locked PDF; send the password separately.</span></div>
+</div></section>

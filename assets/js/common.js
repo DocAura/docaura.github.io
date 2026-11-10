@@ -523,5 +523,113 @@
 
   SK.sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 
+  // Tools without a file (calculators, typing test): record "used" once per page per action name
+  var usedOnce = {};
+  SK.used = function (name, data) {
+    usedTool = true;
+    if (usedOnce[name]) return; usedOnce[name] = 1;
+    SK.track('action', Object.assign({ name: name }, data || {}));
+  };
+
+  // Copy text to the clipboard and briefly change the button label
+  SK.copy = function (text, btn) {
+    function done(ok) {
+      if (!btn) return;
+      var old = btn.getAttribute('data-label') || btn.textContent;
+      btn.setAttribute('data-label', old);
+      btn.textContent = ok ? '✓ Copied' : 'Select and copy';
+      setTimeout(function () { btn.textContent = old; }, 1600);
+    }
+    SK.used('copy');
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+    } else {
+      var t = document.createElement('textarea'); t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      t.remove(); done(ok);
+    }
+  };
+
+  // Best-quality JPG under `limit` bytes. draw(w, h) must return a canvas of that size.
+  // Shrinks the pixels step by step if the quality would get too low. Returns {blob, canvas}.
+  SK.jpegUnder = async function (draw, w, h, limit, keepSize) {
+    async function fit(c) {
+      var lo = 0.05, hi = 0.92;
+      var b = await SK.canvasToBlob(c, 'image/jpeg', hi);
+      if (b.size <= limit) return { blob: b, q: hi };
+      b = await SK.canvasToBlob(c, 'image/jpeg', lo);
+      if (b.size > limit) return null;
+      var best = { blob: b, q: lo };
+      for (var i = 0; i < 7; i++) {
+        var mid = (lo + hi) / 2;
+        b = await SK.canvasToBlob(c, 'image/jpeg', mid);
+        if (b.size <= limit) { best = { blob: b, q: mid }; lo = mid; } else hi = mid;
+      }
+      return best;
+    }
+    var fallback = null;
+    for (var tries = 0; tries < 30; tries++) {
+      var c = draw(w, h), r = await fit(c);
+      if (r && (r.q >= 0.5 || keepSize)) return { blob: r.blob, canvas: c };
+      if (r && !fallback) fallback = { blob: r.blob, canvas: c };
+      if (keepSize || Math.max(w, h) < 60) break;
+      w = Math.max(16, Math.round(w * 0.85)); h = Math.max(16, Math.round(h * 0.85));
+    }
+    return fallback;
+  };
+
+  // Signature photo -> canvas with pure white paper, darker ink, cropped to the ink (with a margin).
+  // clean=false keeps the original colours but still crops.
+  SK.cleanSignature = function (img, clean) {
+    var max = 1600, iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+    var s = Math.min(1, max / Math.max(iw, ih)), w = Math.round(iw * s), h = Math.round(ih * s);
+    var c = document.createElement('canvas'); c.width = w; c.height = h;
+    var x = c.getContext('2d', { willReadFrequently: true });
+    x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(img, 0, 0, w, h);
+    var d = x.getImageData(0, 0, w, h), p = d.data, i, hist = new Array(256).fill(0);
+    for (i = 0; i < p.length; i += 4) hist[(p[i] * 0.3 + p[i + 1] * 0.59 + p[i + 2] * 0.11) | 0]++;
+    // Paper brightness = a high percentile; ink threshold sits well below it
+    var n = w * h, acc = 0, paper = 255;
+    for (i = 255; i >= 0; i--) { acc += hist[i]; if (acc > n * 0.5) { paper = i; break; } }
+    var thr = paper * 0.72, minX = w, minY = h, maxX = -1, maxY = -1;
+    for (var y = 0; y < h; y++) for (var xx = 0; xx < w; xx++) {
+      i = (y * w + xx) * 4;
+      var g = p[i] * 0.3 + p[i + 1] * 0.59 + p[i + 2] * 0.11;
+      var ink = g < thr;
+      if (ink) { if (xx < minX) minX = xx; if (xx > maxX) maxX = xx; if (y < minY) minY = y; if (y > maxY) maxY = y; }
+      if (clean) {
+        if (!ink) { p[i] = p[i + 1] = p[i + 2] = 255; }
+        else { var k = Math.max(0, Math.min(1, g / thr)); var v = Math.round(25 + 60 * k * k);
+          // keep blue ink blue-ish, everything else near-black
+          var blue = p[i + 2] > p[i] + 25 && p[i + 2] > p[i + 1] + 10;
+          p[i] = blue ? Math.round(v * 0.4) : v; p[i + 1] = blue ? Math.round(v * 0.5) : v; p[i + 2] = blue ? Math.min(255, v + 90) : v; }
+      }
+    }
+    if (clean) x.putImageData(d, 0, 0);
+    if (maxX < 0) return c; // no ink found: return the whole picture
+    var m = Math.round(Math.max(maxX - minX, maxY - minY) * 0.08) + 6;
+    minX = Math.max(0, minX - m); minY = Math.max(0, minY - m); maxX = Math.min(w - 1, maxX + m); maxY = Math.min(h - 1, maxY + m);
+    var o = document.createElement('canvas'); o.width = maxX - minX + 1; o.height = maxY - minY + 1;
+    o.getContext('2d').drawImage(c, minX, minY, o.width, o.height, 0, 0, o.width, o.height);
+    return o;
+  };
+
+  // Some forms need a MINIMUM size (e.g. "10KB to 20KB"). A tiny JPG is padded with a harmless
+  // comment block so the picture is unchanged but the file reaches `min` bytes.
+  SK.padJpeg = async function (blob, min) {
+    if (blob.size >= min) return blob;
+    var b = new Uint8Array(await blob.arrayBuffer());
+    if (b[0] !== 0xFF || b[1] !== 0xD8) return blob;
+    var need = min - b.length + 64, parts = [b.subarray(0, 2)];
+    while (need > 0) {
+      var len = Math.min(65533, need), seg = new Uint8Array(len + 4);
+      seg[0] = 0xFF; seg[1] = 0xFE; seg[2] = ((len + 2) >> 8) & 255; seg[3] = (len + 2) & 255;
+      seg.fill(32, 4); parts.push(seg); need -= len + 4;
+    }
+    parts.push(b.subarray(2));
+    return new Blob(parts, { type: 'image/jpeg' });
+  };
+
   window.SK = SK;
 })();

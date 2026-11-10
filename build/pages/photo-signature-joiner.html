@@ -1,0 +1,69 @@
+<!---
+{"slug": "photo-signature-joiner", "tool": true,
+ "title": "Photo and Signature Joiner — Join Photo & Signature in One Image (Free)",
+ "desc": "Join your photo and signature into one image, or add your name and date below the photo, for SSC, UPSC, Railway, bank and state exam forms. Set 20KB, 50KB or 100KB. Free, no upload.",
+ "h1": "Join photo & signature",
+ "sub": "Put your photo and signature together in one picture, or add your name and date under the photo — exactly what many exam forms ask for.",
+ "steps": ["Choose photo", "Add signature or name", "Download"],
+ "scripts": ["assets/js/tools/photo-signature-joiner.js"],
+ "related": ["signature-resize", "resize-image", "age-calculator", "passport-photo"],
+ "faq": [
+  ["Which forms ask for photo and signature in one image?", "Some state police, teacher, university and recruitment forms ask for a single image with the photo on top and the signature below. Always check your form’s instructions for the exact size."],
+  ["Can I add my name and date of photo?", "Yes. Choose “Photo with name & date”, type your name and the date the photo was taken, and they are printed neatly under the photo. UPSC and some other exams ask for this."],
+  ["How do I make it under 50KB?", "Pick 20KB, 50KB or 100KB before you download. The tool keeps the best quality that still fits."],
+  ["Are my photo and signature uploaded?", "No. Everything happens inside your browser. Your pictures never leave your phone or computer."]
+ ]}
+--->
+<div class="panel">
+  <div>
+    <span class="field-label" id="mode-l">What do you need?</span>
+    <div class="choices" id="mode" role="group" aria-labelledby="mode-l">
+      <button type="button" class="choice" data-value="sig" aria-pressed="true">Photo + signature</button>
+      <button type="button" class="choice" data-value="name" aria-pressed="false">Photo with name &amp; date</button>
+    </div>
+  </div>
+
+  <div class="row" style="align-items:stretch">
+    <label class="drop" id="drop-photo" style="min-height:170px">
+      <span class="ic">{{ICON:passport:38:#3B2D8F}}</span>
+      <b id="photo-l">1. Choose your photo</b>
+      <span>JPG, PNG or HEIC</span>
+      <input type="file" accept="image/*,.heic,.heif" aria-label="Choose your photo">
+    </label>
+    <label class="drop" id="drop-sig" style="min-height:170px">
+      <span class="ic">{{ICON:sign:38:#3B2D8F}}</span>
+      <b id="sig-l">2. Choose your signature</b>
+      <span>Sign on white paper, take a photo</span>
+      <input type="file" accept="image/*,.heic,.heif" aria-label="Choose your signature">
+    </label>
+  </div>
+
+  <div id="name-wrap" hidden class="row">
+    <div><label class="field-label" for="nm">Your name</label><input class="input" id="nm" type="text" maxlength="40" autocomplete="name" placeholder="e.g. RAHUL KUMAR"></div>
+    <div><label class="field-label" for="dt">Date of photo</label><input class="input" id="dt" type="date"></div>
+  </div>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:20px">
+    <div style="text-align:center"><canvas id="pv" style="max-width:100%;width:240px;border-radius:12px;box-shadow:var(--clay);background:#fff"></canvas></div>
+    <div>
+      <span class="field-label" id="size-l">File size</span>
+      <div class="choices" id="sizes" role="group" aria-labelledby="size-l">
+        <button type="button" class="choice" data-value="20" aria-pressed="false">Under 20KB</button>
+        <button type="button" class="choice" data-value="50" aria-pressed="true">Under 50KB</button>
+        <button type="button" class="choice" data-value="100" aria-pressed="false">Under 100KB</button>
+      </div>
+    </div>
+    <label style="display:flex;align-items:center;gap:14px;font-weight:700;cursor:pointer;min-height:44px">
+      <input type="checkbox" id="clean" checked style="width:28px;height:28px;accent-color:#3B2D8F"> Make signature paper pure white
+    </label>
+    <button type="button" class="btn btn-big" id="go">{{ICON:download:26:#FFFFFF}} Download JPG</button>
+  </div>
+  <div class="status" id="status"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to join photo and signature</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your photo</b><span>A clear, front-facing photo with a light background works best.</span></div>
+  <div class="step"><span class="num">2</span><b>Add signature or name</b><span>Sign with a black pen on white paper and take a photo, or type your name and date.</span></div>
+  <div class="step"><span class="num">3</span><b>Download</b><span>Pick the KB size your form asks for and download one JPG.</span></div>
+</div></section>

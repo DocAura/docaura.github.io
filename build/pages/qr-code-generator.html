@@ -1,0 +1,61 @@
+<!---
+{"slug": "qr-code-generator", "tool": true,
+ "title": "Free QR Code Generator — UPI, Link, WiFi, WhatsApp QR (No Expiry, No Sign-up)",
+ "desc": "Make a QR code for a website link, UPI payment, WiFi password, WhatsApp, phone number or any text. Download PNG or SVG for printing. Free forever, never expires, no sign-up.",
+ "h1": "QR code generator",
+ "sub": "Make a QR code for a link, UPI payment, WiFi, WhatsApp or any text — download and print it. Your QR code never expires.",
+ "steps": ["Pick type", "Type details", "Download"],
+ "scripts": ["assets/js/tools/qr-code-generator.js"],
+ "related": ["image-converter", "resize-image", "jpg-to-pdf", "gst-calculator"],
+ "faq": [
+  ["Will my QR code stop working after some time?", "No. The QR code holds your link or details directly, not a redirect through our website, so it works forever — even if this website closes."],
+  ["Can I make a UPI QR for my shop?", "Yes. Choose “UPI payment”, type your UPI ID and shop name, and optionally a fixed amount. Customers can scan it with any UPI app such as Google Pay, PhonePe or Paytm. Test it once with a small payment."],
+  ["PNG or SVG — which should I download?", "PNG works everywhere — WhatsApp, Word, phone. SVG stays sharp at any size, which is best for big banners and printing."],
+  ["Do you see what I put in the QR code?", "No. The QR code is made inside your browser. Nothing you type is sent to us."]
+ ]}
+--->
+<div class="panel">
+  <div>
+    <span class="field-label" id="type-l">QR code for</span>
+    <div class="choices" id="type" role="group" aria-labelledby="type-l">
+      <button type="button" class="choice" data-value="url" aria-pressed="true">Link / text</button>
+      <button type="button" class="choice" data-value="upi" aria-pressed="false">UPI payment</button>
+      <button type="button" class="choice" data-value="wifi" aria-pressed="false">WiFi</button>
+      <button type="button" class="choice" data-value="wa" aria-pressed="false">WhatsApp</button>
+      <button type="button" class="choice" data-value="tel" aria-pressed="false">Phone</button>
+    </div>
+  </div>
+  <div class="qr-f" data-t="url"><label class="field-label" for="q-url">Website link or any text</label><textarea class="input" id="q-url" rows="3" placeholder="https://example.com"></textarea></div>
+  <div class="qr-f row" data-t="upi" hidden>
+    <div><label class="field-label" for="q-upi">UPI ID</label><input class="input" id="q-upi" type="text" autocapitalize="off" placeholder="name@okbank"></div>
+    <div><label class="field-label" for="q-pn">Name / shop name</label><input class="input" id="q-pn" type="text" maxlength="40"></div>
+    <div><label class="field-label" for="q-am">Amount ₹ (optional)</label><input class="input" id="q-am" type="number" inputmode="decimal" min="1" step="0.01"></div>
+  </div>
+  <div class="qr-f row" data-t="wifi" hidden>
+    <div><label class="field-label" for="q-ss">WiFi name</label><input class="input" id="q-ss" type="text" autocapitalize="off"></div>
+    <div><label class="field-label" for="q-wp">WiFi password</label><input class="input" id="q-wp" type="text" autocapitalize="off"></div>
+  </div>
+  <div class="qr-f row" data-t="wa" hidden>
+    <div><label class="field-label" for="q-wn">WhatsApp number with country code</label><input class="input" id="q-wn" type="tel" placeholder="91 98765 43210"></div>
+    <div><label class="field-label" for="q-wm">Message (optional)</label><input class="input" id="q-wm" type="text"></div>
+  </div>
+  <div class="qr-f" data-t="tel" hidden><label class="field-label" for="q-tel">Phone number with country code</label><input class="input" id="q-tel" type="tel" placeholder="+91 98765 43210"></div>
+
+  <div class="row" style="align-items:center">
+    <div><label class="field-label" for="q-col">Colour</label><input class="input" id="q-col" type="color" value="#1b1340" style="padding:6px;min-height:58px"></div>
+    <div><label class="field-label" for="q-cap">Text under QR (optional)</label><input class="input" id="q-cap" type="text" maxlength="40" placeholder="e.g. Scan to pay"></div>
+  </div>
+  <div style="text-align:center"><canvas id="qr" width="600" height="600" style="width:min(280px,80%);border-radius:16px;box-shadow:var(--clay);background:#fff"></canvas></div>
+  <div class="btns" style="justify-content:center">
+    <button type="button" class="btn" id="png">{{ICON:download:24:#FFFFFF}} Download PNG</button>
+    <button type="button" class="btn btn-light" id="svg">Download SVG</button>
+  </div>
+  <div class="status" id="status"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to make a QR code</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Pick what it is for</b><span>A link, UPI payment, WiFi, WhatsApp chat or phone number.</span></div>
+  <div class="step"><span class="num">2</span><b>Type the details</b><span>The QR code updates as you type. Scan it with your phone to test.</span></div>
+  <div class="step"><span class="num">3</span><b>Download and print</b><span>PNG for phones and documents, SVG for big prints.</span></div>
+</div></section>

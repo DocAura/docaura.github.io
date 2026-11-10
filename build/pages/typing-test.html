@@ -1,0 +1,59 @@
+<!---
+{"slug": "typing-test", "tool": true,
+ "title": "Typing Test in Hindi & English — SSC, CHSL, CGL, Court Typing Speed Test (Free)",
+ "desc": "Free online typing test in English and Hindi with SSC-style results: WPM, net speed, accuracy, mistakes and key depressions per hour (KDPH). 1, 2, 5 or 10 minutes. No sign-up.",
+ "h1": "Typing speed test",
+ "sub": "Practise for SSC CHSL, CGL, court and office typing tests — in English or Hindi. See your speed, accuracy and mistakes the moment you finish.",
+ "steps": ["Pick language", "Type", "See result"],
+ "scripts": ["assets/js/tools/typing-test.js"],
+ "related": ["age-calculator", "word-counter", "photo-signature-joiner", "resume-builder"],
+ "faq": [
+  ["What speed do I need for SSC?", "SSC CHSL asks for 35 words per minute in English or 30 in Hindi. SSC CGL (DEST) asks for 8,000 key depressions per hour in English. Check your exam notification for the exact rule."],
+  ["How is the speed counted?", "Gross speed counts every word you typed per minute. Net speed counts only correct words. Accuracy is correct words out of the words you typed. KDPH counts every key you pressed per hour."],
+  ["How do I type in Hindi?", "Turn on a Hindi keyboard on your computer or phone (for example Inscript or Google Indic keyboard) and pick “Hindi” here. The test checks the Hindi text you type."],
+  ["Can I practise on a phone?", "Yes, it works on phones too — but real typing exams use a computer keyboard, so practise on one when you can."]
+ ]}
+--->
+<div class="panel">
+  <div class="row" style="align-items:flex-start">
+    <div>
+      <span class="field-label" id="lang-l">Language</span>
+      <div class="choices" id="lang" role="group" aria-labelledby="lang-l">
+        <button type="button" class="choice" data-value="en" aria-pressed="true">English</button>
+        <button type="button" class="choice" data-value="hi" aria-pressed="false">हिंदी</button>
+      </div>
+    </div>
+    <div>
+      <span class="field-label" id="dur-l">Time</span>
+      <div class="choices" id="dur" role="group" aria-labelledby="dur-l">
+        <button type="button" class="choice" data-value="60" aria-pressed="true">1 min</button>
+        <button type="button" class="choice" data-value="120" aria-pressed="false">2 min</button>
+        <button type="button" class="choice" data-value="300" aria-pressed="false">5 min</button>
+        <button type="button" class="choice" data-value="600" aria-pressed="false">10 min</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <b id="timer" style="font-size:30px;color:var(--indigo)" aria-live="off">1:00</b>
+    <span id="live" class="hint" style="margin:0">Start typing to begin the timer</span>
+    <button type="button" class="btn btn-light btn-small" id="next">New passage</button>
+  </div>
+  <div id="passage" class="tt-passage" aria-label="Text to type"></div>
+  <label class="sr-only" for="typed">Type the text here</label>
+  <textarea class="input" id="typed" rows="5" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Type the text above here…"></textarea>
+
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your result</h2>
+    <div class="tt-stats" id="stats"></div>
+    <p class="meta" id="verdict"></p>
+    <div class="btns"><button type="button" class="btn" id="again">Try again</button></div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How the typing test works</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Pick language and time</b><span>English or Hindi; 1 to 10 minutes. SSC skill tests are 10–15 minutes.</span></div>
+  <div class="step"><span class="num">2</span><b>Type the passage</b><span>The timer starts with your first key. The current word is highlighted.</span></div>
+  <div class="step"><span class="num">3</span><b>See your result</b><span>Gross and net WPM, accuracy, mistakes and KDPH — compared with SSC targets.</span></div>
+</div></section>

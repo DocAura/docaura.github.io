@@ -1,0 +1,63 @@
+<!---
+{"slug": "signature-resize", "tool": true,
+ "title": "Signature Resize 10KB to 20KB — Free Signature Resizer for Exam Forms",
+ "desc": "Resize your signature to 10–20KB, 140×60 pixels or any size for SSC, IBPS, SBI, Railway, UPSC and state exam forms. Cleans the paper to pure white. Free, no upload.",
+ "h1": "Resize signature for forms",
+ "sub": "Sign on white paper, take a photo, and get a clean signature in the exact KB and pixel size your form asks for.",
+ "steps": ["Choose signature", "Pick size", "Download"],
+ "scripts": ["assets/js/tools/signature-resize.js"],
+ "related": ["photo-signature-joiner", "resize-image", "sign-pdf", "age-calculator"],
+ "faq": [
+  ["What size should a signature be for exam forms?", "Most bank and SSC forms ask for a signature between 10KB and 20KB. IBPS and SBI usually ask for 140 × 60 pixels. Always check your notification — then pick the same size here."],
+  ["My form says minimum 10KB but my file is only 4KB. Can you fix it?", "Yes. Choose “10KB – 20KB”. If the picture is too small, the tool safely makes the file reach 10KB without changing how the signature looks."],
+  ["The paper looks grey in my photo. Will it be white?", "Yes. Keep “Make the paper pure white” switched on. It removes the grey shade and makes the ink darker."],
+  ["Is my signature uploaded anywhere?", "No. Your signature is processed only inside your browser and never leaves your device."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:sign:42:#3B2D8F}}</span>
+    <b>Tap here to choose your signature photo</b>
+    <span>Sign with a black or blue pen on white paper</span>
+    <input type="file" accept="image/*,.heic,.heif" aria-label="Choose your signature photo">
+  </label>
+
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:20px">
+    <div style="text-align:center;background:var(--ground);border-radius:18px;padding:16px"><canvas id="pv" style="max-width:100%;background:#fff;border-radius:8px"></canvas></div>
+    <label style="display:flex;align-items:center;gap:14px;font-weight:700;cursor:pointer;min-height:44px">
+      <input type="checkbox" id="clean" checked style="width:28px;height:28px;accent-color:#3B2D8F"> Make the paper pure white
+    </label>
+    <div>
+      <span class="field-label" id="kb-l">File size</span>
+      <div class="choices" id="kb" role="group" aria-labelledby="kb-l">
+        <button type="button" class="choice" data-value="10-20" aria-pressed="true">10KB – 20KB</button>
+        <button type="button" class="choice" data-value="0-20" aria-pressed="false">Under 20KB</button>
+        <button type="button" class="choice" data-value="0-50" aria-pressed="false">Under 50KB</button>
+        <button type="button" class="choice" data-value="4-30" aria-pressed="false">4KB – 30KB</button>
+      </div>
+    </div>
+    <div>
+      <span class="field-label" id="px-l">Pixel size</span>
+      <div class="choices" id="px" role="group" aria-labelledby="px-l">
+        <button type="button" class="choice" data-value="140x60" aria-pressed="true">140 × 60 (Bank, IBPS, SBI)</button>
+        <button type="button" class="choice" data-value="350x150" aria-pressed="false">350 × 150</button>
+        <button type="button" class="choice" data-value="keep" aria-pressed="false">Keep shape</button>
+        <button type="button" class="choice" data-value="custom" aria-pressed="false">Custom</button>
+      </div>
+      <div class="row" id="px-wrap" hidden style="margin-top:12px">
+        <div><label class="field-label" for="pw">Width (px)</label><input class="input" id="pw" type="number" inputmode="numeric" min="20" max="3000" value="300"></div>
+        <div><label class="field-label" for="ph">Height (px)</label><input class="input" id="ph" type="number" inputmode="numeric" min="10" max="3000" value="100"></div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-big" id="go">{{ICON:download:26:#FFFFFF}} Download signature</button>
+    <button type="button" class="btn btn-light" id="again">Choose another signature</button>
+  </div>
+  <div class="status" id="status"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to resize a signature to 20KB</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Sign and click a photo</b><span>Use a black pen on plain white paper, in good light, from straight above.</span></div>
+  <div class="step"><span class="num">2</span><b>Pick the size</b><span>Choose the KB and pixel size written in your exam notification.</span></div>
+  <div class="step"><span class="num">3</span><b>Download</b><span>You get a clean JPG ready to upload.</span></div>
+</div></section>

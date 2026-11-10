@@ -1,0 +1,54 @@
+<!---
+{"slug": "age-calculator", "tool": true,
+ "title": "Age Calculator — Exact Age As On Date (Years, Months, Days) for Exams",
+ "desc": "Find your exact age in years, months and days as on any date — for SSC, UPSC, Railway, Army and other exam cut-off dates. Check age limit with OBC, SC/ST and PwBD relaxation. Free.",
+ "h1": "Age calculator",
+ "sub": "Your exact age in years, months and days on any date — and whether you are inside an exam’s age limit.",
+ "steps": ["Date of birth", "As on date", "See age"],
+ "scripts": ["assets/js/tools/age-calculator.js"],
+ "related": ["photo-signature-joiner", "signature-resize", "typing-test", "resize-image"],
+ "faq": [
+  ["What does “age as on 1 August” mean?", "Exams fix a cut-off date. Your age is counted on that date, not today. Put the cut-off date in the “As on date” box to see the age the exam will use."],
+  ["How is the age limit relaxation counted?", "Usually OBC gets 3 extra years, SC/ST 5 years, and PwBD 10 years (more when combined with a category). Rules differ per exam, so always confirm in the official notification."],
+  ["Is this calculation exact?", "Yes. It counts full years, then full months, then the remaining days, the same way exam boards do."],
+  ["Can I use it for any date, not only exams?", "Yes — retirement, school admission, pension or just for fun. Change the “As on date” to any date."]
+ ]}
+--->
+<div class="panel">
+  <div class="row">
+    <div><label class="field-label" for="dob">Date of birth</label><input class="input" id="dob" type="date" max="2100-12-31"></div>
+    <div><label class="field-label" for="ason">Age as on</label><input class="input" id="ason" type="date"></div>
+  </div>
+  <div class="result show" id="out" hidden style="display:block">
+    <p style="font-size:clamp(26px,6vw,38px);font-weight:800;margin:0;color:var(--indigo)" id="age-big"></p>
+    <p class="meta" id="age-more" style="margin-top:8px"></p>
+  </div>
+
+  <details id="limit-box">
+    <summary style="font-weight:800;cursor:pointer;min-height:44px;display:flex;align-items:center">Check exam age limit (optional)</summary>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-top:12px">
+      <div class="row">
+        <div><label class="field-label" for="amin">Minimum age</label><input class="input" id="amin" type="number" inputmode="numeric" min="0" max="80" placeholder="e.g. 18"></div>
+        <div><label class="field-label" for="amax">Maximum age</label><input class="input" id="amax" type="number" inputmode="numeric" min="0" max="80" placeholder="e.g. 27"></div>
+      </div>
+      <div>
+        <span class="field-label" id="cat-l">Your category</span>
+        <div class="choices" id="cat" role="group" aria-labelledby="cat-l">
+          <button type="button" class="choice" data-value="0" aria-pressed="true">General / EWS</button>
+          <button type="button" class="choice" data-value="3" aria-pressed="false">OBC (+3)</button>
+          <button type="button" class="choice" data-value="5" aria-pressed="false">SC / ST (+5)</button>
+          <button type="button" class="choice" data-value="10" aria-pressed="false">PwBD (+10)</button>
+        </div>
+      </div>
+      <p id="elig" class="status" style="font-weight:800"></p>
+      <p class="hint">Relaxation rules differ for each exam. Always confirm in the official notification.</p>
+    </div>
+  </details>
+</div>
+<!--howto-->
+<section class="section"><h2>How to calculate age as on a date</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Enter date of birth</b><span>Use the date written on your 10th certificate.</span></div>
+  <div class="step"><span class="num">2</span><b>Enter the cut-off date</b><span>Find it in the exam notification, e.g. “age as on 01-08-2026”.</span></div>
+  <div class="step"><span class="num">3</span><b>See your age</b><span>Exact years, months and days appear instantly. Add the age limit to check eligibility.</span></div>
+</div></section>

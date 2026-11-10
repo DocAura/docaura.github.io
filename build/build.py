@@ -7,7 +7,7 @@ Output goes to the repo root (index.html, compress-pdf/index.html, ...), ready f
 """
 import json, os, re, html, datetime, copy, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import seo_sizes, seo_pages, seo_hindi as HI
+import seo_sizes, seo_pages, seo_tools, seo_hindi as HI
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -43,6 +43,17 @@ ICONS = {
   'form': '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/><path d="m14 16 1.5 1.5L18 15"/>',
   'sign': '<path d="M3 17c3-4 5-9 7-9s-1 9 1 9 3-5 5-5-1 5 1 5 3-2 4-3"/><path d="M3 21h18"/>',
   'organize': '<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><path d="M21 16a5 5 0 0 1-9 3M12 21v-3h3"/>',
+  'calc': '<rect x="4" y="2" width="16" height="20" rx="2"/><rect x="7" y="5" width="10" height="4" rx="1"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01"/>',
+  'qr': '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h.01M17 21h4v-4"/>',
+  'key': '<circle cx="7.5" cy="15.5" r="4.5"/><path d="m10.7 12.3 9.8-9.8M17 6l3 3M15 8l2 2"/>',
+  'text': '<path d="M4 7V5h16v2M9 19h6M12 5v14"/>',
+  'calendar': '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 15h3v3H8z"/>',
+  'keyboard': '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>',
+  'lock': '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  'unlock': '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/>',
+  'magic': '<path d="m4 20 11-11M13 7l4 4"/><path d="M18 2v3M16.5 3.5h3M6 3v2M5 4h2M20 13v2M19 14h2"/>',
+  'percent': '<path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+  'join': '<rect x="5" y="2" width="14" height="12" rx="2"/><circle cx="12" cy="7" r="2.2"/><path d="M5 18c2-2 3 1 5-1s3 1 5-1 2 1 4 0M5 22h14"/>',
   'numbers': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M10 17h1.5v-5L10 13M14 12h2.5l-2.5 5h2.5"/>',
 }
 
@@ -68,6 +79,21 @@ TOOLS = [
   dict(slug='page-numbers', name='Add page numbers', desc='Number pages and add your name to every page.', icon='numbers', keys='page numbers pdf add name header roll number student', group='pdf'),
   dict(slug='passport-photo', name='Passport photo', desc='Crop your photo to passport size and print a sheet.', icon='passport', keys='passport photo size visa crop 35x45 2x2 print sheet', group='image'),
   dict(slug='heic-to-jpg', name='iPhone photo to JPG', desc='Change HEIC photos into normal JPG files.', icon='convert', keys='heic to jpg iphone photo convert heif', group='image'),
+  dict(slug='photo-signature-joiner', name='Join photo & signature', desc='Photo + signature in one image, or add name & date under the photo.', icon='join', keys='photo signature joiner join combine merge name date exam form ssc upsc', group='exam', dark=True),
+  dict(slug='signature-resize', name='Signature resize 10–20KB', desc='Clean white signature in 140×60 px or any KB for exam forms.', icon='sign', keys='signature resize 10kb 20kb 140x60 sign exam ibps sbi ssc', group='exam'),
+  dict(slug='age-calculator', name='Age calculator', desc='Exact age as on any date, with exam age-limit check.', icon='calendar', keys='age calculator as on date dob birth exam eligibility years months days', group='exam'),
+  dict(slug='typing-test', name='Typing test (Hindi & English)', desc='SSC-style speed test: WPM, accuracy, KDPH.', icon='keyboard', keys='typing test speed wpm hindi english ssc chsl cgl kdph practice', group='exam'),
+  dict(slug='image-to-text', name='Image to text (OCR)', desc='Copy text from photos and screenshots — English & Hindi.', icon='text', keys='image to text ocr photo to text extract copy text scan picture', group='image', dark=True),
+  dict(slug='remove-background', name='Remove photo background', desc='White, blue or transparent background for people photos.', icon='magic', keys='remove background bg remover white background transparent png passport', group='image'),
+  dict(slug='image-converter', name='Image converter', desc='PNG to JPG, JPG to PNG, WEBP to JPG — many at once.', icon='convert', keys='image converter png to jpg jpg to png webp to jpg convert format', group='image'),
+  dict(slug='qr-code-generator', name='QR code generator', desc='QR for links, UPI, WiFi and WhatsApp. Never expires.', icon='qr', keys='qr code generator upi qr wifi whatsapp link barcode', group='more'),
+  dict(slug='unlock-pdf', name='Remove PDF password', desc='Unlock bank statements, e-Aadhaar and salary slips.', icon='unlock', keys='unlock pdf remove password decrypt bank statement aadhaar', group='pdf'),
+  dict(slug='protect-pdf', name='Add password to PDF', desc='Lock a PDF with strong AES-256 encryption.', icon='lock', keys='protect pdf password lock encrypt secure', group='pdf'),
+  dict(slug='emi-calculator', name='EMI calculator', desc='Monthly EMI, total interest and schedule for any loan.', icon='calc', keys='emi calculator loan home car personal interest', group='more'),
+  dict(slug='gst-calculator', name='GST calculator', desc='Add or remove GST with CGST, SGST and IGST split.', icon='percent', keys='gst calculator add remove cgst sgst igst 18% tax', group='more'),
+  dict(slug='percentage-calculator', name='Percentage calculator', desc='Marks %, discounts, % increase or decrease.', icon='percent', keys='percentage calculator marks percent discount increase cgpa', group='more'),
+  dict(slug='word-counter', name='Word counter', desc='Count words and characters, change text case.', icon='text', keys='word counter character count letters case converter uppercase', group='more'),
+  dict(slug='password-generator', name='Password generator', desc='Strong random passwords and easy passphrases.', icon='key', keys='password generator strong random secure passphrase', group='more'),
 ]
 TOOL_BY_SLUG = {t['slug']: t for t in TOOLS}
 
@@ -130,13 +156,18 @@ def tool_card(t, r):
             '<span class="t">%s</span><span class="d">%s</span></a>') % (
         r, t['slug'], html.escape(t['name'].lower() + ' ' + t['keys']), cls, icon(t['icon'], 36, col, 2), t['name'], t['desc'])
 
+GROUPS = [('resume', 'Resume & job'), ('exam', 'Exam & government forms'), ('pdf', 'PDF tools'), ('image', 'Photo & image tools'), ('more', 'Calculators & everyday tools')]
+
 def tool_grid(r, exclude=None):
-    cards = [tool_card(t, r) for t in TOOLS if t['slug'] != exclude]
-    if SUPPORT_ON:  # friendly "buy me a chai" card placed among the PDF tools
-        cards.insert(6, ('<a class="tool sup-tool" href="%ssupport/" data-keys="support chai coffee donate tip buy me thank" data-track="support-grid">'
-                         '<span class="ic sup-ic">' + CHAI_SVG + '</span><span class="t">Buy me a chai</span>'
-                         '<span class="d">Loving DocAura? Keep it free with any amount you wish. 💜</span></a>') % r)
-    return '<div class="tools" id="tool-grid">' + ''.join(cards) + '</div>'
+    out = []
+    for g, label in GROUPS:
+        cards = [tool_card(t, r) for t in TOOLS if t['group'] == g and t['slug'] != exclude]
+        if g == 'pdf' and SUPPORT_ON:  # friendly "buy me a chai" card placed among the PDF tools
+            cards.insert(3, ('<a class="tool sup-tool" href="%ssupport/" data-keys="support chai coffee donate tip buy me thank" data-track="support-grid">'
+                             '<span class="ic sup-ic">' + CHAI_SVG + '</span><span class="t">Buy me a chai</span>'
+                             '<span class="d">Loving DocAura? Keep it free with any amount you wish. 💜</span></a>') % r)
+        if cards: out.append('<h3 class="grid-h">%s</h3>' % label + ''.join(cards))
+    return '<div class="tools" id="tool-grid">' + ''.join(out) + '</div>'
 
 def related(r, slugs):
     return '<nav class="related" aria-label="Related tools">' + ''.join(
@@ -212,8 +243,8 @@ def tool_schema(meta, url):
     return '<script type="application/ld+json">%s</script>' % json.dumps(data)
 
 def size_links(r, meta):
-    fam = meta.get('family') or (meta['slug'] if meta['slug'] in seo_sizes.FAMILIES else None)
-    if not fam: return ''
+    fam = meta.get('family') or meta['slug']
+    if fam not in seo_sizes.FAMILIES: return ''
     if meta.get('lang') == 'hi':
         items = HI.SIZES[fam]
         links = ''.join('<a href="%shi/%s/"%s>%s %s</a>' % (r, v['slug'], ' aria-current="page"' if 'hi/' + v['slug'] == meta['slug'] else '',
@@ -245,6 +276,37 @@ def apply_preset(body, kb, family):
     if family == 'resize-image':
         body = body.replace('Make it 50KB', 'Make it %dKB' % kb)
     return body
+
+def pick_choice(body, gid, val):
+    m = re.search(r'(<div class="choices" id="%s".*?</div>)' % re.escape(gid), body, re.S)
+    if not m: raise SystemExit('choice group %s not found' % gid)
+    grp = m.group(1); new = grp.replace('aria-pressed="true"', 'aria-pressed="false"')
+    btn = 'data-value="%s" aria-pressed="false"' % val
+    if btn not in new: raise SystemExit('choice %s=%s not found' % (gid, val))
+    return body.replace(grp, new.replace(btn, 'data-value="%s" aria-pressed="true"' % val))
+
+def tool_variants(parsed):
+    out = []
+    bases = {m['slug']: (m, b) for m, b in parsed}
+    for v in seo_tools.V:
+        bm, bb = bases[v['base']]
+        m = copy.deepcopy(bm); body = bb
+        for gid, val in v.get('pick', {}).items(): body = pick_choice(body, gid, val)
+        for iid, val in v.get('values', {}).items():
+            body, n = re.subn(r'(id="%s"[^>]*?value=")[^"]*' % re.escape(iid), lambda mm: mm.group(1) + val, body)
+            if not n: raise SystemExit('input %s not found in %s' % (iid, v['base']))
+        m.update(slug=v['slug'], title=v['title'], desc=v['desc'], h1=v['h1'], sub=v['sub'], family=v['base'], priority='0.7')
+        m['faq'] = v['faq'] + [q for q in bm.get('faq', []) if 'upload' in q[0].lower() or 'safe' in q[0].lower()][:1]
+        m['howto_html'] = '<section class="section"><h2>About this tool</h2><div class="panel prose">%s</div></section>' % v['intro'] + bm.get('howto_html', '')
+        out.append((m, body))
+    return out
+
+def variant_links(r, meta):
+    base = meta.get('family') if meta.get('family') in seo_tools.BY_BASE else (meta['slug'] if meta['slug'] in seo_tools.BY_BASE else None)
+    if not base or meta.get('lang') == 'hi': return ''
+    items = [(base, TOOL_BY_SLUG[base]['name'])] + [(v['slug'], v['link']) for v in seo_tools.BY_BASE[base]]
+    links = ''.join('<a href="%s%s/"%s>%s</a>' % (r, s, ' aria-current="page"' if s == meta['slug'] else '', html.escape(t)) for s, t in items)
+    return '<section class="section"><h2>Popular uses</h2><nav class="related" aria-label="Popular uses">%s</nav></section>' % links
 
 def size_variants(parsed):
     out = []
@@ -414,7 +476,7 @@ def tool_shell(meta, body, r):
 </main>''' % dict(r=r, home=(r + 'hi/') if hi else r, backl=HI.UI['back'] if hi else 'Back to all tools',
                   promise=''.join('<span>%s %s</span>' % (icon('check', 18, '#1D6B45', 3), t) for t in (HI.UI['promise'] if hi else ['No daily limit', 'No watermark', 'No sign-up', 'Files never uploaded'])),
                   otherh=HI.UI['other_h'] if hi else 'Other free tools', back=icon('back', 26, '#3B2D8F', 2.6), h1=meta['h1'], sub=meta.get('sub', ''), ps=ps, body=body, chk=icon('check', 18, '#1D6B45', 3), guide='' if hi else (('<section class="section"><h2>Learn more</h2><div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('cta') == gslug) + '</div></section>') if any(g.get('cta') == gslug for g in GUIDES) else ''),
-                  support=support_html(r, 'after', meta.get('lang', 'en')), sizes=size_links(r, meta), howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq'), meta.get('lang', 'en')),
+                  support=support_html(r, 'after', meta.get('lang', 'en')), sizes=size_links(r, meta) + variant_links(r, meta), howto=meta.get('howto_html', ''), faq=faq_html(meta.get('faq'), meta.get('lang', 'en')),
                   related=meta['related_html'] if hi and meta.get('related_html') else related(r, rel_slugs))
 
 ADS_ON = bool(CONFIG.get('adsense_client'))
@@ -665,6 +727,7 @@ def main():
             if fn.endswith('.html'): files.append(os.path.join(root, fn))
     parsed = [parse(f) for f in sorted(files)]
     parsed += size_variants(parsed)
+    parsed += tool_variants(parsed)
     parsed += seo_pages.build_pages()
     parsed += hindi_pages(parsed)
     GUIDES[:] = sorted([m for m, b in parsed if m.get('article')], key=lambda m: m.get('order', 99))

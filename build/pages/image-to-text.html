@@ -1,0 +1,51 @@
+<!---
+{"slug": "image-to-text", "tool": true,
+ "title": "Image to Text — Free OCR to Copy Text from Photos (English & Hindi)",
+ "desc": "Copy text from any photo, screenshot or scanned page with free OCR. Works in English and Hindi, right on your phone. No upload, no sign-up, no limits.",
+ "h1": "Image to text (OCR)",
+ "sub": "Take text out of a photo, screenshot or scanned page so you can copy, edit or search it.",
+ "steps": ["Choose image", "Read text", "Copy"],
+ "scripts": ["assets/js/tools/image-to-text.js"],
+ "related": ["pdf-to-word", "jpg-to-pdf", "word-counter", "resize-image"],
+ "faq": [
+  ["Which languages are supported?", "English and Hindi. You can choose both at once for pages that mix the two."],
+  ["Is my image uploaded to a server?", "No. The text reading happens inside your browser. The first time, the tool downloads its reading engine (about 6MB) from this website; after that it is faster."],
+  ["How do I get the best result?", "Use a sharp, well-lit photo taken straight from above. Crop away the table or background if you can. Printed text works much better than handwriting."],
+  ["Can it read a PDF?", "For a PDF, first use our “PDF to photos” tool to turn pages into pictures, then read them here. If the PDF already has real text, “PDF to Word” is faster."]
+ ]}
+--->
+<div class="panel">
+  <div>
+    <span class="field-label" id="lang-l">Text language</span>
+    <div class="choices" id="lang" role="group" aria-labelledby="lang-l">
+      <button type="button" class="choice" data-value="eng" aria-pressed="true">English</button>
+      <button type="button" class="choice" data-value="hin" aria-pressed="false">हिंदी</button>
+      <button type="button" class="choice" data-value="eng+hin" aria-pressed="false">Both</button>
+    </div>
+  </div>
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:image:42:#3B2D8F}}</span>
+    <b>Tap here to choose a photo or screenshot</b>
+    <span>JPG, PNG, WEBP or HEIC · you can pick several</span>
+    <input type="file" accept="image/*,.heic,.heif" multiple aria-label="Choose images">
+  </label>
+  <div class="status" id="status"></div>
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Text found</h2>
+    <p class="meta" id="meta"></p>
+    <label class="sr-only" for="out">Text from the image</label>
+    <textarea class="input" id="out" rows="12" spellcheck="false"></textarea>
+    <div class="btns">
+      <button type="button" class="btn" id="copy">Copy text</button>
+      <button type="button" class="btn btn-light" id="dl">{{ICON:download:24:#3B2D8F}} Save as .txt</button>
+      <button type="button" class="btn btn-light" id="again">Read another</button>
+    </div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to copy text from an image</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose your image</b><span>A photo of a page, a screenshot or a scanned document.</span></div>
+  <div class="step"><span class="num">2</span><b>Wait a few seconds</b><span>The text is read on your own device — nothing is uploaded.</span></div>
+  <div class="step"><span class="num">3</span><b>Copy or save</b><span>Fix any small mistakes in the box, then copy it or save as a text file.</span></div>
+</div></section>

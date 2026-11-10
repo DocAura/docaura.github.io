@@ -1,0 +1,53 @@
+<!---
+{"slug": "remove-background", "tool": true,
+ "title": "Remove Background from Photo Free — White, Blue or Transparent Background",
+ "desc": "Remove the background from a photo of a person and make it white, blue, any colour or transparent PNG — perfect for passport photos, exam forms, profile pictures and resumes. Free, no upload.",
+ "h1": "Remove photo background",
+ "sub": "Change the background of your photo to white, blue or transparent — great for passport photos, forms and profile pictures.",
+ "steps": ["Choose photo", "Pick background", "Download"],
+ "scripts": ["assets/js/tools/remove-background.js"],
+ "related": ["passport-photo", "resize-image", "photo-signature-joiner", "image-converter"],
+ "faq": [
+  ["What kind of photos work best?", "This tool is made for photos of people — selfies, passport photos and profile pictures — with the face and shoulders clearly visible. It is not meant for products or animals."],
+  ["Can I make a white background for a passport or exam photo?", "Yes. Choose “White”, download, then use our Passport photo or Resize photo tool to get the exact size and KB."],
+  ["Is my photo uploaded to remove the background?", "No. The background is removed by a small AI model that runs inside your browser. Your photo never leaves your device."],
+  ["The edges look a little soft. Can I improve it?", "Use a photo with good light and a plain wall behind you. Try the “Sharper edges” switch for a cleaner cut."]
+ ]}
+--->
+<div class="panel">
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:passport:42:#3B2D8F}}</span>
+    <b>Tap here to choose a photo of a person</b>
+    <span>Selfie, passport or profile photo · JPG, PNG or HEIC</span>
+    <input type="file" accept="image/*,.heic,.heif" aria-label="Choose a photo">
+  </label>
+  <div id="opts" hidden style="display:flex;flex-direction:column;gap:20px">
+    <div style="text-align:center"><canvas id="pv" class="checker" style="max-width:100%;max-height:420px;border-radius:14px;box-shadow:var(--clay)"></canvas></div>
+    <div>
+      <span class="field-label" id="bg-l">New background</span>
+      <div class="choices" id="bg" role="group" aria-labelledby="bg-l">
+        <button type="button" class="choice" data-value="#ffffff" aria-pressed="true">White</button>
+        <button type="button" class="choice" data-value="#3d7bd9" aria-pressed="false">Blue</button>
+        <button type="button" class="choice" data-value="#d9d9d9" aria-pressed="false">Light grey</button>
+        <button type="button" class="choice" data-value="none" aria-pressed="false">Transparent</button>
+        <button type="button" class="choice" data-value="custom" aria-pressed="false">Other colour</button>
+      </div>
+      <input class="input" id="col" type="color" value="#f4d03f" hidden style="margin-top:12px;padding:6px;max-width:160px">
+    </div>
+    <label style="display:flex;align-items:center;gap:14px;font-weight:700;cursor:pointer;min-height:44px">
+      <input type="checkbox" id="sharp" style="width:28px;height:28px;accent-color:#3B2D8F"> Sharper edges
+    </label>
+    <div class="btns">
+      <button type="button" class="btn" id="dl">{{ICON:download:24:#FFFFFF}} Download</button>
+      <button type="button" class="btn btn-light" id="again">Another photo</button>
+    </div>
+  </div>
+  <div class="status" id="status"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to remove the background from a photo</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Choose a photo</b><span>Face and shoulders clearly visible, good light.</span></div>
+  <div class="step"><span class="num">2</span><b>Pick a background</b><span>White, blue, grey, any colour, or transparent PNG.</span></div>
+  <div class="step"><span class="num">3</span><b>Download</b><span>JPG for colours, PNG for transparent.</span></div>
+</div></section>

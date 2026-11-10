@@ -1,0 +1,41 @@
+<!---
+{"slug": "gst-calculator", "tool": true,
+ "title": "GST Calculator India — Add or Remove GST (5%, 12%, 18%, 28%) with CGST & SGST",
+ "desc": "Add GST to a price or remove GST from a GST-inclusive price. Shows CGST, SGST and IGST split for 3%, 5%, 12%, 18% and 28% slabs. Free online GST calculator for India.",
+ "h1": "GST calculator",
+ "sub": "Add GST to a price, or find the price before GST — with the CGST, SGST and IGST split.",
+ "steps": ["Amount", "GST rate", "See result"],
+ "scripts": ["assets/js/tools/gst-calculator.js"],
+ "related": ["emi-calculator", "percentage-calculator", "qr-code-generator", "pdf-to-word"],
+ "faq": [
+  ["How do I add 18% GST to a price?", "Multiply the price by 1.18. For ₹1,000 that is ₹1,180 — ₹180 is GST (₹90 CGST + ₹90 SGST within a state, or ₹180 IGST between states)."],
+  ["How do I remove GST from a total?", "Divide the total by 1 + rate. For ₹1,180 with 18% GST: 1,180 ÷ 1.18 = ₹1,000 before GST. Choose “Remove GST” and the tool does this for you."],
+  ["When is it CGST + SGST and when IGST?", "Sales inside the same state are split equally into CGST and SGST. Sales to another state use IGST for the full rate."],
+  ["Which GST rate applies to my product?", "It depends on the item’s HSN or SAC code. Check the official GST rate list or ask your accountant. Rates can change after GST Council meetings."]
+ ]}
+--->
+<div class="panel">
+  <div class="row">
+    <div><label class="field-label" for="amt">Amount (₹)</label><input class="input" id="amt" type="number" inputmode="decimal" min="0" value="1000"></div>
+    <div><label class="field-label" for="custom">GST rate (%)</label><input class="input" id="custom" type="number" inputmode="decimal" min="0" max="100" step="0.01" value="18"></div>
+  </div>
+  <div class="choices" id="rates" role="group" aria-label="GST slab">
+    <button type="button" class="choice" data-value="3" aria-pressed="false">3%</button>
+    <button type="button" class="choice" data-value="5" aria-pressed="false">5%</button>
+    <button type="button" class="choice" data-value="12" aria-pressed="false">12%</button>
+    <button type="button" class="choice" data-value="18" aria-pressed="true">18%</button>
+    <button type="button" class="choice" data-value="28" aria-pressed="false">28%</button>
+  </div>
+  <div class="choices" id="mode" role="group" aria-label="Add or remove GST">
+    <button type="button" class="choice" data-value="add" aria-pressed="true">Add GST</button>
+    <button type="button" class="choice" data-value="remove" aria-pressed="false">Remove GST (price includes GST)</button>
+  </div>
+  <div class="calc-out" id="out"></div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to calculate GST</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Type the amount</b><span>The price before GST, or the total that already includes GST.</span></div>
+  <div class="step"><span class="num">2</span><b>Pick the GST rate</b><span>Tap a slab or type any rate.</span></div>
+  <div class="step"><span class="num">3</span><b>Add or remove</b><span>See GST amount, total and the CGST / SGST / IGST split.</span></div>
+</div></section>

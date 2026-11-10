@@ -1,0 +1,47 @@
+<!---
+{"slug": "image-converter", "tool": true,
+ "title": "Image Converter — PNG to JPG, JPG to PNG, WEBP to JPG, HEIC to JPG (Free)",
+ "desc": "Convert images between JPG, PNG and WEBP in one tap — PNG to JPG, JPG to PNG, WEBP to JPG or PNG, HEIC to JPG. Convert many at once. Free, private, no upload, no watermark.",
+ "h1": "Image converter",
+ "sub": "Change pictures between JPG, PNG and WEBP — many at once, right on your device.",
+ "steps": ["Choose images", "Pick format", "Download"],
+ "scripts": ["assets/js/tools/image-converter.js"],
+ "related": ["resize-image", "heic-to-jpg", "remove-background", "jpg-to-pdf"],
+ "faq": [
+  ["Which format should I choose?", "JPG is best for photos and forms. PNG keeps sharp text and transparent backgrounds. WEBP gives the smallest files for websites."],
+  ["Will a transparent PNG stay transparent?", "Yes, if you convert to PNG or WEBP. JPG cannot be transparent, so the background becomes white."],
+  ["Can I convert many images at once?", "Yes. Choose as many as you like; each one is converted and you can save them all."],
+  ["Are my images uploaded?", "No. Every image is converted inside your browser and never leaves your device."]
+ ]}
+--->
+<div class="panel">
+  <div>
+    <span class="field-label" id="fmt-l">Convert to</span>
+    <div class="choices" id="fmt" role="group" aria-labelledby="fmt-l">
+      <button type="button" class="choice" data-value="jpeg" aria-pressed="true">JPG</button>
+      <button type="button" class="choice" data-value="png" aria-pressed="false">PNG</button>
+      <button type="button" class="choice" data-value="webp" aria-pressed="false">WEBP</button>
+    </div>
+  </div>
+  <label class="drop" id="drop">
+    <span class="ic">{{ICON:convert:42:#3B2D8F}}</span>
+    <b>Tap here to choose images</b>
+    <span>JPG, PNG, WEBP, GIF, BMP or HEIC · many at once</span>
+    <input type="file" accept="image/*,.heic,.heif" multiple aria-label="Choose images">
+  </label>
+  <div class="status" id="status"></div>
+  <div class="result" id="result">
+    <h2>{{ICON:check:28:#1D6B45}} Your images are ready</h2>
+    <p class="meta" id="out-meta"></p>
+    <div class="btns"><button type="button" class="btn" id="dl-all">{{ICON:download:24:#FFFFFF}} Save all</button><button type="button" class="btn btn-light" id="again">Convert more</button></div>
+    <p class="hint">Or tap one picture to save just that one.</p>
+    <div class="thumbs" id="out-thumbs"></div>
+  </div>
+</div>
+<!--howto-->
+<section class="section"><h2>How to convert an image</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Pick the new format</b><span>JPG, PNG or WEBP.</span></div>
+  <div class="step"><span class="num">2</span><b>Choose your images</b><span>They are converted straight away on your device.</span></div>
+  <div class="step"><span class="num">3</span><b>Save</b><span>Save all at once or one by one.</span></div>
+</div></section>

@@ -1,0 +1,30 @@
+<!---
+{"slug": "percentage-calculator", "tool": true,
+ "title": "Percentage Calculator — % of a Number, Marks Percentage, % Increase or Decrease",
+ "desc": "Free percentage calculator: find X% of a number, what percent one number is of another, marks percentage, and percentage increase or decrease. Instant answers with the formula shown.",
+ "h1": "Percentage calculator",
+ "sub": "Marks percentage, discounts, salary hikes and more — get the answer instantly, with the working shown.",
+ "steps": ["Pick question", "Type numbers", "See answer"],
+ "scripts": ["assets/js/tools/percentage-calculator.js"],
+ "related": ["gst-calculator", "emi-calculator", "age-calculator", "word-counter"],
+ "faq": [
+  ["How do I calculate my marks percentage?", "Divide your total marks by the maximum marks and multiply by 100. For 432 out of 500: 432 ÷ 500 × 100 = 86.4%."],
+  ["How do I find 20% of 1500?", "Multiply 1500 by 20 and divide by 100. The answer is 300. In the first box type 20 and 1500."],
+  ["How do I calculate a percentage increase?", "Subtract the old value from the new value, divide by the old value and multiply by 100. From 40,000 to 46,000 is a 15% increase."],
+  ["How do I convert CGPA to percentage?", "Many Indian boards use CGPA × 9.5. Your university may use a different rule, so check their official formula."]
+ ]}
+--->
+<div class="panel">
+  <div class="pc-card"><b>What is</b> <input class="input pc" id="a1" type="number" inputmode="decimal" value="20"> <b>% of</b> <input class="input pc" id="a2" type="number" inputmode="decimal" value="1500"> <b>?</b><p class="pc-ans" id="a"></p></div>
+  <div class="pc-card"><input class="input pc" id="b1" type="number" inputmode="decimal" value="432"> <b>is what % of</b> <input class="input pc" id="b2" type="number" inputmode="decimal" value="500"> <b>?</b> <span class="hint" style="margin:0">(marks percentage)</span><p class="pc-ans" id="b"></p></div>
+  <div class="pc-card"><b>From</b> <input class="input pc" id="c1" type="number" inputmode="decimal" value="40000"> <b>to</b> <input class="input pc" id="c2" type="number" inputmode="decimal" value="46000"> <b>is what % change?</b><p class="pc-ans" id="c"></p></div>
+  <div class="pc-card"><input class="input pc" id="d1" type="number" inputmode="decimal" value="2499"> <b>with</b> <input class="input pc" id="d2" type="number" inputmode="decimal" value="30"> <b>% discount = ?</b><p class="pc-ans" id="d"></p></div>
+  <div class="pc-card"><b>CGPA</b> <input class="input pc" id="e1" type="number" inputmode="decimal" step="0.01" value="8.4"> <b>to percentage (× 9.5)</b><p class="pc-ans" id="e"></p></div>
+</div>
+<!--howto-->
+<section class="section"><h2>Percentage formulas</h2>
+<div class="steps">
+  <div class="step"><span class="num">%</span><b>X% of Y</b><span>Y × X ÷ 100</span></div>
+  <div class="step"><span class="num">%</span><b>X is what % of Y</b><span>X ÷ Y × 100</span></div>
+  <div class="step"><span class="num">%</span><b>% change</b><span>(New − Old) ÷ Old × 100</span></div>
+</div></section>

@@ -18,6 +18,7 @@
       c.hidden = !ok; if (ok) shown++;
     });
     none.hidden = shown !== 0;
+    document.querySelectorAll('#tool-grid .grid-h').forEach(function (h) { h.hidden = words.length > 0; });
     return words;
   }
   input.addEventListener('input', filter);

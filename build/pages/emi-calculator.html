@@ -1,0 +1,33 @@
+<!---
+{"slug": "emi-calculator", "tool": true,
+ "title": "EMI Calculator — Home, Car, Personal & Education Loan EMI (Free)",
+ "desc": "Calculate your monthly loan EMI, total interest and total payment for home, car, bike, personal or education loans. See the full month-by-month schedule. Free, instant, no sign-up.",
+ "h1": "Loan EMI calculator",
+ "sub": "Find your monthly EMI, total interest and total amount for any loan — home, car, bike, personal or education.",
+ "steps": ["Loan amount", "Rate & time", "See EMI"],
+ "scripts": ["assets/js/tools/emi-calculator.js"],
+ "related": ["gst-calculator", "percentage-calculator", "age-calculator", "qr-code-generator"],
+ "faq": [
+  ["How is EMI calculated?", "EMI = P × r × (1 + r)^n ÷ ((1 + r)^n − 1), where P is the loan amount, r is the monthly interest rate (yearly rate ÷ 12 ÷ 100) and n is the number of months. This tool does the maths for you."],
+  ["Does a longer loan reduce EMI?", "Yes, the monthly EMI goes down, but you pay much more interest in total. Compare the “Total interest” line for 15 vs 20 years to see the difference."],
+  ["Is processing fee included?", "No. Banks may also charge a processing fee, insurance or GST on fees. Ask your bank for the full cost."],
+  ["Does this work for other currencies?", "Yes. The maths is the same everywhere — just read ₹ as your own currency."]
+ ]}
+--->
+<div class="panel">
+  <div class="row">
+    <div><label class="field-label" for="p">Loan amount (₹)</label><input class="input" id="p" type="number" inputmode="decimal" min="0" value="1000000"></div>
+    <div><label class="field-label" for="r">Interest rate (% per year)</label><input class="input" id="r" type="number" inputmode="decimal" min="0" max="60" step="0.05" value="8.5"></div>
+    <div><label class="field-label" for="n">Loan time</label>
+      <div style="display:flex;gap:8px"><input class="input" id="n" type="number" inputmode="numeric" min="1" value="20" style="flex:1"><select class="input" id="u" style="flex:1"><option value="y">Years</option><option value="m">Months</option></select></div></div>
+  </div>
+  <div class="calc-out" id="out"></div>
+  <details><summary style="font-weight:800;cursor:pointer;min-height:44px;display:flex;align-items:center">See year-by-year schedule</summary><div id="sched" style="overflow-x:auto"></div></details>
+</div>
+<!--howto-->
+<section class="section"><h2>How to use the EMI calculator</h2>
+<div class="steps">
+  <div class="step"><span class="num">1</span><b>Enter loan amount</b><span>The amount you will borrow, after your down payment.</span></div>
+  <div class="step"><span class="num">2</span><b>Enter rate and time</b><span>The yearly interest rate from your bank, and the loan time in years or months.</span></div>
+  <div class="step"><span class="num">3</span><b>See your EMI</b><span>Monthly EMI, total interest and total payment update instantly.</span></div>
+</div></section>

@@ -840,6 +840,8 @@ def main():
         sm.append('  <url><loc>%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>' % (u, today, p))
     sm.append('</urlset>')
     open(os.path.join(ROOT, 'sitemap.xml'), 'w').write('\n'.join(sm) + '\n')
+    if CONFIG.get('indexnow_key'):  # IndexNow: proves we own the site so Bing & co. accept instant 'page changed' pings
+        k = CONFIG['indexnow_key']; open(os.path.join(ROOT, k + '.txt'), 'w').write(k)
     open(os.path.join(ROOT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n' % SITE_URL)
     print('built sitemap.xml, robots.txt')
 

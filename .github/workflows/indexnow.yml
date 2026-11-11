@@ -1,0 +1,47 @@
+# Tell Bing, Yandex and other IndexNow search engines about changed pages right after each update.
+name: IndexNow
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Submit changed pages
+        env:
+          SITE: https://docaura.online
+        run: |
+          KEY=$(python3 -c "import json;print(json.load(open('build/config.json')).get('indexnow_key',''))")
+          [ -z "$KEY" ] && { echo "No IndexNow key"; exit 0; }
+          # Changed pages in this push -> their public URLs (index.html files only)
+          git diff --name-only HEAD~1 HEAD -- '*.html' | grep -E '(^|/)index\.html$' | grep -v '^build/' \
+            | sed -E 's#index\.html$##' | sed "s#^#$SITE/#" > urls.txt || true
+          # Full resubmit when asked: run manually, or put [indexnow-all] in the commit message
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || git log -1 --pretty=%B | grep -q '\[indexnow-all\]'; then
+            grep -oE '<loc>[^<]+</loc>' sitemap.xml | sed -E 's#</?loc>##g' > urls.txt
+          fi
+          if [ ! -s urls.txt ]; then echo "No page changes to submit"; exit 0; fi
+          echo "Pages to submit:"; cat urls.txt
+          # Wait until GitHub Pages serves the key file (deploy usually takes ~1 minute)
+          for i in $(seq 1 30); do
+            [ "$(curl -s "$SITE/$KEY.txt")" = "$KEY" ] && break; sleep 10
+          done
+          python3 - "$KEY" <<'PY'
+          import json, sys, urllib.request
+          key = sys.argv[1]
+          urls = [u.strip() for u in open('urls.txt') if u.strip()][:10000]
+          body = json.dumps({"host": "docaura.online", "key": key,
+                             "keyLocation": f"https://docaura.online/{key}.txt", "urlList": urls}).encode()
+          req = urllib.request.Request("https://api.indexnow.org/indexnow", data=body,
+                                       headers={"Content-Type": "application/json; charset=utf-8"})
+          try:
+              r = urllib.request.urlopen(req, timeout=30); print("IndexNow response:", r.status, "for", len(urls), "URLs")
+          except urllib.error.HTTPError as e:
+              print("IndexNow error:", e.code, e.read()[:300]); sys.exit(1)
+          PY

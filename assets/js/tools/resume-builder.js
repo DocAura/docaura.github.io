@@ -365,5 +365,8 @@
   // For automated tests
   window.__skResume = { set: function (d) { data = d; refreshAll(); }, get: function () { return data; }, samples: SAMPLES, build: function (jsPDF) { return buildPdf(jsPDF); } };
 
-  refreshAll();
+  // Fill the form straight away; build the live preview (heavy PDF code) once the page has painted
+  fillSimple(); renderList('exp'); renderList('edu');
+  var startPreview = function () { (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(refreshAll, { timeout: 1500 }); };
+  if (document.readyState === 'complete') startPreview(); else window.addEventListener('load', startPreview);
 })();

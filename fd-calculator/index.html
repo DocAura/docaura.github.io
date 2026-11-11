@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://cloud.umami.is https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' blob: data: https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net https://*.adtrafficquality.google https://*.googleadservices.com https://cloud.umami.is https://api-gateway.umami.dev https://docaura-stats.netlify.app https://accounts.google.com/gsi/; worker-src 'self' blob:; child-src 'self' blob:; frame-src https://*.doubleclick.net https://*.googlesyndication.com https://*.google.com https://*.adtrafficquality.google https://accounts.google.com/gsi/; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://cloud.umami.is https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' blob: data: https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net https://*.adtrafficquality.google https://*.googleadservices.com https://cloud.umami.is https://api-gateway.umami.dev https://docaura-stats.netlify.app https://accounts.google.com/gsi/; worker-src 'self' blob:; child-src 'self' blob:; frame-src https://*.doubleclick.net https://*.googlesyndication.com https://*.google.com https://*.adtrafficquality.google https://accounts.google.com/gsi/; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FD Calculator — Fixed Deposit Maturity &amp; Interest | DocAura</title>
@@ -13,12 +13,12 @@
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../assets/img/icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="../assets/css/style.css?v=c18e4c25">
-<script src="../assets/js/site-config.js?v=b2e90d87"></script>
-<script src="../assets/js/common.js?v=dba28389" data-root="../"></script>
+<link rel="preload" href="../assets/fonts/poppins-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/poppins-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/style.css?v=924b9bee">
+<script src="../assets/js/site-config.js?v=c9de405a"></script>
+<script src="../assets/js/common.js?v=dba28389" data-root="../" defer></script>
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*.pdf"}},{"not":{"selector_matches":"[download],[target=_blank],[data-no-prerender]"}}]},"eagerness":"moderate"}]}</script>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="81420a94-b2f4-4b47-b861-67197601c20c" data-domains="docaura.online"></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do banks calculate FD interest?", "acceptedAnswer": {"@type": "Answer", "text": "Most Indian banks compound FD interest every quarter. Maturity = P \u00d7 (1 + r/400)^(4 \u00d7 years). Choose \u201cQuarterly\u201d for bank FDs."}}, {"@type": "Question", "name": "Is FD interest taxable?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. FD interest is added to your income and taxed at your slab rate. Banks deduct TDS if interest crosses the yearly limit; submit Form 15G/15H if eligible."}}, {"@type": "Question", "name": "Do senior citizens get more?", "acceptedAnswer": {"@type": "Answer", "text": "Usually 0.25%\u20130.50% extra. Type your bank\u2019s senior citizen rate in the rate box."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "FD calculator", "url": "https://docaura.online/fd-calculator/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in your web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
 </head>

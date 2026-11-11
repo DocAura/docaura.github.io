@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://cloud.umami.is https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' blob: data: https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net https://*.adtrafficquality.google https://*.googleadservices.com https://cloud.umami.is https://api-gateway.umami.dev https://docaura-stats.netlify.app https://accounts.google.com/gsi/; worker-src 'self' blob:; child-src 'self' blob:; frame-src https://*.doubleclick.net https://*.googlesyndication.com https://*.google.com https://*.adtrafficquality.google https://accounts.google.com/gsi/; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.googleadservices.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://cloud.umami.is https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com/gsi/style; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' blob: data: https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net https://*.adtrafficquality.google https://*.googleadservices.com https://cloud.umami.is https://api-gateway.umami.dev https://docaura-stats.netlify.app https://accounts.google.com/gsi/; worker-src 'self' blob:; child-src 'self' blob:; frame-src https://*.doubleclick.net https://*.googlesyndication.com https://*.google.com https://*.adtrafficquality.google https://accounts.google.com/gsi/; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BMI Calculator — Body Mass Index for Adults (kg/cm or ft/in)</title>
@@ -13,12 +13,12 @@
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../assets/img/icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="../assets/css/style.css?v=c18e4c25">
-<script src="../assets/js/site-config.js?v=b2e90d87"></script>
-<script src="../assets/js/common.js?v=dba28389" data-root="../"></script>
+<link rel="preload" href="../assets/fonts/poppins-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/poppins-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/style.css?v=924b9bee">
+<script src="../assets/js/site-config.js?v=c9de405a"></script>
+<script src="../assets/js/common.js?v=dba28389" data-root="../" defer></script>
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*.pdf"}},{"not":{"selector_matches":"[download],[target=_blank],[data-no-prerender]"}}]},"eagerness":"moderate"}]}</script>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="81420a94-b2f4-4b47-b861-67197601c20c" data-domains="docaura.online"></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is a healthy BMI?", "acceptedAnswer": {"@type": "Answer", "text": "For adults, the WHO range is 18.5 to 24.9. For South Asian adults many doctors use 18.5 to 22.9, because health risks start at a lower BMI."}}, {"@type": "Question", "name": "Is BMI accurate?", "acceptedAnswer": {"@type": "Answer", "text": "It is a quick screening number only. It doesn\u2019t tell muscle from fat and isn\u2019t meant for children, pregnant women or athletes. A doctor can tell you what is right for you."}}, {"@type": "Question", "name": "How is BMI calculated?", "acceptedAnswer": {"@type": "Answer", "text": "BMI = weight in kg \u00f7 (height in metres \u00d7 height in metres)."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "BMI calculator", "url": "https://docaura.online/bmi-calculator/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (runs in your web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
 </head>

@@ -172,22 +172,24 @@ def footer_en(r):
 def tool_card(t, r):
     cls = 'ic dark' if t.get('dark') else 'ic'
     col = '#FFFFFF' if t.get('dark') else '#3B2D8F'
-    return ('<a class="tool" href="%s%s/" data-keys="%s"><span class="%s">%s</span>'
+    pop = ' data-pop="1"' if t['slug'] in POPULAR else ''
+    return ('<a class="tool" href="%s%s/" data-g="%s"%s data-keys="%s"><span class="%s">%s</span>'
             '<span class="t">%s</span><span class="d">%s</span></a>') % (
-        r, t['slug'], html.escape(t['name'].lower() + ' ' + t['keys']), cls, icon(t['icon'], 36, col, 2), t['name'], t['desc'])
+        r, t['slug'], t['group'], pop, html.escape(t['name'].lower() + ' ' + t['keys']), cls, icon(t['icon'], 36, col, 2), t['name'], t['desc'])
 
 GROUPS = [('resume', 'Resume & job'), ('exam', 'Exam & government forms'), ('pdf', 'PDF tools'), ('image', 'Photo & image tools'), ('money', 'Money & tax calculators'), ('more', 'Everyday calculators & tools')]
+CHIPS = [('pop', 'Popular'), ('exam', 'Exam forms'), ('pdf', 'PDF'), ('image', 'Photo'), ('resume', 'Resume'), ('money', 'Money & tax'), ('more', 'More'), ('all', 'All tools')]
+POPULAR = ['resize-image', 'compress-pdf', 'resume-builder', 'passport-photo', 'signature-resize', 'photo-signature-joiner', 'merge-pdf', 'image-to-text']
 
 def tool_grid(r, exclude=None):
+    # One grid, filtered by category chips (home.js). Without JavaScript every tool shows, grouped.
     out = []
     for g, label in GROUPS:
         cards = [tool_card(t, r) for t in TOOLS if t['group'] == g and t['slug'] != exclude]
-        if g == 'pdf' and SUPPORT_ON:  # friendly "buy me a chai" card placed among the PDF tools
-            cards.insert(3, ('<a class="tool sup-tool" href="%ssupport/" data-keys="support chai coffee donate tip buy me thank" data-track="support-grid">'
-                             '<span class="ic sup-ic">' + CHAI_SVG + '</span><span class="t">Buy me a chai</span>'
-                             '<span class="d">Loving DocAura? Keep it free with any amount you wish. 💜</span></a>') % r)
         if cards: out.append('<h3 class="grid-h">%s</h3>' % label + ''.join(cards))
-    return '<div class="tools" id="tool-grid">' + ''.join(out) + '</div>'
+    chips = ''.join('<button type="button" class="chip-btn" data-chip="%s" aria-pressed="false">%s</button>' % (k, v) for k, v in CHIPS)
+    return ('<div class="chip-row" id="tool-chips" role="toolbar" aria-label="Tool categories" hidden>%s</div>' % chips +
+            '<div class="tools" id="tool-grid">' + ''.join(out) + '</div>')
 
 def related(r, slugs):
     return '<nav class="related" aria-label="Related tools">' + ''.join(
@@ -732,7 +734,7 @@ def page(meta, body):
     if meta.get('article'):
         body = article_shell(meta, body, r)
     body = re.sub(r'\{\{TOPIC_GUIDES:(\w+)\}\}', lambda m: '<div class="guide-grid">' + ''.join('<a class="guide-card" href="%s%s/"><span class="g-tag">Guide</span><b>%s</b><span>%s</span></a>' % (r, g['slug'], html.escape(g['h1']), html.escape(g['desc'])) for g in GUIDES if g.get('topic') == m.group(1)) + '</div>', body)
-    body = body.replace('{{GUIDE_CARDS}}', guide_cards(r, 6)).replace('{{ALL_GUIDES}}', guide_cards(r))
+    body = body.replace('{{GUIDE_CARDS}}', guide_cards(r, 3)).replace('{{ALL_GUIDES}}', guide_cards(r))
     body = body.replace('{{EMAIL}}', email_html()).replace('{{R}}', r).replace('{{TOOL_GRID}}', tool_grid(r)).replace('{{BRAND}}', BRAND['name']).replace('{{EMAIL}}', email_html()).replace('{{ANALYTICS_NOTE}}', ANALYTICS_NOTE).replace('{{SUPPORT_AFTER}}', support_html(r, 'after')).replace('{{SUPPORT_HOME}}', support_html(r, 'home')).replace('{{SUPPORT_FULL}}', support_html(r, 'full')).replace('{{UPDATED}}', CONFIG.get('policy_updated', '19 October 2026'))
     body = re.sub(r'\{\{ICON:(\w+):(\d+):([#\w]+)\}\}', lambda m: icon(m.group(1), int(m.group(2)), m.group(3)), body)
     from seo_titles import TITLES, short_desc

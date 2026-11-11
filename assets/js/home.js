@@ -10,6 +10,16 @@
     words.forEach(function (w) { if (keys.indexOf(w) !== -1) s++; });
     return s;
   }
+  var grid = document.getElementById('tool-grid'), chips = document.getElementById('tool-chips');
+  function setChip(k) {
+    grid.setAttribute('data-show', k);
+    chips.querySelectorAll('.chip-btn').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-chip') === k ? 'true' : 'false'); });
+  }
+  if (chips && grid) {
+    chips.hidden = false; setChip(location.hash === '#tools' ? 'all' : 'pop');
+    window.addEventListener('hashchange', function () { if (location.hash === '#tools') setChip('all'); });
+    chips.addEventListener('click', function (e) { var b = e.target.closest('.chip-btn'); if (b) { input.value = ''; filter(); setChip(b.getAttribute('data-chip')); } });
+  }
   function filter() {
     var words = input.value.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(function (w) { return w.length > 1 && ['to', 'my', 'a', 'the', 'and', 'of', 'for', 'into'].indexOf(w) === -1; });
     var shown = 0;
@@ -19,6 +29,7 @@
     });
     none.hidden = shown !== 0;
     document.querySelectorAll('#tool-grid .grid-h').forEach(function (h) { h.hidden = words.length > 0; });
+    if (grid) grid.classList.toggle('searching', words.length > 0);
     return words;
   }
   input.addEventListener('input', filter);

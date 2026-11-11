@@ -617,3 +617,28 @@ canvas.checker { background: repeating-conic-gradient(#e9e6f2 0% 25%, #fff 0% 50
 .pay-code { margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; background: var(--ground); border-radius: 16px; padding: 14px; }
 .pay-code b { font: 800 26px/1.2 ui-monospace, Menlo, Consolas, monospace; letter-spacing: 1px; color: var(--indigo); }
 .pay-g { display: flex; justify-content: center; min-height: 44px; }
+
+/* Homepage tool chips: one tidy grid filtered by category */
+.chip-row { display: flex; gap: 10px; margin-top: 18px; overflow-x: auto; padding: 4px 2px 10px; scrollbar-width: none; }
+.chip-row::-webkit-scrollbar { display: none; }
+.chip-btn { font: inherit; font-weight: 700; font-size: 16px; white-space: nowrap; border: 0; cursor: pointer; padding: 11px 20px; border-radius: 999px; background: var(--white); color: var(--indigo); box-shadow: 0 8px 18px -10px rgba(59,45,143,.35); }
+.chip-btn[aria-pressed="true"] { background: var(--indigo); color: #fff; }
+.tools[data-show] .grid-h { display: none; }
+.tools[data-show="all"] .grid-h { display: block; }
+.tools[data-show="pop"] .tool:not([data-pop]),
+.tools[data-show="exam"] .tool:not([data-g="exam"]), .tools[data-show="pdf"] .tool:not([data-g="pdf"]),
+.tools[data-show="image"] .tool:not([data-g="image"]), .tools[data-show="resume"] .tool:not([data-g="resume"]),
+.tools[data-show="money"] .tool:not([data-g="money"]), .tools[data-show="more"] .tool:not([data-g="more"]) { display: none; }
+.tools.searching .tool { display: flex; } .tools.searching .tool[hidden] { display: none; } .tools.searching .grid-h { display: none; }
+.trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; background: var(--white); border-radius: 28px; padding: 20px 24px; box-shadow: var(--clay); font-weight: 600; }
+.trust-row span { display: inline-flex; align-items: center; gap: 10px; }
+.guide-card span:last-child { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 560px) {
+  .site-header .wrap { flex-wrap: nowrap; padding-top: 14px; }
+  .site-header .nav { flex-wrap: nowrap; }
+  .text-btn { padding: 8px 14px; min-height: 44px; font-size: 0; gap: 2px; }
+  .text-btn .a1 { font-size: 14px; } .text-btn .a2 { font-size: 20px; }
+  .nav .lang-switch { padding: 7px 12px; }
+  .chip-btn { font-size: 15px; padding: 10px 16px; }
+}
+@media (min-width: 900px) { .guide-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

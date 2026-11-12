@@ -8,8 +8,107 @@
   "background_color": "#F4EEF6",
   "theme_color": "#3B2D8F",
   "icons": [
-    { "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "assets/img/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/img/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "id": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "orientation": "any",
+  "categories": [
+    "productivity",
+    "utilities",
+    "education"
+  ],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "assets/img/screens/phone-home.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "All free tools on one page"
+    },
+    {
+      "src": "assets/img/screens/phone-photo.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Resize a photo to 20 KB for exam forms"
+    },
+    {
+      "src": "assets/img/screens/phone-pdf.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Compress a PDF under 100 KB"
+    },
+    {
+      "src": "assets/img/screens/home.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "DocAura on a computer"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Resize photo to KB",
+      "short_name": "Resize photo",
+      "url": "./resize-image/?source=app",
+      "icons": [
+        {
+          "src": "assets/img/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Compress PDF",
+      "short_name": "Compress PDF",
+      "url": "./compress-pdf/?source=app",
+      "icons": [
+        {
+          "src": "assets/img/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Resume builder",
+      "short_name": "Resume",
+      "url": "./resume-builder/?source=app",
+      "icons": [
+        {
+          "src": "assets/img/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Passport photo",
+      "short_name": "Passport photo",
+      "url": "./passport-photo/?source=app",
+      "icons": [
+        {
+          "src": "assets/img/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }

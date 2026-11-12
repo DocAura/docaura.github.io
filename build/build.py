@@ -698,8 +698,8 @@ def csp():
         ads_script += ' https://accounts.google.com/gsi/client'; ads_conn += ' https://accounts.google.com/gsi/'; g_frame = ' https://accounts.google.com/gsi/'
     return ("default-src 'self'; "
             "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules'%s; " % ads_script +
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com%s; " % (' https://accounts.google.com/gsi/style' if GOOGLE_ID else '') +
-            "font-src 'self' data: https://fonts.gstatic.com; "
+            "style-src 'self' 'unsafe-inline'%s; " % (' https://accounts.google.com/gsi/style' if GOOGLE_ID else '') +
+            "font-src 'self' data:; "
             "img-src 'self' data: blob:%s; " % ads_img +
             "connect-src 'self' blob: data:%s; " % ads_conn +
             "worker-src 'self' blob:; child-src 'self' blob:; "

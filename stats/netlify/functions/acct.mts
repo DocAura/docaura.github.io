@@ -29,4 +29,4 @@ export default async (req: Request, context: Context) => {
   }
 };
 
-export const config: Config = { path: "/api/acct", method: ["POST", "OPTIONS"] };
+export const config: Config = { path: "/api/acct", method: ["POST", "OPTIONS"], rateLimit: { windowLimit: 20, windowSize: 60, aggregateBy: ["ip", "domain"] } }; // Netlify blocks floods; we never store IPs ourselves

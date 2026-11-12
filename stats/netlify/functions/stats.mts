@@ -42,4 +42,4 @@ export default async (req: Request, context: Context) => {
   return Response.json(s, { headers: { "cache-control": "no-store" } });
 };
 
-export const config: Config = { path: "/api/stats", method: ["GET"] };
+export const config: Config = { path: "/api/stats", method: ["GET"], rateLimit: { windowLimit: 10, windowSize: 60, aggregateBy: ["ip", "domain"] } }; // Netlify blocks floods; we never store IPs ourselves

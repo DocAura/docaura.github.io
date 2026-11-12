@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "online.docaura.app",
+    "sha256_cert_fingerprints": ["6B:23:17:EE:3D:62:29:5C:EF:7D:3F:70:04:A8:7E:34:55:2D:2A:12:A7:98:6E:E2:9A:B2:37:80:8F:6C:18:43"]
+  }
+}]

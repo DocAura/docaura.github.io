@@ -851,6 +851,8 @@ def main():
         k = CONFIG['indexnow_key']; open(os.path.join(ROOT, k + '.txt'), 'w').write(k)
     os.makedirs(os.path.join(ROOT, '.well-known'), exist_ok=True)  # security.txt: where to report security problems (a trust signal)
     open(os.path.join(ROOT, '.well-known', 'security.txt'), 'w').write('Contact: mailto:%s\nExpires: %d-12-31T23:59:59Z\nPreferred-Languages: en, hi\nCanonical: %s/.well-known/security.txt\nPolicy: %s/privacy/\n' % (CONFIG['contact_email'], datetime.date.today().year + 1, SITE_URL, SITE_URL))
+    # Digital Asset Links: lets the Android app (online.docaura.app) open docaura.online full-screen, without a browser bar
+    open(os.path.join(ROOT, '.well-known', 'assetlinks.json'), 'w').write('[{\n  "relation": ["delegate_permission/common.handle_all_urls"],\n  "target": {\n    "namespace": "android_app",\n    "package_name": "online.docaura.app",\n    "sha256_cert_fingerprints": ["6B:23:17:EE:3D:62:29:5C:EF:7D:3F:70:04:A8:7E:34:55:2D:2A:12:A7:98:6E:E2:9A:B2:37:80:8F:6C:18:43"]\n  }\n}]\n')
     open(os.path.join(ROOT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n' % SITE_URL)
     print('built sitemap.xml, robots.txt')
 

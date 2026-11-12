@@ -166,7 +166,7 @@ def footer_en(r):
     return '''<footer class="site-footer"><div class="wrap"><div class="card">
   <span style="font-size:21px">%(b1)s<strong>%(b2)s</strong> · %(tag)s</span>
   <nav aria-label="Footer"><a href="%(r)sresume-examples/">Resume examples</a><a href="%(r)sresume-templates/">Resume templates</a><a href="%(r)sguides/">Guides</a><a href="%(r)sabout/">About</a><a href="%(r)sprivacy/">Privacy</a><a href="%(r)scontact/">Contact</a><a href="%(r)sterms/">Terms</a>%(sup)s</nav>
-  <small>© %(y)s %(brand)s. Your files are processed on your own device and are never uploaded.</small>
+  <small>© %(y)s %(brand)s · <a href="%(r)scontact/">hello@docaura.online</a> · Your files are processed on your own device and are never uploaded.</small>
 </div></div></footer>''' % dict(r=r, b1=BRAND['name_light'], b2=BRAND['name_bold'], brand=BRAND['name'], y=year, sup=('<a href="%ssupport/">☕ Support us</a>' % r) if SUPPORT_ON else '', tag=html.escape(BRAND.get('tagline', 'free tools for everyone')))
 
 def tool_card(t, r):
@@ -260,7 +260,7 @@ def crumb_schema(meta):
 def home_schema(meta):
     if meta['slug'] not in ('', 'hi') or not SITE_URL: return ''
     data = [{"@context": "https://schema.org", "@type": "WebSite", "name": BRAND['name'], "url": SITE_URL + '/', "inLanguage": ["en", "hi"]},
-            {"@context": "https://schema.org", "@type": "Organization", "name": BRAND['name'], "url": SITE_URL + '/', "logo": SITE_URL + '/assets/img/icon-512.png'}]
+            {"@context": "https://schema.org", "@type": "Organization", "name": BRAND['name'], "url": SITE_URL + '/', "logo": SITE_URL + '/assets/img/icon-512.png', "email": CONFIG['contact_email'], "contactPoint": {"@type": "ContactPoint", "contactType": "customer support", "email": CONFIG['contact_email'], "availableLanguage": ["English", "Hindi"]}}]
     return '<script type="application/ld+json">%s</script>' % json.dumps(data, ensure_ascii=False)
 
 def tool_schema(meta, url):
@@ -849,6 +849,8 @@ def main():
     open(os.path.join(ROOT, 'sitemap.xml'), 'w').write('\n'.join(sm) + '\n')
     if CONFIG.get('indexnow_key'):  # IndexNow: proves we own the site so Bing & co. accept instant 'page changed' pings
         k = CONFIG['indexnow_key']; open(os.path.join(ROOT, k + '.txt'), 'w').write(k)
+    os.makedirs(os.path.join(ROOT, '.well-known'), exist_ok=True)  # security.txt: where to report security problems (a trust signal)
+    open(os.path.join(ROOT, '.well-known', 'security.txt'), 'w').write('Contact: mailto:%s\nExpires: %d-12-31T23:59:59Z\nPreferred-Languages: en, hi\nCanonical: %s/.well-known/security.txt\nPolicy: %s/privacy/\n' % (CONFIG['contact_email'], datetime.date.today().year + 1, SITE_URL, SITE_URL))
     open(os.path.join(ROOT, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n' % SITE_URL)
     print('built sitemap.xml, robots.txt')
 
